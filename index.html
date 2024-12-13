@@ -255,7 +255,7 @@
 <li>模块化架构：Nginx具有模块化的架构，允许通过添加第三方模块扩展其功能。nginx-rtmp-module就是其中之一，它扩展Nginx的功能，使其能够处理实时流媒体传输。这种模块化的设计使得Nginx可以灵活适应不同的应用需求。</li>
 </ol>
 <p>nginx的下载地址：<a target="_blank" rel="noopener" href="http://nginx.org/en/download.html">http://nginx.org/en/download.html</a></p>
-<p>下载源码包后进行解压，我使用的版本是：<font color=red>nginx-1.25.1</font></p>
+<p>下载源码包后进行解压，我使用的版本是：<font color="red">nginx-1.25.1</font></p>
 <h1 id="nginx-rtmp-module"><a href="#nginx-rtmp-module" class="headerlink" title="nginx-rtmp-module"></a>nginx-rtmp-module</h1><p>nginx-rtmp-module项目地址：<a target="_blank" rel="noopener" href="https://github.com/arut/nginx-rtmp-module">https://github.com/arut/nginx-rtmp-module</a></p>
 <p>RTMP是一种实时传输音频、视频和数据的协议。nginx-rtmp-module添加了对RTMP协议的支持，使得Nginx可以充当流媒体服务器，与客户端设备进行实时的音频传输。</p>
 <p>以下是 nginx-rtmp-module 提供的主要功能：</p>
@@ -283,7 +283,7 @@
 <p>这里安装的时候注意make install的输出信息，网上大多数教程nginx配置文件和执行文件是在&#x2F;etc下的，但我这里安装并不是。</p>
 <p>安装路径在：&#x2F;usr&#x2F;local&#x2F;nginx</p>
 <p>存在如下文件夹：</p>
-<p><img src="/.%5Cassets%5Cimage-20230624175342245.png" alt="image-20230624175342245"></p>
+<p><img src="/2023/08/01/nginx-rtmp-module/.%5Cassets%5Cimage-20230624175342245.png" alt="image-20230624175342245"></p>
 <p><strong>查看Nginx是否安装成功：</strong> </p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bryan@bryan:/usr/local/nginx/sbin$ ./nginx -v</span><br><span class="line">nginx version: nginx/1.25.1</span><br></pre></td></tr></table></figure>
 <p><strong>确认nginx的启动情况：</strong></p>
@@ -296,7 +296,7 @@
 <p>正确加载了配置启动结果如下：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">bryan@bryan:/usr/local/nginx/sbin$ sudo ./nginx -t</span><br><span class="line">nginx: the configuration file /usr/local/nginx/conf/nginx.conf syntax is ok</span><br><span class="line">nginx: configuration file /usr/local/nginx/conf/nginx.conf test is successful</span><br></pre></td></tr></table></figure>
 
-<p>使用vlc打开rtmp<br>vlc地址：rtmp:&#x2F;&#x2F;192.168.43.129:1935&#x2F;video&#x2F;TikTok.mp4<br><img src="/.%5Cassets%5CvlcRTMP.png" alt="vlcrtmp"></p>
+<p>使用vlc打开rtmp<br>vlc地址：rtmp:&#x2F;&#x2F;192.168.43.129:1935&#x2F;video&#x2F;TikTok.mp4<br><img src="/2023/08/01/nginx-rtmp-module/.%5Cassets%5CvlcRTMP.png" alt="vlcrtmp"></p>
 
       
     </div>
@@ -362,17 +362,17 @@
 
       
           <h1 id="live555的介绍"><a href="#live555的介绍" class="headerlink" title="live555的介绍"></a>live555的介绍</h1><p>Live555是一个流媒体开源项目，用于实现RTSP(Real-Time Streaming Protocol)流媒体服务器和客户端。<br>目前我接触到的嵌入式设备推流封装的大多数都是live555.</p>
-<h1 id="live555的编译"><a href="#live555的编译" class="headerlink" title="live555的编译"></a>live555的编译</h1><p><a target="_blank" rel="noopener" href="http://live555.com/liveMedia/public/">http://live555.com/liveMedia/public/</a><br>下载源码压缩包(tar.gz),选择latest.<br><img src="/./assets/live555_sourcecode.png" alt="lastest"></p>
+<h1 id="live555的编译"><a href="#live555的编译" class="headerlink" title="live555的编译"></a>live555的编译</h1><p><a target="_blank" rel="noopener" href="http://live555.com/liveMedia/public/">http://live555.com/liveMedia/public/</a><br>下载源码压缩包(tar.gz),选择latest.<br><img src="/2023/07/24/live555-RTSP/live555_sourcecode.png" alt="lastest"></p>
 <p>启动编译</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo ./genMakefiles linux</span><br><span class="line">sudo make</span><br></pre></td></tr></table></figure>
 
-<p>**<font color=red>报错：BasicTaskScheduler.cpp:191:40: error: ‘struct std::atomic_flag’ has no member named ‘test’<br>  191 |       if (fTriggersAwaitingHandling[i].test()) {<br>      |                                        ^~~~<br>make[1]: *** [Makefile:41: BasicTaskScheduler.o] Error 1<br>**</font><br>阅读changelog.txt文档可以看到在2023.06.20这次更新中使用到了std::atomic_flag，这里需要修改相关的配置。</p>
+<p>**<font color="red">报错：BasicTaskScheduler.cpp:191:40: error: ‘struct std::atomic_flag’ has no member named ‘test’<br>  191 |       if (fTriggersAwaitingHandling[i].test()) {<br>      |                                        ^~~~<br>make[1]: *** [Makefile:41: BasicTaskScheduler.o] Error 1<br>**</font><br>阅读changelog.txt文档可以看到在2023.06.20这次更新中使用到了std::atomic_flag，这里需要修改相关的配置。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">添加如下配置在CPLUSPLUS_FLAGS中</span></span><br><span class="line">CPLUSPLUS_FLAGS =	$(COMPILE_OPTS) -Wall -DBSD=1 $(CPPFLAGS) $(CXXFLAGS)   -DNO_STD_LIB</span><br></pre></td></tr></table></figure>
 <p>如果你的平台支持GCC 20那么添加</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CPLUSPLUS_FLAGS =	$(COMPILE_OPTS) -Wall -DBSD=1 $(CPPFLAGS) $(CXXFLAGS) -std=c++2a  </span><br></pre></td></tr></table></figure>
 <h1 id="live555的实例"><a href="#live555的实例" class="headerlink" title="live555的实例"></a>live555的实例</h1><p>编译成功后进入到mediaServer文件夹下可以看到一个<strong>live555MediaServer</strong>的文件</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">bryan@bryan:~/share/live/mediaServer$ ./live555MediaServer</span><br><span class="line">LIVE555 Media Server</span><br><span class="line">	version 1.11 (LIVE555 Streaming Media library version 2023.06.20).</span><br><span class="line">Play streams from this server using the URL</span><br><span class="line">	rtsp://192.168.43.129:8554/&lt;filename&gt;</span><br><span class="line">where &lt;filename&gt; is a file present in the current directory.</span><br><span class="line">Each file&#x27;s type is inferred from its name suffix:</span><br><span class="line">	&quot;.264&quot; =&gt; a H.264 Video Elementary Stream file</span><br><span class="line">	&quot;.265&quot; =&gt; a H.265 Video Elementary Stream file</span><br><span class="line">	&quot;.aac&quot; =&gt; an AAC Audio (ADTS format) file</span><br><span class="line">	&quot;.ac3&quot; =&gt; an AC-3 Audio file</span><br><span class="line">	&quot;.amr&quot; =&gt; an AMR Audio file</span><br><span class="line">	&quot;.dv&quot; =&gt; a DV Video file</span><br><span class="line">	&quot;.m4e&quot; =&gt; a MPEG-4 Video Elementary Stream file</span><br><span class="line">	&quot;.mkv&quot; =&gt; a Matroska audio+video+(optional)subtitles file</span><br><span class="line">	&quot;.mp3&quot; =&gt; a MPEG-1 or 2 Audio file</span><br><span class="line">	&quot;.mpg&quot; =&gt; a MPEG-1 or 2 Program Stream (audio+video) file</span><br><span class="line">	&quot;.ogg&quot; or &quot;.ogv&quot; or &quot;.opus&quot; =&gt; an Ogg audio and/or video file</span><br><span class="line">	&quot;.ts&quot; =&gt; a MPEG Transport Stream file</span><br><span class="line">		(a &quot;.tsx&quot; index file - if present - provides server &#x27;trick play&#x27; support)</span><br><span class="line">	&quot;.vob&quot; =&gt; a VOB (MPEG-2 video with AC-3 audio) file</span><br><span class="line">	&quot;.wav&quot; =&gt; a WAV Audio file</span><br><span class="line">	&quot;.webm&quot; =&gt; a WebM audio(Vorbis)+video(VP8) file</span><br><span class="line">See http://www.live555.com/mediaServer/ for additional documentation.</span><br><span class="line">(We use port 8000 for optional RTSP-over-HTTP tunneling).)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>可以通过rtsp:&#x2F;&#x2F;192.168.43.129:8554&#x2F;<filename>来访问该文件夹下的资源<br><img src="/./assets/vlcRTSP1.png" alt="vlcrtsp1"><br><img src="/./assets/vlcRTSP2.png" alt="vlcrtsp2"></p>
+<p>可以通过rtsp:&#x2F;&#x2F;192.168.43.129:8554&#x2F;<filename>来访问该文件夹下的资源<br><img src="/2023/07/24/live555-RTSP/vlcRTSP1.png" alt="vlcrtsp1"><br><img src="/2023/07/24/live555-RTSP/vlcRTSP2.png" alt="vlcrtsp2"></filename></p>
 
       
     </div>
