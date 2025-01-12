@@ -145,6 +145,67 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/01/12/hexo%E5%9B%BE%E7%89%87%E4%B8%8D%E6%98%BE%E7%A4%BA%E4%BF%AE%E5%A4%8D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/01/12/hexo%E5%9B%BE%E7%89%87%E4%B8%8D%E6%98%BE%E7%A4%BA%E4%BF%AE%E5%A4%8D/" class="post-title-link" itemprop="url">hexo图片不显示修复</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-01-12 21:45:30 / Modified: 21:53:07" itemprop="dateCreated datePublished" datetime="2025-01-12T21:45:30+08:00">2025-01-12</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="问题表现"><a href="#问题表现" class="headerlink" title="问题表现"></a>问题表现</h1><p>在本地MD插入的图片显示非常正常，但是使用hexo打开后看到的图片是有破图。<br><img src="/../images/20250112140339.png"></p>
+<h1 id="排查问题"><a href="#排查问题" class="headerlink" title="排查问题"></a>排查问题</h1><p>使用<b>F12</b>查看html页面显示的内容<br><img src="/../images/20250112140500.png"><br>使用网页直接打开图片会显示<font color="red">cannot get</font>，看起来是转换图片格式存在问题。由于使用的开源的Git hexo架构来搭建的博客，所以来github上查看对应的issue看看是否有相关的内容。<br>十分幸运的是在<a target="_blank" rel="noopener" href="https://github.com/orgs/hexojs/discussions/5314%E6%89%BE%E5%88%B0%E4%BA%86%E7%9B%B8%E5%85%B3%E7%9A%84%E7%AD%94%E6%A1%88%E3%80%82">https://github.com/orgs/hexojs/discussions/5314找到了相关的答案。</a></p>
+<h1 id="主要步骤"><a href="#主要步骤" class="headerlink" title="主要步骤"></a>主要步骤</h1><p>step1. 在soruce路径下创建一个images文件夹；<br>steps. 将图片存放在这个路径下就可以了；<br>完成这两个步骤，之前在hexo上不显示图片的博客都可以正常显示啦！</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2024/12/15/linux%E5%86%85%E6%A0%B8%E5%88%86%E5%B1%82/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -367,10 +428,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2023-08-01 11:30:15 / Modified: 11:30:38" itemprop="dateCreated datePublished" datetime="2023-08-01T11:30:15+08:00">2023-08-01</time>
+              <time title="Created: 2023-08-01 11:30:15" itemprop="dateCreated datePublished" datetime="2023-08-01T11:30:15+08:00">2023-08-01</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-01-12 21:42:55" itemprop="dateModified" datetime="2025-01-12T21:42:55+08:00">2025-01-12</time>
+              </span>
 
           
 
@@ -423,7 +490,7 @@
 <p>这里安装的时候注意make install的输出信息，网上大多数教程nginx配置文件和执行文件是在&#x2F;etc下的，但我这里安装并不是。</p>
 <p>安装路径在：&#x2F;usr&#x2F;local&#x2F;nginx</p>
 <p>存在如下文件夹：</p>
-<p><img src="/2023/08/01/nginx-rtmp-module/.%5Cassets%5Cimage-20230624175342245.png" alt="image-20230624175342245"></p>
+<p><img src="/../images/image-20230624175342245.png" alt="image-20230624175342245"></p>
 <p><strong>查看Nginx是否安装成功：</strong> </p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bryan@bryan:/usr/local/nginx/sbin$ ./nginx -v</span><br><span class="line">nginx version: nginx/1.25.1</span><br></pre></td></tr></table></figure>
 <p><strong>确认nginx的启动情况：</strong></p>
@@ -436,7 +503,7 @@
 <p>正确加载了配置启动结果如下：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">bryan@bryan:/usr/local/nginx/sbin$ sudo ./nginx -t</span><br><span class="line">nginx: the configuration file /usr/local/nginx/conf/nginx.conf syntax is ok</span><br><span class="line">nginx: configuration file /usr/local/nginx/conf/nginx.conf test is successful</span><br></pre></td></tr></table></figure>
 
-<p>使用vlc打开rtmp<br>vlc地址：rtmp:&#x2F;&#x2F;192.168.43.129:1935&#x2F;video&#x2F;TikTok.mp4<br><img src="/2023/08/01/nginx-rtmp-module/.%5Cassets%5CvlcRTMP.png" alt="vlcrtmp"></p>
+<p>使用vlc打开rtmp<br>vlc地址：rtmp:&#x2F;&#x2F;192.168.43.129:1935&#x2F;video&#x2F;TikTok.mp4<br><img src="/../images/vlcRTMP.png" alt="vlcrtmp"></p>
 
       
     </div>
@@ -487,7 +554,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-08-01 11:28:42" itemprop="dateModified" datetime="2023-08-01T11:28:42+08:00">2023-08-01</time>
+                <time title="Modified: 2025-01-12 21:37:46" itemprop="dateModified" datetime="2025-01-12T21:37:46+08:00">2025-01-12</time>
               </span>
 
           
@@ -502,17 +569,18 @@
 
       
           <h1 id="live555的介绍"><a href="#live555的介绍" class="headerlink" title="live555的介绍"></a>live555的介绍</h1><p>Live555是一个流媒体开源项目，用于实现RTSP(Real-Time Streaming Protocol)流媒体服务器和客户端。<br>目前我接触到的嵌入式设备推流封装的大多数都是live555.</p>
-<h1 id="live555的编译"><a href="#live555的编译" class="headerlink" title="live555的编译"></a>live555的编译</h1><p><a target="_blank" rel="noopener" href="http://live555.com/liveMedia/public/">http://live555.com/liveMedia/public/</a><br>下载源码压缩包(tar.gz),选择latest.<br><img src="/2023/07/24/live555-RTSP/live555_sourcecode.png" alt="lastest"></p>
+<h1 id="live555的编译"><a href="#live555的编译" class="headerlink" title="live555的编译"></a>live555的编译</h1><p><a target="_blank" rel="noopener" href="http://live555.com/liveMedia/public/">http://live555.com/liveMedia/public/</a><br>下载源码压缩包(tar.gz),选择latest.</p>
+<p><img src="/../images/live555_sourcecode.png" alt="live555_sourcecode"></p>
 <p>启动编译</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo ./genMakefiles linux</span><br><span class="line">sudo make</span><br></pre></td></tr></table></figure>
 
-<p>**<font color="red">报错：BasicTaskScheduler.cpp:191:40: error: ‘struct std::atomic_flag’ has no member named ‘test’<br>  191 |       if (fTriggersAwaitingHandling[i].test()) {<br>      |                                        ^~~~<br>make[1]: *** [Makefile:41: BasicTaskScheduler.o] Error 1<br>**</font><br>阅读changelog.txt文档可以看到在2023.06.20这次更新中使用到了std::atomic_flag，这里需要修改相关的配置。</p>
+<p><b><font color="red">报错：BasicTaskScheduler.cpp:191:40: error: ‘struct std::atomic_flag’ has no member named ‘test’<br>  191 |       if (fTriggersAwaitingHandling[i].test()) {<br>      |                                        ^~~~<br>make[1]: *** [Makefile:41: BasicTaskScheduler.o] Error 1<br></font></b><br>阅读changelog.txt文档可以看到在2023.06.20这次更新中使用到了std::atomic_flag，这里需要修改相关的配置。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">添加如下配置在CPLUSPLUS_FLAGS中</span></span><br><span class="line">CPLUSPLUS_FLAGS =	$(COMPILE_OPTS) -Wall -DBSD=1 $(CPPFLAGS) $(CXXFLAGS)   -DNO_STD_LIB</span><br></pre></td></tr></table></figure>
 <p>如果你的平台支持GCC 20那么添加</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CPLUSPLUS_FLAGS =	$(COMPILE_OPTS) -Wall -DBSD=1 $(CPPFLAGS) $(CXXFLAGS) -std=c++2a  </span><br></pre></td></tr></table></figure>
 <h1 id="live555的实例"><a href="#live555的实例" class="headerlink" title="live555的实例"></a>live555的实例</h1><p>编译成功后进入到mediaServer文件夹下可以看到一个<strong>live555MediaServer</strong>的文件</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">bryan@bryan:~/share/live/mediaServer$ ./live555MediaServer</span><br><span class="line">LIVE555 Media Server</span><br><span class="line">	version 1.11 (LIVE555 Streaming Media library version 2023.06.20).</span><br><span class="line">Play streams from this server using the URL</span><br><span class="line">	rtsp://192.168.43.129:8554/&lt;filename&gt;</span><br><span class="line">where &lt;filename&gt; is a file present in the current directory.</span><br><span class="line">Each file&#x27;s type is inferred from its name suffix:</span><br><span class="line">	&quot;.264&quot; =&gt; a H.264 Video Elementary Stream file</span><br><span class="line">	&quot;.265&quot; =&gt; a H.265 Video Elementary Stream file</span><br><span class="line">	&quot;.aac&quot; =&gt; an AAC Audio (ADTS format) file</span><br><span class="line">	&quot;.ac3&quot; =&gt; an AC-3 Audio file</span><br><span class="line">	&quot;.amr&quot; =&gt; an AMR Audio file</span><br><span class="line">	&quot;.dv&quot; =&gt; a DV Video file</span><br><span class="line">	&quot;.m4e&quot; =&gt; a MPEG-4 Video Elementary Stream file</span><br><span class="line">	&quot;.mkv&quot; =&gt; a Matroska audio+video+(optional)subtitles file</span><br><span class="line">	&quot;.mp3&quot; =&gt; a MPEG-1 or 2 Audio file</span><br><span class="line">	&quot;.mpg&quot; =&gt; a MPEG-1 or 2 Program Stream (audio+video) file</span><br><span class="line">	&quot;.ogg&quot; or &quot;.ogv&quot; or &quot;.opus&quot; =&gt; an Ogg audio and/or video file</span><br><span class="line">	&quot;.ts&quot; =&gt; a MPEG Transport Stream file</span><br><span class="line">		(a &quot;.tsx&quot; index file - if present - provides server &#x27;trick play&#x27; support)</span><br><span class="line">	&quot;.vob&quot; =&gt; a VOB (MPEG-2 video with AC-3 audio) file</span><br><span class="line">	&quot;.wav&quot; =&gt; a WAV Audio file</span><br><span class="line">	&quot;.webm&quot; =&gt; a WebM audio(Vorbis)+video(VP8) file</span><br><span class="line">See http://www.live555.com/mediaServer/ for additional documentation.</span><br><span class="line">(We use port 8000 for optional RTSP-over-HTTP tunneling).)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>可以通过rtsp:&#x2F;&#x2F;192.168.43.129:8554&#x2F;<filename>来访问该文件夹下的资源<br><img src="/2023/07/24/live555-RTSP/vlcRTSP1.png" alt="vlcrtsp1"><br><img src="/2023/07/24/live555-RTSP/vlcRTSP2.png" alt="vlcrtsp2"></filename></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">![live555_sourcecode](live555-RTSP/live555_sourcecode.png)bryan@bryan:~/share/live/mediaServer$ ./live555MediaServer</span><br><span class="line">LIVE555 Media Server</span><br><span class="line">	version 1.11 (LIVE555 Streaming Media library version 2023.06.20).</span><br><span class="line">Play streams from this server using the URL</span><br><span class="line">	rtsp://192.168.43.129:8554/&lt;filename&gt;</span><br><span class="line">where &lt;filename&gt; is a file present in the current directory.</span><br><span class="line">Each file&#x27;s type is inferred from its name suffix:</span><br><span class="line">	&quot;.264&quot; =&gt; a H.264 Video Elementary Stream file</span><br><span class="line">	&quot;.265&quot; =&gt; a H.265 Video Elementary Stream file</span><br><span class="line">	&quot;.aac&quot; =&gt; an AAC Audio (ADTS format) file</span><br><span class="line">	&quot;.ac3&quot; =&gt; an AC-3 Audio file</span><br><span class="line">	&quot;.amr&quot; =&gt; an AMR Audio file</span><br><span class="line">	&quot;.dv&quot; =&gt; a DV Video file</span><br><span class="line">	&quot;.m4e&quot; =&gt; a MPEG-4 Video Elementary Stream file</span><br><span class="line">	&quot;.mkv&quot; =&gt; a Matroska audio+video+(optional)subtitles file</span><br><span class="line">	&quot;.mp3&quot; =&gt; a MPEG-1 or 2 Audio file</span><br><span class="line">	&quot;.mpg&quot; =&gt; a MPEG-1 or 2 Program Stream (audio+video) file</span><br><span class="line">	&quot;.ogg&quot; or &quot;.ogv&quot; or &quot;.opus&quot; =&gt; an Ogg audio and/or video file</span><br><span class="line">	&quot;.ts&quot; =&gt; a MPEG Transport Stream file</span><br><span class="line">		(a &quot;.tsx&quot; index file - if present - provides server &#x27;trick play&#x27; support)</span><br><span class="line">	&quot;.vob&quot; =&gt; a VOB (MPEG-2 video with AC-3 audio) file</span><br><span class="line">	&quot;.wav&quot; =&gt; a WAV Audio file</span><br><span class="line">	&quot;.webm&quot; =&gt; a WebM audio(Vorbis)+video(VP8) file</span><br><span class="line">See http://www.live555.com/mediaServer/ for additional documentation.</span><br><span class="line">(We use port 8000 for optional RTSP-over-HTTP tunneling).)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>可以通过rtsp:&#x2F;&#x2F;192.168.43.129:8554&#x2F;<filename>来访问该文件夹下的资源<br><img src="/../images/vlcRTSP1.png" alt="vlcrtsp1"><br><img src="/../images/vlcRTSP2.png" alt="vlcrtsp2"></filename></p>
 
       
     </div>
@@ -654,7 +722,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-count">7</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -682,7 +750,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2024</span>
+  <span itemprop="copyrightYear">2025</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
