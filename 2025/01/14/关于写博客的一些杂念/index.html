@@ -20,19 +20,19 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="不诚实是局部最优，但一定不会是全局最优。 原理pstore是一个抽象层，提供统一的接口来存储内核日志、崩溃转储等数据。可以支持多种存储后端，如ramoops(RAM环形缓冲区)、NVRAM、EFI等。 ramoops是一个存储后端，将日志数据存储在分配的RAM区域中，崩溃后内存数据不会被覆盖，系统重启时可以恢复这些日志。 使用场景 系统需要再崩溃后保存日志供后续调试。 没有持久化存储设备（如硬盘或">
+  <meta name="description" content="过去很长一段时间我都遗忘掉写博客的念头，与我而言我想要将我的博客写的完美点，从而行动力低下。不过最近发生了两件事情让我打算重新开始博客的编写，并且希望在25年将博客篇数达到100。 第一件事情是在观看网易云计算首席架构师刘超的访谈中关于博客记录的描写，他有提到技术的更新迭代是很快的，而人们遗忘也很快，但是如果有编写过相关的文章，那么重新拾起也会快一点。与我而言，我在过去十年接触到的技术点我自信是不">
 <meta property="og:type" content="article">
-<meta property="og:title" content="内核日志环形缓冲区">
-<meta property="og:url" content="http://example.com/2024/12/14/%E5%86%85%E6%A0%B8%E6%97%A5%E5%BF%97%E7%8E%AF%E5%BD%A2%E7%BC%93%E5%86%B2%E5%8C%BA/index.html">
+<meta property="og:title" content="关于写博客的一些杂念">
+<meta property="og:url" content="http://example.com/2025/01/14/%E5%85%B3%E4%BA%8E%E5%86%99%E5%8D%9A%E5%AE%A2%E7%9A%84%E4%B8%80%E4%BA%9B%E6%9D%82%E5%BF%B5/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="不诚实是局部最优，但一定不会是全局最优。 原理pstore是一个抽象层，提供统一的接口来存储内核日志、崩溃转储等数据。可以支持多种存储后端，如ramoops(RAM环形缓冲区)、NVRAM、EFI等。 ramoops是一个存储后端，将日志数据存储在分配的RAM区域中，崩溃后内存数据不会被覆盖，系统重启时可以恢复这些日志。 使用场景 系统需要再崩溃后保存日志供后续调试。 没有持久化存储设备（如硬盘或">
+<meta property="og:description" content="过去很长一段时间我都遗忘掉写博客的念头，与我而言我想要将我的博客写的完美点，从而行动力低下。不过最近发生了两件事情让我打算重新开始博客的编写，并且希望在25年将博客篇数达到100。 第一件事情是在观看网易云计算首席架构师刘超的访谈中关于博客记录的描写，他有提到技术的更新迭代是很快的，而人们遗忘也很快，但是如果有编写过相关的文章，那么重新拾起也会快一点。与我而言，我在过去十年接触到的技术点我自信是不">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2024-12-14T13:40:31.980Z">
-<meta property="article:modified_time" content="2024-12-14T14:03:41.308Z">
+<meta property="article:published_time" content="2025-01-14T13:17:53.000Z">
+<meta property="article:modified_time" content="2025-01-15T16:32:54.256Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/2024/12/14/%E5%86%85%E6%A0%B8%E6%97%A5%E5%BF%97%E7%8E%AF%E5%BD%A2%E7%BC%93%E5%86%B2%E5%8C%BA/">
+<link rel="canonical" href="http://example.com/2025/01/14/%E5%85%B3%E4%BA%8E%E5%86%99%E5%8D%9A%E5%AE%A2%E7%9A%84%E4%B8%80%E4%BA%9B%E6%9D%82%E5%BF%B5/">
 
 
 <script id="page-configurations">
@@ -45,7 +45,7 @@
   };
 </script>
 
-  <title>内核日志环形缓冲区 | Hexo</title>
+  <title>关于写博客的一些杂念 | Hexo</title>
   
 
 
@@ -150,7 +150,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/12/14/%E5%86%85%E6%A0%B8%E6%97%A5%E5%BF%97%E7%8E%AF%E5%BD%A2%E7%BC%93%E5%86%B2%E5%8C%BA/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/01/14/%E5%85%B3%E4%BA%8E%E5%86%99%E5%8D%9A%E5%AE%A2%E7%9A%84%E4%B8%80%E4%BA%9B%E6%9D%82%E5%BF%B5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -163,7 +163,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          内核日志环形缓冲区
+          关于写博客的一些杂念
         </h1>
 
         <div class="post-meta">
@@ -172,10 +172,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2024-12-14 21:40:31 / Modified: 22:03:41" itemprop="dateCreated datePublished" datetime="2024-12-14T21:40:31+08:00">2024-12-14</time>
+              <time title="Created: 2025-01-14 21:17:53" itemprop="dateCreated datePublished" datetime="2025-01-14T21:17:53+08:00">2025-01-14</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-01-16 00:32:54" itemprop="dateModified" datetime="2025-01-16T00:32:54+08:00">2025-01-16</time>
+              </span>
 
           
 
@@ -188,21 +194,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>不诚实是局部最优，但一定不会是全局最优。</p>
-<h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><p><code>pstore</code>是一个抽象层，提供统一的接口来存储内核日志、崩溃转储等数据。可以支持多种存储后端，如<code>ramoops</code>(RAM环形缓冲区)、NVRAM、EFI等。</p>
-<p><code>ramoops</code>是一个存储后端，将日志数据存储在分配的RAM区域中，崩溃后内存数据不会被覆盖，系统重启时可以恢复这些日志。</p>
-<h1 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h1><ol>
-<li>系统需要再崩溃后保存日志供后续调试。</li>
-<li>没有持久化存储设备（如硬盘或NVRAM)，只能依赖RAM存储。</li>
-<li>系统运行在资源受限的嵌入式设备上。</li>
-</ol>
-<h1 id="配置步骤"><a href="#配置步骤" class="headerlink" title="配置步骤"></a>配置步骤</h1><h2 id="内核配置"><a href="#内核配置" class="headerlink" title="内核配置"></a>内核配置</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">CONFIG_PSTORE=y</span><br><span class="line">CONFIG_PSTORE_RAM=y</span><br><span class="line">CONFIG_RAMOOPS=y</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="日志查看"><a href="#日志查看" class="headerlink" title="日志查看"></a>日志查看</h1><p><code>pstore</code>会将存储的日志挂载到<code>/sys/fs/pstore</code>目录下，重启后可以直接查看崩溃日志</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ls</span> /sys/fs/pstore</span><br></pre></td></tr></table></figure>
-
+        <p>过去很长一段时间我都遗忘掉写博客的念头，与我而言我想要将我的博客写的完美点，从而行动力低下。不过最近发生了两件事情让我打算重新开始博客的编写，并且希望在25年将博客篇数达到<font color="red">100</font>。</p>
+<p>第一件事情是在观看网易云计算首席架构师刘超的访谈中关于博客记录的描写，他有提到技术的更新迭代是很快的，而人们遗忘也很快，但是如果有编写过相关的文章，那么重新拾起也会快一点。<br>与我而言，我在过去十年接触到的技术点我自信是不弱于这个行业百分之八十的人的，但我总是没有沉淀下去，知识就像往池塘丢进一颗石子，当它沉淀到底的时候就是掌握知识的时候，而我的知识好似一片叶子，从来都不曾往池底沉落知识一直漂浮在水面上，偶尔清风来袭泛起一丝波澜罢了。</p>
+<p>第二件事是最近有一个人对我说，我看过你的博客，但好像里面没写啥东西。<br>对于这件事我是很惊喜的，我的博客竟然真的有人去浏览，但我也很难过，我似乎真的没有往里面放点什么东西，那怕是几篇水文呢？</p>
+<p>所以我决定重新将写博文这件事情放上我的计划中，我希望能够将我的知识沉淀下去，也希望阅览到我博客的人对我的技术有所认知。</p>
 
     </div>
 
@@ -218,12 +213,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2024/12/14/challenge/" rel="prev" title="a challenge">
-      <i class="fa fa-chevron-left"></i> a challenge
+    <a href="/2025/01/14/%E4%BD%BF%E7%94%A8tcpdump-wireshark%E6%8E%92%E6%9F%A5%E7%BD%91%E7%BB%9C%E4%BA%A4%E4%BA%92%E9%97%AE%E9%A2%98/" rel="prev" title="使用tcpdump+wireshark排查网络交互问题">
+      <i class="fa fa-chevron-left"></i> 使用tcpdump+wireshark排查网络交互问题
     </a></div>
       <div class="post-nav-item">
-    <a href="/2024/12/15/linux%E5%86%85%E6%A0%B8%E5%88%86%E5%B1%82/" rel="next" title="linux内核分层">
-      linux内核分层 <i class="fa fa-chevron-right"></i>
+    <a href="/2025/01/14/linux%E7%B3%BB%E7%BB%9F%E8%A3%81%E5%89%AA%E6%96%B9%E5%BC%8F/" rel="next" title="linux系统裁剪方式">
+      linux系统裁剪方式 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -283,7 +278,6 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">2.</span> <span class="nav-text">使用场景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%AD%A5%E9%AA%A4"><span class="nav-number">3.</span> <span class="nav-text">配置步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E6%A0%B8%E9%85%8D%E7%BD%AE"><span class="nav-number">3.1.</span> <span class="nav-text">内核配置</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%97%A5%E5%BF%97%E6%9F%A5%E7%9C%8B"><span class="nav-number">4.</span> <span class="nav-text">日志查看</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

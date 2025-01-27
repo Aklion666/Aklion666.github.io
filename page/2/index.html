@@ -20,36 +20,28 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="live555的介绍Live555是一个流媒体开源项目，用于实现RTSP(Real-Time Streaming Protocol)流媒体服务器和客户端。目前我接触到的嵌入式设备推流封装的大多数都是live555. live555的编译http:&#x2F;&#x2F;live555.com&#x2F;liveMedia&#x2F;public&#x2F;下载源码压缩包(tar.gz),选择latest.  启动编译 12sudo .&#x2F;genMa">
-<meta property="og:type" content="article">
-<meta property="og:title" content="live555_RTSP">
-<meta property="og:url" content="http://example.com/2023/07/24/live555-RTSP/index.html">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://example.com/page/2/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="live555的介绍Live555是一个流媒体开源项目，用于实现RTSP(Real-Time Streaming Protocol)流媒体服务器和客户端。目前我接触到的嵌入式设备推流封装的大多数都是live555. live555的编译http:&#x2F;&#x2F;live555.com&#x2F;liveMedia&#x2F;public&#x2F;下载源码压缩包(tar.gz),选择latest.  启动编译 12sudo .&#x2F;genMa">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/images/live555_sourcecode.png">
-<meta property="og:image" content="http://example.com/images/vlcRTSP1.png">
-<meta property="og:image" content="http://example.com/images/vlcRTSP2.png">
-<meta property="article:published_time" content="2023-07-23T16:45:48.000Z">
-<meta property="article:modified_time" content="2025-01-12T13:37:46.979Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/images/live555_sourcecode.png">
 
-<link rel="canonical" href="http://example.com/2023/07/24/live555-RTSP/">
+<link rel="canonical" href="http://example.com/page/2/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : false,
-    isPost : true,
+    isHome : true,
+    isPost : false,
     lang   : 'en'
   };
 </script>
 
-  <title>live555_RTSP | Hexo</title>
+  <title>Hexo</title>
   
 
 
@@ -147,10 +139,127 @@
         <div class="content-wrap">
           
 
-          <div class="content post posts-expand">
+          <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/08/01/nginx-rtmp-module/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/08/01/nginx-rtmp-module/" class="post-title-link" itemprop="url">nginx-rtmp-module</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-08-01 11:30:15" itemprop="dateCreated datePublished" datetime="2023-08-01T11:30:15+08:00">2023-08-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-01-12 21:42:55" itemprop="dateModified" datetime="2025-01-12T21:42:55+08:00">2025-01-12</time>
+              </span>
+
+          
+
+        </div>
+      </header>
 
     
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h1><ol>
+<li>下载nginx-rtmp-module</li>
+<li>安装nginx</li>
+</ol>
+<h1 id="nginx"><a href="#nginx" class="headerlink" title="nginx"></a>nginx</h1><p>我们将采用nginx来作为流媒体服务器，主要原因是因为Nginx具有：</p>
+<ol>
+<li>高性能：Nginx以事件驱动的方式处理请求，采用异步非阻塞的工作模式，能够高效地处理大量的并发连接。这使得它非常适合处理实时流媒体传输，能够提供稳定、低延迟的传输性能。</li>
+<li>可靠性和稳定性：Nginx被广泛认为是一个稳定可靠的服务器软件，它在大规模并发负载下表现出色。它经受住了各种实际应用环境的考验，并被许多大型网站和服务所采用。</li>
+<li>反向代理和负载均衡：Nginx提供了反向代理和负载均衡功能，可以将客户端请求转发到多个后端服务器，实现负载均衡和高可用性。对于实时流媒体而言，这意味着可以通过配置Nginx，将流媒体请求分发到多个流媒体服务器，提供可扩展性和可靠性。</li>
+<li>模块化架构：Nginx具有模块化的架构，允许通过添加第三方模块扩展其功能。nginx-rtmp-module就是其中之一，它扩展Nginx的功能，使其能够处理实时流媒体传输。这种模块化的设计使得Nginx可以灵活适应不同的应用需求。</li>
+</ol>
+<p>nginx的下载地址：<a target="_blank" rel="noopener" href="http://nginx.org/en/download.html">http://nginx.org/en/download.html</a></p>
+<p>下载源码包后进行解压，我使用的版本是：<font color="red">nginx-1.25.1</font></p>
+<h1 id="nginx-rtmp-module"><a href="#nginx-rtmp-module" class="headerlink" title="nginx-rtmp-module"></a>nginx-rtmp-module</h1><p>nginx-rtmp-module项目地址：<a target="_blank" rel="noopener" href="https://github.com/arut/nginx-rtmp-module">https://github.com/arut/nginx-rtmp-module</a></p>
+<p>RTMP是一种实时传输音频、视频和数据的协议。nginx-rtmp-module添加了对RTMP协议的支持，使得Nginx可以充当流媒体服务器，与客户端设备进行实时的音频传输。</p>
+<p>以下是 nginx-rtmp-module 提供的主要功能：</p>
+<ol>
+<li>接收 RTMP 流：nginx-rtmp-module 允许服务器接收来自 RTMP 客户端的实时流，并进行处理和分发。</li>
+<li>多种协议支持：除了 RTMP，该模块还支持 HLS（HTTP Live Streaming）和 MPEG-DASH（Dynamic Adaptive Streaming over HTTP）等流媒体协议。</li>
+<li>视频录制和存储：该模块可以将接收到的实时流媒体数据进行录制和存储，以便后续回放或存档。</li>
+<li>动态模块配置：通过配置 Nginx 的配置文件，可以动态地控制流媒体服务的行为，如设置并发连接数、调整缓存大小等。</li>
+<li>安全认证和访问控制：nginx-rtmp-module 提供了基于 IP 地址、用户名&#x2F;密码和令牌等方式的认证和访问控制机制，用于保护流媒体服务的安全性。</li>
+<li>事件通知和回调：该模块支持事件通知和回调机制，允许开发者通过自定义代码处理特定的流媒体事件，如新的连接、断开连接等。</li>
+</ol>
+<p>更详细的部分后续看源码学习。</p>
+<h1 id="实际操作"><a href="#实际操作" class="headerlink" title="实际操作"></a>实际操作</h1><p>nginx解压路径：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bryan@bryan:~/share/nginx-1.25.1$ </span><br></pre></td></tr></table></figure>
+
+
+
+<p>nginx-rtmp-module解压路径：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bryan@bryan:~/share/nginx-rtmp-module-master$</span><br></pre></td></tr></table></figure>
+
+<p>并不需要对nginx-rtmp-module做什么多余的操作</p>
+<p>进入nginx的压缩文件下，进行编译操作：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">./configure --add-module=/home/bryan/share/nginx-rtmp-module-master</span><br><span class="line">make</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
+
+<p>这里安装的时候注意make install的输出信息，网上大多数教程nginx配置文件和执行文件是在&#x2F;etc下的，但我这里安装并不是。</p>
+<p>安装路径在：&#x2F;usr&#x2F;local&#x2F;nginx</p>
+<p>存在如下文件夹：</p>
+<p><img src="/../images/image-20230624175342245.png" alt="image-20230624175342245"></p>
+<p><strong>查看Nginx是否安装成功：</strong> </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bryan@bryan:/usr/local/nginx/sbin$ ./nginx -v</span><br><span class="line">nginx version: nginx/1.25.1</span><br></pre></td></tr></table></figure>
+<p><strong>确认nginx的启动情况：</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ps -ef|grep nginx</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">console input</span></span><br><span class="line">bryan@bryan:/usr/local/nginx/sbin$ ps -ef|grep nginx</span><br><span class="line">bryan      15360   15207  0 13:34 pts/0    00:00:00 grep --color=auto nginx</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>nginx rtmp配置：</strong><br>打开&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;conf$ vim nginx.conf 在配置文件的末尾添加如下配置：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">rtmp &#123;</span><br><span class="line">  server &#123;</span><br><span class="line">    listen <span class="number">1935</span>;  # 监听端口，通常为默认的 RTMP 端口 <span class="number">1935</span></span><br><span class="line">    chunk_size <span class="number">4096</span>;</span><br><span class="line"></span><br><span class="line">    application live &#123;</span><br><span class="line">      live <span class="keyword">on</span>;</span><br><span class="line">      allow play <span class="keyword">all</span>;</span><br><span class="line">      # 可以添加其他配置，如推流、播放设置等</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    application video&#123;</span><br><span class="line">        play /home/bryan/share/video;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>再次启动nginx：</strong><br>启动nginx的命令为：&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;sbin&#x2F;nginx<br>停止nginx的命令为 ：&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;sbin&#x2F;nginx -s stop<br>重启nginx的命令为：&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;sbin&#x2F;nginx -s reload</p>
+<p>正确加载了配置启动结果如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">bryan@bryan:/usr/local/nginx/sbin$ sudo ./nginx -t</span><br><span class="line">nginx: the configuration file /usr/local/nginx/conf/nginx.conf syntax is ok</span><br><span class="line">nginx: configuration file /usr/local/nginx/conf/nginx.conf test is successful</span><br></pre></td></tr></table></figure>
+
+<p>使用vlc打开rtmp<br>vlc地址：rtmp:&#x2F;&#x2F;192.168.43.129:1935&#x2F;video&#x2F;TikTok.mp4<br><img src="/../images/vlcRTMP.png" alt="vlcrtmp"></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
@@ -166,9 +275,10 @@
       <meta itemprop="name" content="Hexo">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          live555_RTSP
-        </h1>
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/07/24/live555-RTSP/" class="post-title-link" itemprop="url">live555_RTSP</a>
+        </h2>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -198,7 +308,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="live555的介绍"><a href="#live555的介绍" class="headerlink" title="live555的介绍"></a>live555的介绍</h1><p>Live555是一个流媒体开源项目，用于实现RTSP(Real-Time Streaming Protocol)流媒体服务器和客户端。<br>目前我接触到的嵌入式设备推流封装的大多数都是live555.</p>
+          <h1 id="live555的介绍"><a href="#live555的介绍" class="headerlink" title="live555的介绍"></a>live555的介绍</h1><p>Live555是一个流媒体开源项目，用于实现RTSP(Real-Time Streaming Protocol)流媒体服务器和客户端。<br>目前我接触到的嵌入式设备推流封装的大多数都是live555.</p>
 <h1 id="live555的编译"><a href="#live555的编译" class="headerlink" title="live555的编译"></a>live555的编译</h1><p><a target="_blank" rel="noopener" href="http://live555.com/liveMedia/public/">http://live555.com/liveMedia/public/</a><br>下载源码压缩包(tar.gz),选择latest.</p>
 <p><img src="/../images/live555_sourcecode.png" alt="live555_sourcecode"></p>
 <p>启动编译</p>
@@ -212,34 +322,85 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">![live555_sourcecode](live555-RTSP/live555_sourcecode.png)bryan@bryan:~/share/live/mediaServer$ ./live555MediaServer</span><br><span class="line">LIVE555 Media Server</span><br><span class="line">	version 1.11 (LIVE555 Streaming Media library version 2023.06.20).</span><br><span class="line">Play streams from this server using the URL</span><br><span class="line">	rtsp://192.168.43.129:8554/&lt;filename&gt;</span><br><span class="line">where &lt;filename&gt; is a file present in the current directory.</span><br><span class="line">Each file&#x27;s type is inferred from its name suffix:</span><br><span class="line">	&quot;.264&quot; =&gt; a H.264 Video Elementary Stream file</span><br><span class="line">	&quot;.265&quot; =&gt; a H.265 Video Elementary Stream file</span><br><span class="line">	&quot;.aac&quot; =&gt; an AAC Audio (ADTS format) file</span><br><span class="line">	&quot;.ac3&quot; =&gt; an AC-3 Audio file</span><br><span class="line">	&quot;.amr&quot; =&gt; an AMR Audio file</span><br><span class="line">	&quot;.dv&quot; =&gt; a DV Video file</span><br><span class="line">	&quot;.m4e&quot; =&gt; a MPEG-4 Video Elementary Stream file</span><br><span class="line">	&quot;.mkv&quot; =&gt; a Matroska audio+video+(optional)subtitles file</span><br><span class="line">	&quot;.mp3&quot; =&gt; a MPEG-1 or 2 Audio file</span><br><span class="line">	&quot;.mpg&quot; =&gt; a MPEG-1 or 2 Program Stream (audio+video) file</span><br><span class="line">	&quot;.ogg&quot; or &quot;.ogv&quot; or &quot;.opus&quot; =&gt; an Ogg audio and/or video file</span><br><span class="line">	&quot;.ts&quot; =&gt; a MPEG Transport Stream file</span><br><span class="line">		(a &quot;.tsx&quot; index file - if present - provides server &#x27;trick play&#x27; support)</span><br><span class="line">	&quot;.vob&quot; =&gt; a VOB (MPEG-2 video with AC-3 audio) file</span><br><span class="line">	&quot;.wav&quot; =&gt; a WAV Audio file</span><br><span class="line">	&quot;.webm&quot; =&gt; a WebM audio(Vorbis)+video(VP8) file</span><br><span class="line">See http://www.live555.com/mediaServer/ for additional documentation.</span><br><span class="line">(We use port 8000 for optional RTSP-over-HTTP tunneling).)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>可以通过rtsp:&#x2F;&#x2F;192.168.43.129:8554&#x2F;<filename>来访问该文件夹下的资源<br><img src="/../images/vlcRTSP1.png" alt="vlcrtsp1"><br><img src="/../images/vlcRTSP2.png" alt="vlcrtsp2"></filename></p>
 
+      
     </div>
 
     
     
     
-
       <footer class="post-footer">
-
-        
-
-
-        
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/2022/06/08/hello-world/" rel="prev" title="Hello World">
-      <i class="fa fa-chevron-left"></i> Hello World
-    </a></div>
-      <div class="post-nav-item">
-    <a href="/2023/08/01/nginx-rtmp-module/" rel="next" title="nginx-rtmp-module">
-      nginx-rtmp-module <i class="fa fa-chevron-right"></i>
-    </a></div>
-    </div>
+        <div class="post-eof"></div>
       </footer>
-    
   </article>
   
   
   
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/08/hello-world/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/06/08/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-06-08 14:10:07 / Modified: 14:41:13" itemprop="dateCreated datePublished" datetime="2022-06-08T14:10:07+08:00">2022-06-08</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><p>Hello Bryan~</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+  </nav>
 
 
 
@@ -291,7 +452,6 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#live555%E7%9A%84%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">live555的介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#live555%E7%9A%84%E7%BC%96%E8%AF%91"><span class="nav-number">2.</span> <span class="nav-text">live555的编译</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#live555%E7%9A%84%E5%AE%9E%E4%BE%8B"><span class="nav-number">3.</span> <span class="nav-text">live555的实例</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
