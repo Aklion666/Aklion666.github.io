@@ -20,19 +20,19 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="过去很长一段时间我都遗忘掉写博客的念头，与我而言我想要将我的博客写的完美点，从而行动力低下。不过最近发生了两件事情让我打算重新开始博客的编写，并且希望在25年将博客篇数达到100。 第一件事情是在观看网易云计算首席架构师刘超的访谈中关于博客记录的描写，他有提到技术的更新迭代是很快的，而人们遗忘也很快，但是如果有编写过相关的文章，那么重新拾起也会快一点。与我而言，我在过去十年接触到的技术点我自信是不">
+  <meta name="description" content="场景在一次拉取摄像头音视频数据进行播放的时候出现了画面跳帧、高延迟、卡顿的现象，不满足于产品需求，是一个无法忍受的功能场景，故需要进行问题定位后进行排查。 初步判断大致可以分为两个部分进行问题排查，首先是设备端推流数据是否有问题，其次是媒体服务器转码的数据是否有问题。由于这里的摄像头数据的功能实现代码是完全无感的，所以只能先从媒体服务器这边进行排查。 手段一：视频保存将推流的数据保存为视频文件，进">
 <meta property="og:type" content="article">
-<meta property="og:title" content="关于写博客的一些杂念">
-<meta property="og:url" content="http://example.com/2025/01/14/%E5%85%B3%E4%BA%8E%E5%86%99%E5%8D%9A%E5%AE%A2%E7%9A%84%E4%B8%80%E4%BA%9B%E6%9D%82%E5%BF%B5/index.html">
+<meta property="og:title" content="直播中画面偶发的跳帧问题排查手段">
+<meta property="og:url" content="http://example.com/2025/09/03/%E7%9B%B4%E6%92%AD%E4%B8%AD%E7%94%BB%E9%9D%A2%E5%81%B6%E5%8F%91%E7%9A%84%E8%B7%B3%E5%B8%A7%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E6%89%8B%E6%AE%B5/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="过去很长一段时间我都遗忘掉写博客的念头，与我而言我想要将我的博客写的完美点，从而行动力低下。不过最近发生了两件事情让我打算重新开始博客的编写，并且希望在25年将博客篇数达到100。 第一件事情是在观看网易云计算首席架构师刘超的访谈中关于博客记录的描写，他有提到技术的更新迭代是很快的，而人们遗忘也很快，但是如果有编写过相关的文章，那么重新拾起也会快一点。与我而言，我在过去十年接触到的技术点我自信是不">
+<meta property="og:description" content="场景在一次拉取摄像头音视频数据进行播放的时候出现了画面跳帧、高延迟、卡顿的现象，不满足于产品需求，是一个无法忍受的功能场景，故需要进行问题定位后进行排查。 初步判断大致可以分为两个部分进行问题排查，首先是设备端推流数据是否有问题，其次是媒体服务器转码的数据是否有问题。由于这里的摄像头数据的功能实现代码是完全无感的，所以只能先从媒体服务器这边进行排查。 手段一：视频保存将推流的数据保存为视频文件，进">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2025-01-14T13:17:53.000Z">
-<meta property="article:modified_time" content="2025-01-15T16:32:54.256Z">
+<meta property="article:published_time" content="2025-09-02T16:12:30.000Z">
+<meta property="article:modified_time" content="2025-09-02T16:21:34.743Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/2025/01/14/%E5%85%B3%E4%BA%8E%E5%86%99%E5%8D%9A%E5%AE%A2%E7%9A%84%E4%B8%80%E4%BA%9B%E6%9D%82%E5%BF%B5/">
+<link rel="canonical" href="http://example.com/2025/09/03/%E7%9B%B4%E6%92%AD%E4%B8%AD%E7%94%BB%E9%9D%A2%E5%81%B6%E5%8F%91%E7%9A%84%E8%B7%B3%E5%B8%A7%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E6%89%8B%E6%AE%B5/">
 
 
 <script id="page-configurations">
@@ -45,7 +45,7 @@
   };
 </script>
 
-  <title>关于写博客的一些杂念 | Hexo</title>
+  <title>直播中画面偶发的跳帧问题排查手段 | Hexo</title>
   
 
 
@@ -150,7 +150,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/01/14/%E5%85%B3%E4%BA%8E%E5%86%99%E5%8D%9A%E5%AE%A2%E7%9A%84%E4%B8%80%E4%BA%9B%E6%9D%82%E5%BF%B5/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/09/03/%E7%9B%B4%E6%92%AD%E4%B8%AD%E7%94%BB%E9%9D%A2%E5%81%B6%E5%8F%91%E7%9A%84%E8%B7%B3%E5%B8%A7%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E6%89%8B%E6%AE%B5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -163,7 +163,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          关于写博客的一些杂念
+          直播中画面偶发的跳帧问题排查手段
         </h1>
 
         <div class="post-meta">
@@ -172,16 +172,10 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
+              
 
-              <time title="Created: 2025-01-14 21:17:53" itemprop="dateCreated datePublished" datetime="2025-01-14T21:17:53+08:00">2025-01-14</time>
+              <time title="Created: 2025-09-03 00:12:30 / Modified: 00:21:34" itemprop="dateCreated datePublished" datetime="2025-09-03T00:12:30+08:00">2025-09-03</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2025-01-16 00:32:54" itemprop="dateModified" datetime="2025-01-16T00:32:54+08:00">2025-01-16</time>
-              </span>
 
           
 
@@ -194,10 +188,16 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>过去很长一段时间我都遗忘掉写博客的念头，与我而言我想要将我的博客写的完美点，从而行动力低下。不过最近发生了两件事情让我打算重新开始博客的编写，并且希望在25年将博客篇数达到<font color="red">100</font>。</p>
-<p>第一件事情是在观看网易云计算首席架构师刘超的访谈中关于博客记录的描写，他有提到技术的更新迭代是很快的，而人们遗忘也很快，但是如果有编写过相关的文章，那么重新拾起也会快一点。<br>与我而言，我在过去十年接触到的技术点我自信是不弱于这个行业百分之八十的人的，但我总是没有沉淀下去，知识就像往池塘丢进一颗石子，当它沉淀到底的时候就是掌握知识的时候，而我的知识好似一片叶子，从来都不曾往池底沉落知识一直漂浮在水面上，偶尔清风来袭泛起一丝波澜罢了。</p>
-<p>第二件事是最近有一个人对我说，我看过你的博客，但好像里面没写啥东西。<br>对于这件事我是很惊喜的，我的博客竟然真的有人去浏览，但我也很难过，我似乎真的没有往里面放点什么东西，那怕是几篇水文呢？</p>
-<p>所以我决定重新将写博文这件事情放上我的计划中，我希望能够将我的知识沉淀下去，也希望阅览到我博客的人对我的技术有所认知。</p>
+        <h1 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h1><p>在一次拉取摄像头音视频数据进行播放的时候出现了<font color="red">画面跳帧、高延迟、卡顿</font>的现象，不满足于产品需求，是一个无法忍受的功能场景，故需要进行问题定位后进行排查。</p>
+<h1 id="初步判断"><a href="#初步判断" class="headerlink" title="初步判断"></a>初步判断</h1><p>大致可以分为两个部分进行问题排查，首先是<strong>设备端</strong>推流数据是否有问题，其次是<strong>媒体服务器</strong>转码的数据是否有问题。由于这里的摄像头数据的功能实现代码是完全无感的，所以只能先从媒体服务器这边进行排查。</p>
+<h1 id="手段一：视频保存"><a href="#手段一：视频保存" class="headerlink" title="手段一：视频保存"></a>手段一：视频保存</h1><p>将推流的数据保存为视频文件，进行本地播放进行查看，看看获取到的数据是否存在问题。</p>
+<h1 id="手段二：原始数据保存"><a href="#手段二：原始数据保存" class="headerlink" title="手段二：原始数据保存"></a>手段二：原始数据保存</h1><p>使用网络抓包的手段，但由于视频数据较大，且需要仔细的按帧切割所以不采用常规的一些抓包手段。这里可以选择在服务端打开对应的端口进行端口监听，将保存下来的数据原封不动的保存下来（bin)然后按照私有协议进行payload的切割，这里可以查看<strong>：</strong></p>
+<ol>
+<li><strong>seq</strong>与<strong>timestamp</strong>是否存在异常；</li>
+<li>按帧保存Jpg图片，查看图片是否正常，跳帧数据是否确实丢失；</li>
+<li>结合 1 和 2 进行更细节的排查；</li>
+</ol>
+<p>按照上面三个步骤排查后，可以准确定位是否为服务端的问题。如果服务端有问题，按照这三个部分大致也能定位到了。</p>
 
     </div>
 
@@ -213,13 +213,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2025/01/14/%E4%BD%BF%E7%94%A8tcpdump-wireshark%E6%8E%92%E6%9F%A5%E7%BD%91%E7%BB%9C%E4%BA%A4%E4%BA%92%E9%97%AE%E9%A2%98/" rel="prev" title="使用tcpdump+wireshark排查网络交互问题">
-      <i class="fa fa-chevron-left"></i> 使用tcpdump+wireshark排查网络交互问题
+    <a href="/2025/01/28/ZLMediaKit%E7%9A%84%E5%BF%AB%E9%80%9F%E5%AE%9E%E8%B7%B5/" rel="prev" title="ZLMediaKit的快速实践">
+      <i class="fa fa-chevron-left"></i> ZLMediaKit的快速实践
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2025/01/14/linux%E7%B3%BB%E7%BB%9F%E8%A3%81%E5%89%AA%E6%96%B9%E5%BC%8F/" rel="next" title="linux系统裁剪方式">
-      linux系统裁剪方式 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -278,6 +275,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF"><span class="nav-number">1.</span> <span class="nav-text">场景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%9D%E6%AD%A5%E5%88%A4%E6%96%AD"><span class="nav-number">2.</span> <span class="nav-text">初步判断</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%89%8B%E6%AE%B5%E4%B8%80%EF%BC%9A%E8%A7%86%E9%A2%91%E4%BF%9D%E5%AD%98"><span class="nav-number">3.</span> <span class="nav-text">手段一：视频保存</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%89%8B%E6%AE%B5%E4%BA%8C%EF%BC%9A%E5%8E%9F%E5%A7%8B%E6%95%B0%E6%8D%AE%E4%BF%9D%E5%AD%98"><span class="nav-number">4.</span> <span class="nav-text">手段二：原始数据保存</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

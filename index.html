@@ -216,6 +216,74 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/09/03/%E7%9B%B4%E6%92%AD%E4%B8%AD%E7%94%BB%E9%9D%A2%E5%81%B6%E5%8F%91%E7%9A%84%E8%B7%B3%E5%B8%A7%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E6%89%8B%E6%AE%B5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/09/03/%E7%9B%B4%E6%92%AD%E4%B8%AD%E7%94%BB%E9%9D%A2%E5%81%B6%E5%8F%91%E7%9A%84%E8%B7%B3%E5%B8%A7%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E6%89%8B%E6%AE%B5/" class="post-title-link" itemprop="url">直播中画面偶发的跳帧问题排查手段</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-09-03 00:12:30 / Modified: 00:21:34" itemprop="dateCreated datePublished" datetime="2025-09-03T00:12:30+08:00">2025-09-03</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h1><p>在一次拉取摄像头音视频数据进行播放的时候出现了<font color="red">画面跳帧、高延迟、卡顿</font>的现象，不满足于产品需求，是一个无法忍受的功能场景，故需要进行问题定位后进行排查。</p>
+<h1 id="初步判断"><a href="#初步判断" class="headerlink" title="初步判断"></a>初步判断</h1><p>大致可以分为两个部分进行问题排查，首先是<strong>设备端</strong>推流数据是否有问题，其次是<strong>媒体服务器</strong>转码的数据是否有问题。由于这里的摄像头数据的功能实现代码是完全无感的，所以只能先从媒体服务器这边进行排查。</p>
+<h1 id="手段一：视频保存"><a href="#手段一：视频保存" class="headerlink" title="手段一：视频保存"></a>手段一：视频保存</h1><p>将推流的数据保存为视频文件，进行本地播放进行查看，看看获取到的数据是否存在问题。</p>
+<h1 id="手段二：原始数据保存"><a href="#手段二：原始数据保存" class="headerlink" title="手段二：原始数据保存"></a>手段二：原始数据保存</h1><p>使用网络抓包的手段，但由于视频数据较大，且需要仔细的按帧切割所以不采用常规的一些抓包手段。这里可以选择在服务端打开对应的端口进行端口监听，将保存下来的数据原封不动的保存下来（bin)然后按照私有协议进行payload的切割，这里可以查看<strong>：</strong></p>
+<ol>
+<li><strong>seq</strong>与<strong>timestamp</strong>是否存在异常；</li>
+<li>按帧保存Jpg图片，查看图片是否正常，跳帧数据是否确实丢失；</li>
+<li>结合 1 和 2 进行更细节的排查；</li>
+</ol>
+<p>按照上面三个步骤排查后，可以准确定位是否为服务端的问题。如果服务端有问题，按照这三个部分大致也能定位到了。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2025/01/28/ZLMediaKit%E7%9A%84%E5%BF%AB%E9%80%9F%E5%AE%9E%E8%B7%B5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -457,6 +525,13 @@
 
               <time title="Created: 2025-01-14 22:34:03" itemprop="dateCreated datePublished" datetime="2025-01-14T22:34:03+08:00">2025-01-14</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-02-09 19:54:23" itemprop="dateModified" datetime="2025-02-09T19:54:23+08:00">2025-02-09</time>
+              </span>
 
           
 
@@ -469,7 +544,31 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          
+          <h1 id="裁剪驱动"><a href="#裁剪驱动" class="headerlink" title="裁剪驱动"></a>裁剪驱动</h1><p>使用 <code>make kernel_menuconfig</code>将不要的驱动去除，避免因为无用的驱动而导致系统增大。</p>
+<h1 id="内核配置表"><a href="#内核配置表" class="headerlink" title="内核配置表"></a>内核配置表</h1><p>除去内核中无用的配置，一般内核配置在<b>开发阶段</b>与<b>发布阶段</b>是不同的，通常情况下在<b>发布阶段</b>会小一些。<br>“Y *” - 建议开发阶段开启，在部署阶段可以选择<code>N</code>;<br>“N +” - 是否能够设置为<code>N</code>取决于自己的系统是否需要该功能;<br>“Y -“ - 通常需要配置，如果不需要的话可以自己进行审查是否可以关闭。</p>
+<table>
+<thead>
+<tr>
+<th>配置选项</th>
+<th>表述</th>
+<th>默认</th>
+<th>最小</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CONFIG_CORE_SMALL</td>
+<td>优化内核数据大小</td>
+<td>N</td>
+<td>Y</td>
+</tr>
+<tr>
+<td>CONFIG_NET_SMALL</td>
+<td>优化网络数据相关大小</td>
+<td>N</td>
+<td>Y</td>
+</tr>
+</tbody></table>
+
       
     </div>
 
@@ -767,65 +866,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/12/14/challenge/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/12/14/challenge/" class="post-title-link" itemprop="url">a challenge</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2024-12-14 01:05:05 / Modified: 01:10:18" itemprop="dateCreated datePublished" datetime="2024-12-14T01:05:05+08:00">2024-12-14</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>在还没正式上班之前，争取日更博客，内容不限于技术还是兴趣。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -895,7 +935,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-count">14</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
