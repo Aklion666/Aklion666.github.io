@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="宏块的基本概念宏块块（Macroblock）是H.264编码的基本单位，它通常为16x16像素的亮度(Luma)。对应的色度（Chroma）部分大小取决于采样格式：  4:2:0 格式（最常见）：每个宏块包含两个 8 × 8 的色度块（U 和 V）。 4:2:2 格式：色度是两个 8 × 16。 4:4:4 格式：色度与亮度一样大，也是 16 × 16。  👉 所以在常见的 YUV 4:2:0">
+<meta property="og:type" content="article">
+<meta property="og:title" content="H264的16x16与H265的64x64">
+<meta property="og:url" content="http://example.com/2025/09/22/H264%E7%9A%8416x16%E4%B8%8EH265%E7%9A%8464x64/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="宏块的基本概念宏块块（Macroblock）是H.264编码的基本单位，它通常为16x16像素的亮度(Luma)。对应的色度（Chroma）部分大小取决于采样格式：  4:2:0 格式（最常见）：每个宏块包含两个 8 × 8 的色度块（U 和 V）。 4:2:2 格式：色度是两个 8 × 16。 4:4:4 格式：色度与亮度一样大，也是 16 × 16。  👉 所以在常见的 YUV 4:2:0">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2025/09/22/H264%E7%9A%8416x16%E4%B8%8EH265%E7%9A%8464x64/1.png">
+<meta property="article:published_time" content="2025-09-21T16:19:01.000Z">
+<meta property="article:modified_time" content="2025-09-21T16:21:45.382Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2025/09/22/H264%E7%9A%8416x16%E4%B8%8EH265%E7%9A%8464x64/1.png">
+
+<link rel="canonical" href="http://example.com/2025/09/22/H264%E7%9A%8416x16%E4%B8%8EH265%E7%9A%8464x64/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>H264的16x16与H265的64x64 | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/09/22/H264%E7%9A%8416x16%E4%B8%8EH265%E7%9A%8464x64/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          H264的16x16与H265的64x64
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-09-22 00:19:01 / Modified: 00:21:45" itemprop="dateCreated datePublished" datetime="2025-09-22T00:19:01+08:00">2025-09-22</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="宏块的基本概念"><a href="#宏块的基本概念" class="headerlink" title="宏块的基本概念"></a>宏块的基本概念</h1><p>宏块块（Macroblock）是H.264编码的基本单位，它通常为16x16像素的亮度(Luma)。<br>对应的色度（Chroma）部分大小取决于采样格式：</p>
+<ul>
+<li>4:2:0 格式（最常见）：每个宏块包含两个 8 × 8 的色度块（U 和 V）。</li>
+<li>4:2:2 格式：色度是两个 8 × 16。</li>
+<li>4:4:4 格式：色度与亮度一样大，也是 16 × 16。</li>
+</ul>
+<p>👉 所以在常见的 YUV 4:2:0 里，一个宏块由：</p>
+<ul>
+<li>16 × 16 &#x3D; 256 个亮度像素</li>
+<li>8 × 8 &#x3D; 64 个 U 色度像素</li>
+<li>8 × 8 &#x3D; 64 个 V 色度像素<br>总计 384 个采样点</li>
+</ul>
+<h1 id="为什么是16x16"><a href="#为什么是16x16" class="headerlink" title="为什么是16x16"></a>为什么是16x16</h1><p>选择 16×16 是编码效率和复杂度之间的折中：<br></p>
+<ul>
+<li>足够大，可以容纳运动估计时的主要内容块。<br></li>
+<li>足够小，可以跟踪物体的局部运动变化。<br></li>
+<li>在运动补偿时，宏块是预测、变换和熵编码的基本单元</li>
+</ul>
+<h1 id="宏块内部结构"><a href="#宏块内部结构" class="headerlink" title="宏块内部结构"></a>宏块内部结构</h1><p>在 H.264 中，一个 16×16 宏块可以进一步划分：</p>
+<ul>
+<li>帧内预测（Intra Prediction）：宏块可分成 16×16、8×8 或 4×4 子块进行预测。<br></li>
+<li>帧间预测（Inter Prediction）：<br><br>宏块可以划分成</li>
+<li>16×16 <br></li>
+<li>16×8 <br></li>
+<li>8×16 <br></li>
+<li>8×8（还可以继续划分成 4×8、8×4、4×4）<br><br>这样可以灵活适应不同区域的运动。</li>
+</ul>
+<h1 id="宏块与编码工具的关系"><a href="#宏块与编码工具的关系" class="headerlink" title="宏块与编码工具的关系"></a>宏块与编码工具的关系</h1><p>每个宏块会进行：</p>
+<ul>
+<li>预测（帧内 or 帧间）<br></li>
+<li>残差变换（通常是 4×4 或 8×8 DCT-like 变换）<br></li>
+<li>量化<br></li>
+<li>熵编码（CAVLC&#x2F;CABAC）<br></li>
+</ul>
+<h1 id="H265的CTU"><a href="#H265的CTU" class="headerlink" title="H265的CTU"></a>H265的CTU</h1><p>在H265中，就没有宏块的定义，而是CTU（Coding Tree Unit）。CTU为64x64的块，是编码单元尺寸的升级而带来的压缩效率的提升。想象一下，在过去H264一次性只能压缩16X16的块状的图像，现在H265一次可以压缩64X64的图像。<br><br>64x64 CTU的划分方式与16x16的划分方式一样，也是通过宏块的划分。可以继续切分为CU(coding unit)，PU(Prediction Unit)，TU(Transform Unit)，最小可以达到4X4。</p>
+<h1 id="为什么可以使用CTU"><a href="#为什么可以使用CTU" class="headerlink" title="为什么可以使用CTU"></a>为什么可以使用CTU</h1><h2 id="大块区域预测效率更高"><a href="#大块区域预测效率更高" class="headerlink" title="大块区域预测效率更高"></a>大块区域预测效率更高</h2><p>视频里大面积的平坦区域（比如天空、墙壁、背景等），用 64×64 一次编码，比用很多个 16×16 宏块更省比特。减少了 <code>预测模式 + 运动矢量 + 残差信息</code> 的开销。</p>
+<h2 id="支持灵活的分割结构"><a href="#支持灵活的分割结构" class="headerlink" title="支持灵活的分割结构"></a>支持灵活的分割结构</h2><p>H.264 的宏块划分方式比较有限（16×16 &#x2F; 8×16 &#x2F; 16×8 &#x2F; 8×8）。<br><br>H.265 的 CTU 可以分裂成 四叉树结构：<br><code>64×64 → 32×32 → 16×16 → 8×8 → 4×4</code></p>
+<p>每层都能单独选择预测方式（帧内&#x2F;帧间），适配不同区域。<br><br>👉 大块区域用大块，小细节用小块，效率远超 H.264 的固定划分。</p>
+<h2 id="变换块更灵活"><a href="#变换块更灵活" class="headerlink" title="变换块更灵活"></a>变换块更灵活</h2><p>H.264 主要用 4×4 &#x2F; 8×8 DCT 变换。<br><br>H.265 允许从 4×4 到 32×32 的变换单元 (TU)。<br><br>平滑区域 → 大 TU（32×32），压缩效率高。<br><br>边缘&#x2F;纹理多的区域 → 小 TU（4×4），细节保留好。<br></p>
+<h2 id="整体压缩率提升"><a href="#整体压缩率提升" class="headerlink" title="整体压缩率提升"></a>整体压缩率提升</h2><p>由于块更大、分割更灵活，H.265 在相同主观质量下可以比 H.264 节省 30–50% 的码率。<br>这是 HEVC 的核心卖点。</p>
+<h1 id="成本"><a href="#成本" class="headerlink" title="成本"></a>成本</h1><p>当然，H.265 也不是没有代价：<br><br>更大的块 + 四叉树划分 → 编码复杂度提高很多。<br>解码也比 H.264 更耗算力。<br>所以 H.265 对硬件加速和芯片支持依赖更强（手机、机顶盒、摄像头必须支持硬解码，否则发热&#x2F;耗电大）。</p>
+<p><img src="/2025/09/22/H264%E7%9A%8416x16%E4%B8%8EH265%E7%9A%8464x64/1.png"></p>
+<p>这张图直观展示了差别：</p>
+<p>左边：H.264 宏块 (16×16)，固定划分，通常再细分成 4×4 或 8×8 小块。</p>
+<p>右边：H.265 CTU (64×64)，支持递归划分成 32×32 → 16×16 → 8×8 → 4×4，更灵活。</p>
+<p>👉 H.265 之所以更有优势，就是因为大块区域能用大 CTU 一次处理，小细节还能继续细分，从而同时提升了压缩率和灵活性。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/09/05/C-%E7%BA%BF%E7%A8%8B%E4%B8%ADdetach%E4%B8%8Ejoin%E7%9A%84%E9%80%89%E6%8B%A9/" rel="prev" title="C++线程中detach与join的选择">
+      <i class="fa fa-chevron-left"></i> C++线程中detach与join的选择
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%8F%E5%9D%97%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">1.</span> <span class="nav-text">宏块的基本概念</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%98%AF16x16"><span class="nav-number">2.</span> <span class="nav-text">为什么是16x16</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%8F%E5%9D%97%E5%86%85%E9%83%A8%E7%BB%93%E6%9E%84"><span class="nav-number">3.</span> <span class="nav-text">宏块内部结构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%8F%E5%9D%97%E4%B8%8E%E7%BC%96%E7%A0%81%E5%B7%A5%E5%85%B7%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-number">4.</span> <span class="nav-text">宏块与编码工具的关系</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#H265%E7%9A%84CTU"><span class="nav-number">5.</span> <span class="nav-text">H265的CTU</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%8F%AF%E4%BB%A5%E4%BD%BF%E7%94%A8CTU"><span class="nav-number">6.</span> <span class="nav-text">为什么可以使用CTU</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%A7%E5%9D%97%E5%8C%BA%E5%9F%9F%E9%A2%84%E6%B5%8B%E6%95%88%E7%8E%87%E6%9B%B4%E9%AB%98"><span class="nav-number">6.1.</span> <span class="nav-text">大块区域预测效率更高</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%94%AF%E6%8C%81%E7%81%B5%E6%B4%BB%E7%9A%84%E5%88%86%E5%89%B2%E7%BB%93%E6%9E%84"><span class="nav-number">6.2.</span> <span class="nav-text">支持灵活的分割结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%98%E6%8D%A2%E5%9D%97%E6%9B%B4%E7%81%B5%E6%B4%BB"><span class="nav-number">6.3.</span> <span class="nav-text">变换块更灵活</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B4%E4%BD%93%E5%8E%8B%E7%BC%A9%E7%8E%87%E6%8F%90%E5%8D%87"><span class="nav-number">6.4.</span> <span class="nav-text">整体压缩率提升</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%88%90%E6%9C%AC"><span class="nav-number">7.</span> <span class="nav-text">成本</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

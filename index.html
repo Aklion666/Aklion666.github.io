@@ -216,6 +216,174 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/09/22/H264%E7%9A%8416x16%E4%B8%8EH265%E7%9A%8464x64/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/09/22/H264%E7%9A%8416x16%E4%B8%8EH265%E7%9A%8464x64/" class="post-title-link" itemprop="url">H264的16x16与H265的64x64</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-09-22 00:19:01 / Modified: 00:21:45" itemprop="dateCreated datePublished" datetime="2025-09-22T00:19:01+08:00">2025-09-22</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="宏块的基本概念"><a href="#宏块的基本概念" class="headerlink" title="宏块的基本概念"></a>宏块的基本概念</h1><p>宏块块（Macroblock）是H.264编码的基本单位，它通常为16x16像素的亮度(Luma)。<br>对应的色度（Chroma）部分大小取决于采样格式：</p>
+<ul>
+<li>4:2:0 格式（最常见）：每个宏块包含两个 8 × 8 的色度块（U 和 V）。</li>
+<li>4:2:2 格式：色度是两个 8 × 16。</li>
+<li>4:4:4 格式：色度与亮度一样大，也是 16 × 16。</li>
+</ul>
+<p>👉 所以在常见的 YUV 4:2:0 里，一个宏块由：</p>
+<ul>
+<li>16 × 16 &#x3D; 256 个亮度像素</li>
+<li>8 × 8 &#x3D; 64 个 U 色度像素</li>
+<li>8 × 8 &#x3D; 64 个 V 色度像素<br>总计 384 个采样点</li>
+</ul>
+<h1 id="为什么是16x16"><a href="#为什么是16x16" class="headerlink" title="为什么是16x16"></a>为什么是16x16</h1><p>选择 16×16 是编码效率和复杂度之间的折中：<br></p>
+<ul>
+<li>足够大，可以容纳运动估计时的主要内容块。<br></li>
+<li>足够小，可以跟踪物体的局部运动变化。<br></li>
+<li>在运动补偿时，宏块是预测、变换和熵编码的基本单元</li>
+</ul>
+<h1 id="宏块内部结构"><a href="#宏块内部结构" class="headerlink" title="宏块内部结构"></a>宏块内部结构</h1><p>在 H.264 中，一个 16×16 宏块可以进一步划分：</p>
+<ul>
+<li>帧内预测（Intra Prediction）：宏块可分成 16×16、8×8 或 4×4 子块进行预测。<br></li>
+<li>帧间预测（Inter Prediction）：<br><br>宏块可以划分成</li>
+<li>16×16 <br></li>
+<li>16×8 <br></li>
+<li>8×16 <br></li>
+<li>8×8（还可以继续划分成 4×8、8×4、4×4）<br><br>这样可以灵活适应不同区域的运动。</li>
+</ul>
+<h1 id="宏块与编码工具的关系"><a href="#宏块与编码工具的关系" class="headerlink" title="宏块与编码工具的关系"></a>宏块与编码工具的关系</h1><p>每个宏块会进行：</p>
+<ul>
+<li>预测（帧内 or 帧间）<br></li>
+<li>残差变换（通常是 4×4 或 8×8 DCT-like 变换）<br></li>
+<li>量化<br></li>
+<li>熵编码（CAVLC&#x2F;CABAC）<br></li>
+</ul>
+<h1 id="H265的CTU"><a href="#H265的CTU" class="headerlink" title="H265的CTU"></a>H265的CTU</h1><p>在H265中，就没有宏块的定义，而是CTU（Coding Tree Unit）。CTU为64x64的块，是编码单元尺寸的升级而带来的压缩效率的提升。想象一下，在过去H264一次性只能压缩16X16的块状的图像，现在H265一次可以压缩64X64的图像。<br><br>64x64 CTU的划分方式与16x16的划分方式一样，也是通过宏块的划分。可以继续切分为CU(coding unit)，PU(Prediction Unit)，TU(Transform Unit)，最小可以达到4X4。</p>
+<h1 id="为什么可以使用CTU"><a href="#为什么可以使用CTU" class="headerlink" title="为什么可以使用CTU"></a>为什么可以使用CTU</h1><h2 id="大块区域预测效率更高"><a href="#大块区域预测效率更高" class="headerlink" title="大块区域预测效率更高"></a>大块区域预测效率更高</h2><p>视频里大面积的平坦区域（比如天空、墙壁、背景等），用 64×64 一次编码，比用很多个 16×16 宏块更省比特。减少了 <code>预测模式 + 运动矢量 + 残差信息</code> 的开销。</p>
+<h2 id="支持灵活的分割结构"><a href="#支持灵活的分割结构" class="headerlink" title="支持灵活的分割结构"></a>支持灵活的分割结构</h2><p>H.264 的宏块划分方式比较有限（16×16 &#x2F; 8×16 &#x2F; 16×8 &#x2F; 8×8）。<br><br>H.265 的 CTU 可以分裂成 四叉树结构：<br><code>64×64 → 32×32 → 16×16 → 8×8 → 4×4</code></p>
+<p>每层都能单独选择预测方式（帧内&#x2F;帧间），适配不同区域。<br><br>👉 大块区域用大块，小细节用小块，效率远超 H.264 的固定划分。</p>
+<h2 id="变换块更灵活"><a href="#变换块更灵活" class="headerlink" title="变换块更灵活"></a>变换块更灵活</h2><p>H.264 主要用 4×4 &#x2F; 8×8 DCT 变换。<br><br>H.265 允许从 4×4 到 32×32 的变换单元 (TU)。<br><br>平滑区域 → 大 TU（32×32），压缩效率高。<br><br>边缘&#x2F;纹理多的区域 → 小 TU（4×4），细节保留好。<br></p>
+<h2 id="整体压缩率提升"><a href="#整体压缩率提升" class="headerlink" title="整体压缩率提升"></a>整体压缩率提升</h2><p>由于块更大、分割更灵活，H.265 在相同主观质量下可以比 H.264 节省 30–50% 的码率。<br>这是 HEVC 的核心卖点。</p>
+<h1 id="成本"><a href="#成本" class="headerlink" title="成本"></a>成本</h1><p>当然，H.265 也不是没有代价：<br><br>更大的块 + 四叉树划分 → 编码复杂度提高很多。<br>解码也比 H.264 更耗算力。<br>所以 H.265 对硬件加速和芯片支持依赖更强（手机、机顶盒、摄像头必须支持硬解码，否则发热&#x2F;耗电大）。</p>
+<p><img src="/2025/09/22/H264%E7%9A%8416x16%E4%B8%8EH265%E7%9A%8464x64/1.png"></p>
+<p>这张图直观展示了差别：</p>
+<p>左边：H.264 宏块 (16×16)，固定划分，通常再细分成 4×4 或 8×8 小块。</p>
+<p>右边：H.265 CTU (64×64)，支持递归划分成 32×32 → 16×16 → 8×8 → 4×4，更灵活。</p>
+<p>👉 H.265 之所以更有优势，就是因为大块区域能用大 CTU 一次处理，小细节还能继续细分，从而同时提升了压缩率和灵活性。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/09/05/C-%E7%BA%BF%E7%A8%8B%E4%B8%ADdetach%E4%B8%8Ejoin%E7%9A%84%E9%80%89%E6%8B%A9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/09/05/C-%E7%BA%BF%E7%A8%8B%E4%B8%ADdetach%E4%B8%8Ejoin%E7%9A%84%E9%80%89%E6%8B%A9/" class="post-title-link" itemprop="url">C++线程中detach与join的选择</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-09-05 21:19:09" itemprop="dateCreated datePublished" datetime="2025-09-05T21:19:09+08:00">2025-09-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-09-22 00:19:16" itemprop="dateModified" datetime="2025-09-22T00:19:16+08:00">2025-09-22</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2025/09/03/%E7%9B%B4%E6%92%AD%E4%B8%AD%E7%94%BB%E9%9D%A2%E5%81%B6%E5%8F%91%E7%9A%84%E8%B7%B3%E5%B8%A7%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E6%89%8B%E6%AE%B5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -726,146 +894,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/12/15/linux%E5%86%85%E6%A0%B8%E5%88%86%E5%B1%82/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/12/15/linux%E5%86%85%E6%A0%B8%E5%88%86%E5%B1%82/" class="post-title-link" itemprop="url">linux内核分层</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2024-12-15 21:30:53 / Modified: 21:49:34" itemprop="dateCreated datePublished" datetime="2024-12-15T21:30:53+08:00">2024-12-15</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">+</span><span class="comment">--------------------------+</span></span><br><span class="line"><span class="operator">|</span>       <span class="keyword">User</span> Space         <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> Applications, Libraries  <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>      <span class="keyword">User</span> Interfaces     <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">--------------------------+</span></span><br><span class="line">            ↑</span><br><span class="line"><span class="operator">+</span><span class="comment">--------------------------+</span></span><br><span class="line"><span class="operator">|</span>  <span class="keyword">System</span> <span class="keyword">Call</span> Interface   <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>  Provides bridge <span class="keyword">between</span> <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>   <span class="keyword">User</span> Space <span class="keyword">and</span> Kernel  <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">--------------------------+</span></span><br><span class="line">            ↑</span><br><span class="line"><span class="operator">+</span><span class="comment">--------------------------+</span></span><br><span class="line"><span class="operator">|</span>       Kernel Core        <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> Process, Memory, File    <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>  Systems, Networking     <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">--------------------------+</span></span><br><span class="line">            ↑</span><br><span class="line"><span class="operator">+</span><span class="comment">--------------------------+</span></span><br><span class="line"><span class="operator">|</span>  Hardware Abstraction    <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> Drivers, Arch<span class="operator">-</span><span class="keyword">specific</span>   <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> Code (e.g., x86, ARM)    <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">--------------------------+</span></span><br><span class="line">            ↑</span><br><span class="line"><span class="operator">+</span><span class="comment">--------------------------+</span></span><br><span class="line"><span class="operator">|</span>        Hardware          <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> CPU, Memory, I<span class="operator">/</span>O Devices <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">--------------------------+</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="Hardware"><a href="#Hardware" class="headerlink" title="Hardware"></a>Hardware</h1><p>硬件底层，包括CPU、内存、输入输出设备等。</p>
-<h1 id="Hardware-Abstraction"><a href="#Hardware-Abstraction" class="headerlink" title="Hardware Abstraction"></a>Hardware Abstraction</h1><p>硬件抽象层，封装硬件细节，提供统一接口。</p>
-<h1 id="Kernel-Core"><a href="#Kernel-Core" class="headerlink" title="Kernel Core"></a>Kernel Core</h1><p>核心功能，包括进程管理、内存管理、文件系统、网络协议等。</p>
-<h1 id="System-Call-Interface"><a href="#System-Call-Interface" class="headerlink" title="System Call Interface"></a>System Call Interface</h1><p>系统调用接口，为用户程序提供访问内核服务的入口。</p>
-<h1 id="User-Space"><a href="#User-Space" class="headerlink" title="User Space"></a>User Space</h1><p>用户空间，运行应用程序和库。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/12/14/%E5%86%85%E6%A0%B8%E6%97%A5%E5%BF%97%E7%8E%AF%E5%BD%A2%E7%BC%93%E5%86%B2%E5%8C%BA/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/12/14/%E5%86%85%E6%A0%B8%E6%97%A5%E5%BF%97%E7%8E%AF%E5%BD%A2%E7%BC%93%E5%86%B2%E5%8C%BA/" class="post-title-link" itemprop="url">内核日志环形缓冲区</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2024-12-14 21:40:31 / Modified: 22:03:41" itemprop="dateCreated datePublished" datetime="2024-12-14T21:40:31+08:00">2024-12-14</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>不诚实是局部最优，但一定不会是全局最优。</p>
-<h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><p><code>pstore</code>是一个抽象层，提供统一的接口来存储内核日志、崩溃转储等数据。可以支持多种存储后端，如<code>ramoops</code>(RAM环形缓冲区)、NVRAM、EFI等。</p>
-<p><code>ramoops</code>是一个存储后端，将日志数据存储在分配的RAM区域中，崩溃后内存数据不会被覆盖，系统重启时可以恢复这些日志。</p>
-<h1 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h1><ol>
-<li>系统需要再崩溃后保存日志供后续调试。</li>
-<li>没有持久化存储设备（如硬盘或NVRAM)，只能依赖RAM存储。</li>
-<li>系统运行在资源受限的嵌入式设备上。</li>
-</ol>
-<h1 id="配置步骤"><a href="#配置步骤" class="headerlink" title="配置步骤"></a>配置步骤</h1><h2 id="内核配置"><a href="#内核配置" class="headerlink" title="内核配置"></a>内核配置</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">CONFIG_PSTORE=y</span><br><span class="line">CONFIG_PSTORE_RAM=y</span><br><span class="line">CONFIG_RAMOOPS=y</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="日志查看"><a href="#日志查看" class="headerlink" title="日志查看"></a>日志查看</h1><p><code>pstore</code>会将存储的日志挂载到<code>/sys/fs/pstore</code>目录下，重启后可以直接查看崩溃日志</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ls</span> /sys/fs/pstore</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -935,7 +963,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-count">16</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
