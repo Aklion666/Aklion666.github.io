@@ -216,6 +216,257 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/10/04/PIMPL/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/10/04/PIMPL/" class="post-title-link" itemprop="url">PIMPL</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-10-04 22:16:01 / Modified: 22:16:40" itemprop="dateCreated datePublished" datetime="2025-10-04T22:16:01+08:00">2025-10-04</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p><strong>Pimpl</strong> 的全称是 Pointer to IMPLementation，中文直译就是 <strong>“指向实现的指针”</strong>，有时也被叫 <strong>Cheshire Cat Idiom</strong> （像柴郡猫一样，头文件只露出笑容（接口），身体（实现）藏起来）<strong>Compilation Firewall</strong>（编译防火墙，挡住依赖扩散）</p>
+<p>Pimpl 不是语法特性，而是一种设计思想&#x2F;习惯用法（idiom）。就像 RAII、Singleton 一样，它是 C++ 社区长期演进出来的设计模式。</p>
+<p>主要目标是：</p>
+<ul>
+<li><p>隐藏实现细节（information hiding）;</p>
+</li>
+<li><p>减少编译依赖（降低头文件之间的耦合）;</p>
+</li>
+<li><p>保持 ABI 稳定（对外接口二进制兼容）;</p>
+</li>
+</ul>
+<p>普通类：.h 文件 &#x3D; “全身裸露”，别人一眼就看到内部细节。</p>
+<p>Pimpl：.h 文件 &#x3D; “只露个影子（指针）”，别人只知道有个实现，却不知道里面长啥样。</p>
+<h1 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h1><p>struct Impl; 这其实是 不完整类型声明（forward declaration）。</p>
+<p>这里只是告诉编译器有一个叫 Impl 的结构体存在，但不说明它里面有些什么成员。</p>
+<p>编译器因此知道 Impl 这个名字，但不能直接用它的大小（sizeof(Impl)）或访问里面的字段。</p>
+<p>常见用途就是 Pimpl 手法（Pointer to Implementation），比如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 头文件 MyClass.h</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyClass</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">MyClass</span>();</span><br><span class="line">    ~<span class="built_in">MyClass</span>();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">doSomething</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">struct</span> <span class="title class_">Impl</span>;          <span class="comment">// 前向声明</span></span><br><span class="line">    Impl* pImpl;          <span class="comment">// 只存一个指针，不暴露实现细节</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>然后在 .cpp 文件里再给出 struct Impl 的完整定义：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// MyClass.cpp</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;MyClass.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">MyClass</span>::Impl &#123;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">doSomethingImpl</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Hello from Impl!&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">MyClass::<span class="built_in">MyClass</span>() : <span class="built_in">pImpl</span>(<span class="keyword">new</span> Impl) &#123;&#125;</span><br><span class="line"></span><br><span class="line">MyClass::~<span class="built_in">MyClass</span>() &#123; <span class="keyword">delete</span> pImpl; &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">MyClass::doSomething</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    pImpl-&gt;<span class="built_in">doSomethingImpl</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样做的好处：</p>
+<ul>
+<li><p>封装实现：头文件只暴露接口，不暴露内部细节；</p>
+</li>
+<li><p>减少编译依赖：修改 Impl 的实现不会导致依赖 MyClass.h 的代码重新编译；</p>
+</li>
+<li><p>稳定 ABI：常用于库的接口设计；</p>
+</li>
+</ul>
+<h1 id="内存示意布局"><a href="#内存示意布局" class="headerlink" title="内存示意布局"></a>内存示意布局</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[调用方栈帧 / 对象所在处 - 栈或静态区]</span><br><span class="line">┌──────────────────────────────┐</span><br><span class="line">│ MyClass obj                  │</span><br><span class="line">│ ┌──────────────────────────┐ │</span><br><span class="line">│ │ pImpl : pointer (8B x64) │─┼─────────────┐</span><br><span class="line">│ └──────────────────────────┘ │             │</span><br><span class="line">└──────────────────────────────┘             │</span><br><span class="line">                                             │</span><br><span class="line">[堆内存 - 由 MyClass 管理的实现体]          │</span><br><span class="line">┌─────────────────────────────────────────┐  │</span><br><span class="line">│ MyClass::Impl                           │◀─┘</span><br><span class="line">│ ┌───────────────┬───────────────┬─────┐ │</span><br><span class="line">│ │ 成员a         │ 成员b         │ ... │ │</span><br><span class="line">│ │ (如 int)      │ (如 std::string)    │ │</span><br><span class="line">│ └───────────────┴───────────────┴─────┘ │</span><br><span class="line">└─────────────────────────────────────────┘</span><br></pre></td></tr></table></figure>
+
+<p>要点：</p>
+<ul>
+<li><p>MyClass 对外只有一个指针大小（x64 通常 8 字节）；</p>
+</li>
+<li><p>大小稳定，ABI 友好；</p>
+</li>
+<li><p>实际“重量级”成员都藏在 Impl 里，实现细节不泄露。</p>
+</li>
+<li><p>改 Impl 的字段不会触发大量重编译（依赖减少），编译更快。</p>
+</li>
+</ul>
+<h1 id="和传统的-h的声明方式的对比"><a href="#和传统的-h的声明方式的对比" class="headerlink" title="和传统的.h的声明方式的对比"></a>和传统的.h的声明方式的对比</h1><ol>
+<li>普通类：<strong>声明在 .h，实现放 .cpp</strong></li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Animal.h</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Animal</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Animal</span>();</span><br><span class="line">    ~<span class="built_in">Animal</span>();</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">speak</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="type">int</span> age;</span><br><span class="line">    std::string name;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// Animal.cpp</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;Animal.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line">Animal::<span class="built_in">Animal</span>() : <span class="built_in">age</span>(<span class="number">0</span>), <span class="built_in">name</span>(<span class="string">&quot;dog&quot;</span>) &#123;&#125;</span><br><span class="line">Animal::~<span class="built_in">Animal</span>() &#123;&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">Animal::speak</span><span class="params">()</span> </span>&#123; std::cout &lt;&lt; name &lt;&lt; std::endl; &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>特点：</p>
+<ul>
+<li><p>.h 文件必须包含所有成员定义（比如 int age, std::string name）；</p>
+</li>
+<li><p>只不过函数体（实现细节）放在 .cpp；</p>
+</li>
+</ul>
+<p>这样依赖 Animal.h 的代码，会被迫看到 STL 的<code> &lt;string&gt;</code>，编译时依赖很大。</p>
+<p>一旦 Animal 的成员变量变动（比如 std::string 改成 std::vector<char>），所有包含 <code>Animal.h</code> 的代码都得重新编译。</char></p>
+<ol start="2">
+<li>Pimpl 手法（指针实现）</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Animal.h</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Animal</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Animal</span>();</span><br><span class="line">    ~<span class="built_in">Animal</span>();</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">speak</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">struct</span> <span class="title class_">Impl</span>;     <span class="comment">// 只声明，不公开细节</span></span><br><span class="line">    Impl* pImpl;     <span class="comment">// 或者 std::unique_ptr&lt;Impl&gt;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Animal.cpp</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;Animal.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Animal</span>::Impl &#123;</span><br><span class="line">    <span class="type">int</span> age;</span><br><span class="line">    std::string name;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">speak</span><span class="params">()</span> </span>&#123; std::cout &lt;&lt; name &lt;&lt; std::endl; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Animal::<span class="built_in">Animal</span>() : <span class="built_in">pImpl</span>(<span class="keyword">new</span> Impl&#123;<span class="number">0</span>, <span class="string">&quot;dog&quot;</span>&#125;) &#123;&#125;</span><br><span class="line">Animal::~<span class="built_in">Animal</span>() &#123; <span class="keyword">delete</span> pImpl; &#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">Animal::speak</span><span class="params">()</span> </span>&#123; pImpl-&gt;<span class="built_in">speak</span>(); &#125;</span><br></pre></td></tr></table></figure>
+
+<p>特点：</p>
+<ul>
+<li><p>.h 文件 不暴露任何成员变量，只暴露一个指针;</p>
+</li>
+<li><p>.cpp 才包含 <string> 等庞大依赖;</string></p>
+</li>
+</ul>
+<p>Animal.h 变得非常轻量，改动 Impl 时不需要重新编译依赖方，接口 ABI 稳定（sizeof(Animal) 恒定&#x3D;一个指针大小）。</p>
+<table>
+<thead>
+<tr>
+<th>对比点</th>
+<th>普通声明+实现</th>
+<th>Pimpl 手法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>成员变量</td>
+<td>.h 里要写</td>
+<td>.h 里看不到</td>
+</tr>
+<tr>
+<td>编译依赖</td>
+<td>改成员就要全量编译</td>
+<td>只改 .cpp 就行</td>
+</tr>
+<tr>
+<td>ABI 稳定性</td>
+<td>sizeof(Animal) 随成员变化而变</td>
+<td>恒定（一个指针大小）</td>
+</tr>
+<tr>
+<td>封装性</td>
+<td>依赖方能看到类的完整定义</td>
+<td>依赖方完全不知道实现细节</td>
+</tr>
+</tbody></table>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/10/03/IPC%E6%B5%81%E9%87%8F%E7%9A%84%E6%A6%82%E5%BF%B5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/10/03/IPC%E6%B5%81%E9%87%8F%E7%9A%84%E6%A6%82%E5%BF%B5/" class="post-title-link" itemprop="url">IPC流量的概念</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-10-03 23:26:16 / Modified: 23:42:59" itemprop="dateCreated datePublished" datetime="2025-10-03T23:26:16+08:00">2025-10-03</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>在<strong>App服务商&#x2F;商业运营商&#x2F;IPC(网络摄像机）</strong>的场景中，我们经常会需要强度<font color="red">流量</font>的概念。主要原因有以下几点：</p>
+<h1 id="流量是成本的直接提现"><a href="#流量是成本的直接提现" class="headerlink" title="流量是成本的直接提现"></a>流量是成本的直接提现</h1><ul>
+<li>服务器带宽通常是按照**出网流量(egress traffic)**或者带宽峰值来计费的。</li>
+<li>公网环境下，云厂商(阿里云、腾讯云、AWS等)都会按流量来计费，比如1GB出网几毛到几块等，看似不多，但是累积下来就是大头。</li>
+<li>对运营商而言，流量决定了对外链路的租用费用，骨干网成本。</li>
+</ul>
+<h1 id="IPC视频场景流量消耗极大"><a href="#IPC视频场景流量消耗极大" class="headerlink" title="IPC视频场景流量消耗极大"></a>IPC视频场景流量消耗极大</h1><ul>
+<li>一路IPC 1080P@15fps H.264编码，码率大概<strong>1.5~2Mbps</strong>。</li>
+<li>如果1000路摄像头同时上传，带宽需求 &#x3D; 2000 Mbps &#x3D; 250MB&#x2F;s。<ul>
+<li>每天流量：250MB&#x2F;s x 86400s &#x3D; 21TB&#x2F;天。</li>
+<li>一个月就是 600 +TB，成本非常高。</li>
+</ul>
+</li>
+<li>所以每增加一路摄像头，都会带来<strong>流量线性增长</strong>。</li>
+</ul>
+<h1 id="流量决定了架构设计"><a href="#流量决定了架构设计" class="headerlink" title="流量决定了架构设计"></a>流量决定了架构设计</h1><ul>
+<li>直连（P2P）：流量只在端与端之间走，服务器只做信令，这样流量成本低级。</li>
+<li>转发（Relay)：所有流量走App服务器 -&gt; 服务器出网流量爆炸，成本非常高。</li>
+<li>CDN分发：单源推流，多端观看，利用CDN节点分发，单节点压力小，但CDN出口流量费依然巨大。</li>
+</ul>
+<h1 id="影响商业模式"><a href="#影响商业模式" class="headerlink" title="影响商业模式"></a>影响商业模式</h1><ul>
+<li>ToB项目：客户可能要求本地化部署，就是为了避免云端流量费用。</li>
+<li>ToC项目：用户端看回放、看直播、云厂商的带宽账单决定盈利模式能否跑通的核心。</li>
+<li>很多云存、云回放、视频AI服务都需要额外收费，本质就是流量带来的成本。</li>
+</ul>
+<h1 id="流量与体验的矛盾"><a href="#流量与体验的矛盾" class="headerlink" title="流量与体验的矛盾"></a>流量与体验的矛盾</h1><ul>
+<li>流量压缩：降低码率 -&gt; 画质下降。</li>
+<li>提升画质：提高码率 -&gt; 流量成本升高。</li>
+<li>所以经常要在以下方面做平衡：<ul>
+<li>清晰度</li>
+<li>延迟</li>
+<li>流程成本</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2025/09/22/H264%E7%9A%8416x16%E4%B8%8EH265%E7%9A%8464x64/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -805,149 +1056,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/01/14/%E4%BD%BF%E7%94%A8tcpdump-wireshark%E6%8E%92%E6%9F%A5%E7%BD%91%E7%BB%9C%E4%BA%A4%E4%BA%92%E9%97%AE%E9%A2%98/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/01/14/%E4%BD%BF%E7%94%A8tcpdump-wireshark%E6%8E%92%E6%9F%A5%E7%BD%91%E7%BB%9C%E4%BA%A4%E4%BA%92%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">使用tcpdump+wireshark排查网络交互问题</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2025-01-14 00:11:16 / Modified: 00:54:19" itemprop="dateCreated datePublished" datetime="2025-01-14T00:11:16+08:00">2025-01-14</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>只要不是单机应用，你就必然需要与其他设备进行通讯，而只要具备网络功能那么必然需要有网络交互这一部分的开发工作。如果在与其他人合作开发应用的过程中，如果遇到了双方都认为自己不存在问题的时候就需要进行最底层的数据抓包来排查问题了。<br>最近在接触一个较大的项目代码，询问服务端开发的工程师与客户端开发的工程师双方都认为数据已经发送成功了，至于为什么没有处理不晓得为啥，双方认为都是对方的错误，再次我们不能单纯的从代码来判断是否<font color="red">接收到与发送成功</font>，更适合的做法是通过更底层的数据来判断。<br>由于我们网络受限的情况，没有办法直接在A主机上对B主机进行抓包，所以需要依赖到tcpdump。</p>
-<h1 id="编译tcpdump-libpcap"><a href="#编译tcpdump-libpcap" class="headerlink" title="编译tcpdump + libpcap"></a>编译tcpdump + libpcap</h1><p>tcpdump是需要用到的工具，而libpcap是tcpdump的依赖库。</p>
-<h2 id="下载编译libpcap"><a href="#下载编译libpcap" class="headerlink" title="下载编译libpcap"></a>下载编译libpcap</h2><p>源码下载</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/the-tcpdump-group/libpcap.git</span><br><span class="line">cd libpcap</span><br></pre></td></tr></table></figure>
-<p>编译配置</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">./autogen.sh</span><br><span class="line">./configure \</span><br><span class="line">    --host=arm-xxx-linux-uclibcgnueabihf \</span><br><span class="line">    CC=arm-xxx-linux-uclibcgnueabihf-gcc \</span><br><span class="line">    CXX=arm-xxx-linux-uclibcgnueabihf-g++</span><br><span class="line"></span><br><span class="line">make</span><br></pre></td></tr></table></figure>
-<p>安装</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make install DESTDIR=../temp #我选择安装在上一层文件夹下</span><br></pre></td></tr></table></figure>
-
-<h2 id="下载编译tcpdump"><a href="#下载编译tcpdump" class="headerlink" title="下载编译tcpdump"></a>下载编译tcpdump</h2><p>源码下载</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/the-tcpdump-group/tcpdump.git</span><br><span class="line">cd tcpdump</span><br></pre></td></tr></table></figure>
-<p>编译配置</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">./configure \</span><br><span class="line">    --host=arm-xxx-linux-uclibcgnueabihf \</span><br><span class="line">    CC=arm-xxx-linux-uclibcgnueabihf-gcc \</span><br><span class="line">    CXX=arm-xxx-linux-uclibcgnueabihf-g++ \</span><br><span class="line">    LDFLAGS=&quot;-L../temp/usr/lib&quot; \</span><br><span class="line">    CPPFLAGS=&quot;-I../temp/usr/include&quot;</span><br></pre></td></tr></table></figure>
-<p>编译与安装</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">make</span><br><span class="line">make install DESTDIR=../temp</span><br></pre></td></tr></table></figure>
-
-<h1 id="下载wireshark"><a href="#下载wireshark" class="headerlink" title="下载wireshark"></a>下载wireshark</h1><p>由于我是windows系统，直接去到官方<a target="_blank" rel="noopener" href="https://www.wireshark.org/">https://www.wireshark.org/</a> 进行安装下载程序就行了。</p>
-<h1 id="实操"><a href="#实操" class="headerlink" title="实操"></a>实操</h1><p>将tcpdump 二进制执行文件传输到客户端的主机上，进行抓包。可以直接选择抓全部包，也可以选择抓取特定的包，由于不确定交互是否正确，在此我抓取的内容是全部。</p>
-<ol>
-<li>打开客户端的执行程序，执行如下代码<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tcpdump -i any -w capture.pcap</span><br></pre></td></tr></table></figure></li>
-<li>执行你的网络交互步骤，譬如服务端向客户端发送消息或者客户端向服务端发送消息等操作。</li>
-<li>将抓取文件复制到主机A上，使用wireshark打开后进行具体的分析。<br>我是在这一步的时候，确定了客户端是有获取到服务端消息的。后逐步排查客户端更加底层的代码，确定了客户端开发工程师在实现交互中存在问题，后续修复该问题完成与服务端的交互。</li>
-</ol>
-<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>在进行项目开发的时候，无论功能的简单与否，只要涉及到2层以上的交互都应该有具体的文档输出，否则的话是给双方隐形增加开发成本。另外我真心觉得有些开发工程师过于傲慢，无论是否发送成功，业务层逻辑设计关于指令交互这一块，如果不存在来回交互的，认为不合理都是可以接受的。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/01/12/hexo%E5%9B%BE%E7%89%87%E4%B8%8D%E6%98%BE%E7%A4%BA%E4%BF%AE%E5%A4%8D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/01/12/hexo%E5%9B%BE%E7%89%87%E4%B8%8D%E6%98%BE%E7%A4%BA%E4%BF%AE%E5%A4%8D/" class="post-title-link" itemprop="url">hexo图片不显示修复</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2025-01-12 21:45:30 / Modified: 21:53:07" itemprop="dateCreated datePublished" datetime="2025-01-12T21:45:30+08:00">2025-01-12</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="问题表现"><a href="#问题表现" class="headerlink" title="问题表现"></a>问题表现</h1><p>在本地MD插入的图片显示非常正常，但是使用hexo打开后看到的图片是有破图。<br><img src="/../images/20250112140339.png"></p>
-<h1 id="排查问题"><a href="#排查问题" class="headerlink" title="排查问题"></a>排查问题</h1><p>使用<b>F12</b>查看html页面显示的内容<br><img src="/../images/20250112140500.png"><br>使用网页直接打开图片会显示<font color="red">cannot get</font>，看起来是转换图片格式存在问题。由于使用的开源的Git hexo架构来搭建的博客，所以来github上查看对应的issue看看是否有相关的内容。<br>十分幸运的是在<a target="_blank" rel="noopener" href="https://github.com/orgs/hexojs/discussions/5314%E6%89%BE%E5%88%B0%E4%BA%86%E7%9B%B8%E5%85%B3%E7%9A%84%E7%AD%94%E6%A1%88%E3%80%82">https://github.com/orgs/hexojs/discussions/5314找到了相关的答案。</a></p>
-<h1 id="主要步骤"><a href="#主要步骤" class="headerlink" title="主要步骤"></a>主要步骤</h1><p>step1. 在soruce路径下创建一个images文件夹；<br>steps. 将图片存放在这个路径下就可以了；<br>完成这两个步骤，之前在hexo上不显示图片的博客都可以正常显示啦！</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1017,7 +1125,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-count">18</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
