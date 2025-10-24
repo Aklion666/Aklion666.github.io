@@ -145,6 +145,94 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/01/14/linux%E7%B3%BB%E7%BB%9F%E8%A3%81%E5%89%AA%E6%96%B9%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/01/14/linux%E7%B3%BB%E7%BB%9F%E8%A3%81%E5%89%AA%E6%96%B9%E5%BC%8F/" class="post-title-link" itemprop="url">linux系统裁剪方式</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-01-14 22:34:03" itemprop="dateCreated datePublished" datetime="2025-01-14T22:34:03+08:00">2025-01-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-02-09 19:54:23" itemprop="dateModified" datetime="2025-02-09T19:54:23+08:00">2025-02-09</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="裁剪驱动"><a href="#裁剪驱动" class="headerlink" title="裁剪驱动"></a>裁剪驱动</h1><p>使用 <code>make kernel_menuconfig</code>将不要的驱动去除，避免因为无用的驱动而导致系统增大。</p>
+<h1 id="内核配置表"><a href="#内核配置表" class="headerlink" title="内核配置表"></a>内核配置表</h1><p>除去内核中无用的配置，一般内核配置在<b>开发阶段</b>与<b>发布阶段</b>是不同的，通常情况下在<b>发布阶段</b>会小一些。<br>“Y *” - 建议开发阶段开启，在部署阶段可以选择<code>N</code>;<br>“N +” - 是否能够设置为<code>N</code>取决于自己的系统是否需要该功能;<br>“Y -“ - 通常需要配置，如果不需要的话可以自己进行审查是否可以关闭。</p>
+<table>
+<thead>
+<tr>
+<th>配置选项</th>
+<th>表述</th>
+<th>默认</th>
+<th>最小</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CONFIG_CORE_SMALL</td>
+<td>优化内核数据大小</td>
+<td>N</td>
+<td>Y</td>
+</tr>
+<tr>
+<td>CONFIG_NET_SMALL</td>
+<td>优化网络数据相关大小</td>
+<td>N</td>
+<td>Y</td>
+</tr>
+</tbody></table>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2025/01/14/%E4%BD%BF%E7%94%A8tcpdump-wireshark%E6%8E%92%E6%9F%A5%E7%BD%91%E7%BB%9C%E4%BA%A4%E4%BA%92%E9%97%AE%E9%A2%98/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -807,7 +895,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-count">19</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
