@@ -145,6 +145,604 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/10/03/IPC%E6%B5%81%E9%87%8F%E7%9A%84%E6%A6%82%E5%BF%B5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/10/03/IPC%E6%B5%81%E9%87%8F%E7%9A%84%E6%A6%82%E5%BF%B5/" class="post-title-link" itemprop="url">IPC流量的概念</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-10-03 23:26:16 / Modified: 23:42:59" itemprop="dateCreated datePublished" datetime="2025-10-03T23:26:16+08:00">2025-10-03</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>在<strong>App服务商&#x2F;商业运营商&#x2F;IPC(网络摄像机）</strong>的场景中，我们经常会需要强度<font color="red">流量</font>的概念。主要原因有以下几点：</p>
+<h1 id="流量是成本的直接提现"><a href="#流量是成本的直接提现" class="headerlink" title="流量是成本的直接提现"></a>流量是成本的直接提现</h1><ul>
+<li>服务器带宽通常是按照**出网流量(egress traffic)**或者带宽峰值来计费的。</li>
+<li>公网环境下，云厂商(阿里云、腾讯云、AWS等)都会按流量来计费，比如1GB出网几毛到几块等，看似不多，但是累积下来就是大头。</li>
+<li>对运营商而言，流量决定了对外链路的租用费用，骨干网成本。</li>
+</ul>
+<h1 id="IPC视频场景流量消耗极大"><a href="#IPC视频场景流量消耗极大" class="headerlink" title="IPC视频场景流量消耗极大"></a>IPC视频场景流量消耗极大</h1><ul>
+<li>一路IPC 1080P@15fps H.264编码，码率大概<strong>1.5~2Mbps</strong>。</li>
+<li>如果1000路摄像头同时上传，带宽需求 &#x3D; 2000 Mbps &#x3D; 250MB&#x2F;s。<ul>
+<li>每天流量：250MB&#x2F;s x 86400s &#x3D; 21TB&#x2F;天。</li>
+<li>一个月就是 600 +TB，成本非常高。</li>
+</ul>
+</li>
+<li>所以每增加一路摄像头，都会带来<strong>流量线性增长</strong>。</li>
+</ul>
+<h1 id="流量决定了架构设计"><a href="#流量决定了架构设计" class="headerlink" title="流量决定了架构设计"></a>流量决定了架构设计</h1><ul>
+<li>直连（P2P）：流量只在端与端之间走，服务器只做信令，这样流量成本低级。</li>
+<li>转发（Relay)：所有流量走App服务器 -&gt; 服务器出网流量爆炸，成本非常高。</li>
+<li>CDN分发：单源推流，多端观看，利用CDN节点分发，单节点压力小，但CDN出口流量费依然巨大。</li>
+</ul>
+<h1 id="影响商业模式"><a href="#影响商业模式" class="headerlink" title="影响商业模式"></a>影响商业模式</h1><ul>
+<li>ToB项目：客户可能要求本地化部署，就是为了避免云端流量费用。</li>
+<li>ToC项目：用户端看回放、看直播、云厂商的带宽账单决定盈利模式能否跑通的核心。</li>
+<li>很多云存、云回放、视频AI服务都需要额外收费，本质就是流量带来的成本。</li>
+</ul>
+<h1 id="流量与体验的矛盾"><a href="#流量与体验的矛盾" class="headerlink" title="流量与体验的矛盾"></a>流量与体验的矛盾</h1><ul>
+<li>流量压缩：降低码率 -&gt; 画质下降。</li>
+<li>提升画质：提高码率 -&gt; 流量成本升高。</li>
+<li>所以经常要在以下方面做平衡：<ul>
+<li>清晰度</li>
+<li>延迟</li>
+<li>流程成本</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/09/22/H264%E7%9A%8416x16%E4%B8%8EH265%E7%9A%8464x64/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/09/22/H264%E7%9A%8416x16%E4%B8%8EH265%E7%9A%8464x64/" class="post-title-link" itemprop="url">H264的16x16与H265的64x64</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-09-22 00:19:01 / Modified: 00:21:45" itemprop="dateCreated datePublished" datetime="2025-09-22T00:19:01+08:00">2025-09-22</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="宏块的基本概念"><a href="#宏块的基本概念" class="headerlink" title="宏块的基本概念"></a>宏块的基本概念</h1><p>宏块块（Macroblock）是H.264编码的基本单位，它通常为16x16像素的亮度(Luma)。<br>对应的色度（Chroma）部分大小取决于采样格式：</p>
+<ul>
+<li>4:2:0 格式（最常见）：每个宏块包含两个 8 × 8 的色度块（U 和 V）。</li>
+<li>4:2:2 格式：色度是两个 8 × 16。</li>
+<li>4:4:4 格式：色度与亮度一样大，也是 16 × 16。</li>
+</ul>
+<p>👉 所以在常见的 YUV 4:2:0 里，一个宏块由：</p>
+<ul>
+<li>16 × 16 &#x3D; 256 个亮度像素</li>
+<li>8 × 8 &#x3D; 64 个 U 色度像素</li>
+<li>8 × 8 &#x3D; 64 个 V 色度像素<br>总计 384 个采样点</li>
+</ul>
+<h1 id="为什么是16x16"><a href="#为什么是16x16" class="headerlink" title="为什么是16x16"></a>为什么是16x16</h1><p>选择 16×16 是编码效率和复杂度之间的折中：<br></p>
+<ul>
+<li>足够大，可以容纳运动估计时的主要内容块。<br></li>
+<li>足够小，可以跟踪物体的局部运动变化。<br></li>
+<li>在运动补偿时，宏块是预测、变换和熵编码的基本单元</li>
+</ul>
+<h1 id="宏块内部结构"><a href="#宏块内部结构" class="headerlink" title="宏块内部结构"></a>宏块内部结构</h1><p>在 H.264 中，一个 16×16 宏块可以进一步划分：</p>
+<ul>
+<li>帧内预测（Intra Prediction）：宏块可分成 16×16、8×8 或 4×4 子块进行预测。<br></li>
+<li>帧间预测（Inter Prediction）：<br><br>宏块可以划分成</li>
+<li>16×16 <br></li>
+<li>16×8 <br></li>
+<li>8×16 <br></li>
+<li>8×8（还可以继续划分成 4×8、8×4、4×4）<br><br>这样可以灵活适应不同区域的运动。</li>
+</ul>
+<h1 id="宏块与编码工具的关系"><a href="#宏块与编码工具的关系" class="headerlink" title="宏块与编码工具的关系"></a>宏块与编码工具的关系</h1><p>每个宏块会进行：</p>
+<ul>
+<li>预测（帧内 or 帧间）<br></li>
+<li>残差变换（通常是 4×4 或 8×8 DCT-like 变换）<br></li>
+<li>量化<br></li>
+<li>熵编码（CAVLC&#x2F;CABAC）<br></li>
+</ul>
+<h1 id="H265的CTU"><a href="#H265的CTU" class="headerlink" title="H265的CTU"></a>H265的CTU</h1><p>在H265中，就没有宏块的定义，而是CTU（Coding Tree Unit）。CTU为64x64的块，是编码单元尺寸的升级而带来的压缩效率的提升。想象一下，在过去H264一次性只能压缩16X16的块状的图像，现在H265一次可以压缩64X64的图像。<br><br>64x64 CTU的划分方式与16x16的划分方式一样，也是通过宏块的划分。可以继续切分为CU(coding unit)，PU(Prediction Unit)，TU(Transform Unit)，最小可以达到4X4。</p>
+<h1 id="为什么可以使用CTU"><a href="#为什么可以使用CTU" class="headerlink" title="为什么可以使用CTU"></a>为什么可以使用CTU</h1><h2 id="大块区域预测效率更高"><a href="#大块区域预测效率更高" class="headerlink" title="大块区域预测效率更高"></a>大块区域预测效率更高</h2><p>视频里大面积的平坦区域（比如天空、墙壁、背景等），用 64×64 一次编码，比用很多个 16×16 宏块更省比特。减少了 <code>预测模式 + 运动矢量 + 残差信息</code> 的开销。</p>
+<h2 id="支持灵活的分割结构"><a href="#支持灵活的分割结构" class="headerlink" title="支持灵活的分割结构"></a>支持灵活的分割结构</h2><p>H.264 的宏块划分方式比较有限（16×16 &#x2F; 8×16 &#x2F; 16×8 &#x2F; 8×8）。<br><br>H.265 的 CTU 可以分裂成 四叉树结构：<br><code>64×64 → 32×32 → 16×16 → 8×8 → 4×4</code></p>
+<p>每层都能单独选择预测方式（帧内&#x2F;帧间），适配不同区域。<br><br>👉 大块区域用大块，小细节用小块，效率远超 H.264 的固定划分。</p>
+<h2 id="变换块更灵活"><a href="#变换块更灵活" class="headerlink" title="变换块更灵活"></a>变换块更灵活</h2><p>H.264 主要用 4×4 &#x2F; 8×8 DCT 变换。<br><br>H.265 允许从 4×4 到 32×32 的变换单元 (TU)。<br><br>平滑区域 → 大 TU（32×32），压缩效率高。<br><br>边缘&#x2F;纹理多的区域 → 小 TU（4×4），细节保留好。<br></p>
+<h2 id="整体压缩率提升"><a href="#整体压缩率提升" class="headerlink" title="整体压缩率提升"></a>整体压缩率提升</h2><p>由于块更大、分割更灵活，H.265 在相同主观质量下可以比 H.264 节省 30–50% 的码率。<br>这是 HEVC 的核心卖点。</p>
+<h1 id="成本"><a href="#成本" class="headerlink" title="成本"></a>成本</h1><p>当然，H.265 也不是没有代价：<br><br>更大的块 + 四叉树划分 → 编码复杂度提高很多。<br>解码也比 H.264 更耗算力。<br>所以 H.265 对硬件加速和芯片支持依赖更强（手机、机顶盒、摄像头必须支持硬解码，否则发热&#x2F;耗电大）。</p>
+<p><img src="/2025/09/22/H264%E7%9A%8416x16%E4%B8%8EH265%E7%9A%8464x64/1.png"></p>
+<p>这张图直观展示了差别：</p>
+<p>左边：H.264 宏块 (16×16)，固定划分，通常再细分成 4×4 或 8×8 小块。</p>
+<p>右边：H.265 CTU (64×64)，支持递归划分成 32×32 → 16×16 → 8×8 → 4×4，更灵活。</p>
+<p>👉 H.265 之所以更有优势，就是因为大块区域能用大 CTU 一次处理，小细节还能继续细分，从而同时提升了压缩率和灵活性。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/09/05/C-%E7%BA%BF%E7%A8%8B%E4%B8%ADdetach%E4%B8%8Ejoin%E7%9A%84%E9%80%89%E6%8B%A9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/09/05/C-%E7%BA%BF%E7%A8%8B%E4%B8%ADdetach%E4%B8%8Ejoin%E7%9A%84%E9%80%89%E6%8B%A9/" class="post-title-link" itemprop="url">C++线程中detach与join的选择</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-09-05 21:19:09" itemprop="dateCreated datePublished" datetime="2025-09-05T21:19:09+08:00">2025-09-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-09-29 20:39:01" itemprop="dateModified" datetime="2025-09-29T20:39:01+08:00">2025-09-29</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>在进行多线程编程的时候，如何管理线程的生命周期一直是一件很头疼的事情。如果生命周期管理不好，轻则程序进行过程中马上崩溃，重则在长期运行后因为资源释放失败而造成了虚拟内存碎片的上涨，很难以排查。<br>在我的实际工作中，有两种方式来处理这个问题：</p>
+<ol>
+<li><code>join</code>来等待thread执行结束；</li>
+<li><code>detach</code>让线程自己管理自己的生命周期，<strong>外部</strong>不做处理。</li>
+</ol>
+<h1 id="join-孤独的等待者"><a href="#join-孤独的等待者" class="headerlink" title="join 孤独的等待者"></a>join 孤独的等待者</h1><p>join() 会阻塞当前线程，直到被调用的线程执行完毕。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;thread&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;chrono&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">worker</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    std::this_thread::<span class="built_in">sleep_for</span>(std::chrono::<span class="built_in">seconds</span>(<span class="number">2</span>));</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Worker thread completed\n&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="function">std::thread <span class="title">t</span><span class="params">(worker)</span></span>;</span><br><span class="line">    </span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Main thread waiting for worker...\n&quot;</span>;</span><br><span class="line">    t.<span class="built_in">join</span>();  <span class="comment">// 主线程在这里阻塞，等待worker线程完成</span></span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Main thread continues\n&quot;</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>输出:</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Main thread waiting for worker...</span><br><span class="line">Worker thread completed</span><br><span class="line">Main thread continues</span><br></pre></td></tr></table></figure>
+
+<h1 id="detach-无情的渣男"><a href="#detach-无情的渣男" class="headerlink" title="detach()无情的渣男"></a>detach()无情的渣男</h1><p>detach() 将线程与 std::thread 对象分离，让线程在后台独立运行。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;thread&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;chrono&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">worker</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    std::this_thread::<span class="built_in">sleep_for</span>(std::chrono::<span class="built_in">seconds</span>(<span class="number">2</span>));</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Worker thread completed\n&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="function">std::thread <span class="title">t</span><span class="params">(worker)</span></span>;</span><br><span class="line">    </span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Main thread detaching worker...\n&quot;</span>;</span><br><span class="line">    t.<span class="built_in">detach</span>();  <span class="comment">// 线程在后台独立运行</span></span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Main thread continues immediately\n&quot;</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 给detached线程一些时间完成</span></span><br><span class="line">    std::this_thread::<span class="built_in">sleep_for</span>(std::chrono::<span class="built_in">seconds</span>(<span class="number">3</span>));</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>输出：</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Main thread detaching worker...</span><br><span class="line">Main thread continues immediately</span><br><span class="line">Worker thread completed</span><br></pre></td></tr></table></figure>
+
+<h2 id="detach的陷阱"><a href="#detach的陷阱" class="headerlink" title="detach的陷阱"></a>detach的陷阱</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;thread&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">dangerous_worker</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> local_var = <span class="number">42</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="function">std::thread <span class="title">t</span><span class="params">([&amp;local_var]() &#123;  <span class="comment">// 捕获局部变量的引用</span></span></span></span><br><span class="line"><span class="params"><span class="function">        std::this_thread::sleep_for(std::chrono::seconds(<span class="number">1</span>));</span></span></span><br><span class="line"><span class="params"><span class="function">        std::cout &lt;&lt; <span class="string">&quot;Local var: &quot;</span> &lt;&lt; local_var &lt;&lt; std::endl;  <span class="comment">// 危险！</span></span></span></span><br><span class="line"><span class="params"><span class="function">    &#125;)</span></span>;</span><br><span class="line">    </span><br><span class="line">    t.<span class="built_in">detach</span>();</span><br><span class="line">&#125;  <span class="comment">// local_var 被销毁，但detached线程可能还在访问它</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">dangerous_worker</span>();</span><br><span class="line">    std::this_thread::<span class="built_in">sleep_for</span>(std::chrono::<span class="built_in">seconds</span>(<span class="number">2</span>));</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>很糟糕的一个情况，需要牢记一个特性，当启动了<code>detach</code>后，所有的事物都是独立的，这个时候如果还有对于外部有依赖，那可不是一个合格的渣男噢！会造成程序错误的。</p>
+<h1 id="引入RAII的思想"><a href="#引入RAII的思想" class="headerlink" title="引入RAII的思想"></a>引入RAII的思想</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ThreadGuard</span> &#123;</span><br><span class="line">    std::thread&amp; t_;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">explicit</span> <span class="title">ThreadGuard</span><span class="params">(std::thread&amp; t)</span> : t_(t) &#123;</span>&#125;</span><br><span class="line">    </span><br><span class="line">    ~<span class="built_in">ThreadGuard</span>() &#123;</span><br><span class="line">        <span class="keyword">if</span> (t_.<span class="built_in">joinable</span>()) &#123;</span><br><span class="line">            t_.<span class="built_in">join</span>();  <span class="comment">// 自动等待线程完成</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 禁止拷贝</span></span><br><span class="line">    <span class="built_in">ThreadGuard</span>(<span class="type">const</span> ThreadGuard&amp;) = <span class="keyword">delete</span>;</span><br><span class="line">    ThreadGuard&amp; <span class="keyword">operator</span>=(<span class="type">const</span> ThreadGuard&amp;) = <span class="keyword">delete</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">safe_example</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="function">std::thread <span class="title">t</span><span class="params">([]()&#123;</span></span></span><br><span class="line"><span class="params"><span class="function">        <span class="comment">// 做一些工作</span></span></span></span><br><span class="line"><span class="params"><span class="function">    &#125;)</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="function">ThreadGuard <span class="title">guard</span><span class="params">(t)</span></span>;  <span class="comment">// 确保线程会被join</span></span><br><span class="line">    <span class="comment">// 即使发生异常，guard的析构函数也会调用join()</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ul>
+<li>使用 join()：当你需要等待线程完成并获得其结果时</li>
+<li>使用 detach()：当你想让线程在后台独立运行，且确保它不会访问已销毁的对象时</li>
+<li>永远不要让 std::thread 对象在没有调用 join() 或 detach() 的情况下被销毁</li>
+<li>优先考虑 join()，因为它更安全且更容易管理资源</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>join</th>
+<th>detach</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>阻塞</td>
+<td>阻塞调用线程，直到目标线程完成后</td>
+<td>立即返回</td>
+</tr>
+<tr>
+<td>线程所有权</td>
+<td>保持所有权，可以随时查看</td>
+<td>放弃所有权</td>
+</tr>
+<tr>
+<td>资源管理</td>
+<td>自动清理线程资源</td>
+<td>线程自己清理资源</td>
+</tr>
+<tr>
+<td>安全性</td>
+<td>安全，确保线程完成</td>
+<td>需要确保线程不会访问已经销毁的对象</td>
+</tr>
+</tbody></table>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/09/03/%E7%9B%B4%E6%92%AD%E4%B8%AD%E7%94%BB%E9%9D%A2%E5%81%B6%E5%8F%91%E7%9A%84%E8%B7%B3%E5%B8%A7%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E6%89%8B%E6%AE%B5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/09/03/%E7%9B%B4%E6%92%AD%E4%B8%AD%E7%94%BB%E9%9D%A2%E5%81%B6%E5%8F%91%E7%9A%84%E8%B7%B3%E5%B8%A7%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E6%89%8B%E6%AE%B5/" class="post-title-link" itemprop="url">直播中画面偶发的跳帧问题排查手段</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-09-03 00:12:30 / Modified: 00:21:34" itemprop="dateCreated datePublished" datetime="2025-09-03T00:12:30+08:00">2025-09-03</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h1><p>在一次拉取摄像头音视频数据进行播放的时候出现了<font color="red">画面跳帧、高延迟、卡顿</font>的现象，不满足于产品需求，是一个无法忍受的功能场景，故需要进行问题定位后进行排查。</p>
+<h1 id="初步判断"><a href="#初步判断" class="headerlink" title="初步判断"></a>初步判断</h1><p>大致可以分为两个部分进行问题排查，首先是<strong>设备端</strong>推流数据是否有问题，其次是<strong>媒体服务器</strong>转码的数据是否有问题。由于这里的摄像头数据的功能实现代码是完全无感的，所以只能先从媒体服务器这边进行排查。</p>
+<h1 id="手段一：视频保存"><a href="#手段一：视频保存" class="headerlink" title="手段一：视频保存"></a>手段一：视频保存</h1><p>将推流的数据保存为视频文件，进行本地播放进行查看，看看获取到的数据是否存在问题。</p>
+<h1 id="手段二：原始数据保存"><a href="#手段二：原始数据保存" class="headerlink" title="手段二：原始数据保存"></a>手段二：原始数据保存</h1><p>使用网络抓包的手段，但由于视频数据较大，且需要仔细的按帧切割所以不采用常规的一些抓包手段。这里可以选择在服务端打开对应的端口进行端口监听，将保存下来的数据原封不动的保存下来（bin)然后按照私有协议进行payload的切割，这里可以查看<strong>：</strong></p>
+<ol>
+<li><strong>seq</strong>与<strong>timestamp</strong>是否存在异常；</li>
+<li>按帧保存Jpg图片，查看图片是否正常，跳帧数据是否确实丢失；</li>
+<li>结合 1 和 2 进行更细节的排查；</li>
+</ol>
+<p>按照上面三个步骤排查后，可以准确定位是否为服务端的问题。如果服务端有问题，按照这三个部分大致也能定位到了。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/01/28/ZLMediaKit%E7%9A%84%E5%BF%AB%E9%80%9F%E5%AE%9E%E8%B7%B5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/01/28/ZLMediaKit%E7%9A%84%E5%BF%AB%E9%80%9F%E5%AE%9E%E8%B7%B5/" class="post-title-link" itemprop="url">ZLMediaKit的快速实践</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-01-28 01:06:18 / Modified: 01:22:46" itemprop="dateCreated datePublished" datetime="2025-01-28T01:06:18+08:00">2025-01-28</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="ZLMediaKit介绍"><a href="#ZLMediaKit介绍" class="headerlink" title="ZLMediaKit介绍"></a>ZLMediaKit介绍</h1><p>一个基于C++11的高性能运营级流媒体服务框架</p>
+<h1 id="clone-amp-amp-make"><a href="#clone-amp-amp-make" class="headerlink" title="clone &amp;&amp; make"></a>clone &amp;&amp; make</h1><p><b>step1</b> 克隆代码，因为存在第三方代码，不要使用zip的方式。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/ZLMediaKit/ZLMediaKit.git</span><br></pre></td></tr></table></figure>
+
+<p><b>step2</b> </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git submodule update --init</span><br></pre></td></tr></table></figure>
+<p>这一步很重要，如果没有执行会在<code>cmake ..</code>阶段出现如下报错：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">-- Configuring done</span><br><span class="line">CMake Error: Cannot determine link language for target &quot;mpeg&quot;.</span><br><span class="line">CMake Error: CMake can not determine linker language for target: mpeg</span><br><span class="line">CMake Error: Cannot determine link language for target &quot;flv&quot;.</span><br><span class="line">CMake Error: CMake can not determine linker language for target: flv</span><br><span class="line">CMake Error: Cannot determine link language for target &quot;zltoolkit&quot;.</span><br><span class="line">CMake Error: CMake can not determine linker language for target: zltoolkit</span><br><span class="line">CMake Error: Cannot determine link language for target &quot;mov&quot;.</span><br><span class="line">CMake Error: CMake can not determine linker language for target: mov</span><br><span class="line">CMake Error: Cannot determine link language for target &quot;jsoncpp&quot;.</span><br><span class="line">CMake Error: CMake can not determine linker language for target: jsoncpp</span><br><span class="line">-- Generating done</span><br></pre></td></tr></table></figure>
+
+<p><b>step3</b> 构建与编译项目</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cd ZLMediaKit</span><br><span class="line">mkdir build</span><br><span class="line">cd build</span><br><span class="line">cmake ..</span><br><span class="line">make</span><br></pre></td></tr></table></figure>
+
+<h1 id="推流"><a href="#推流" class="headerlink" title="推流"></a>推流</h1><p><b>step1</b> 进入到ZLMediaKit&#x2F;release&#x2F;linux&#x2F;Debug目录下执行<code>MediaServer</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ./MediaServer</span><br></pre></td></tr></table></figure>
+<p>可以看到如下输出</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">2025-01-28 01:15:51.241 I [MediaServer] [55320-MediaServer] Factory.cpp:35 registerPlugin | Load codec: H264</span><br><span class="line">2025-01-28 01:15:51.241 I [MediaServer] [55320-MediaServer] Factory.cpp:35 registerPlugin | Load codec: H265</span><br><span class="line">2025-01-28 01:15:51.241 I [MediaServer] [55320-MediaServer] Factory.cpp:35 registerPlugin | Load codec: JPEG</span><br><span class="line">2025-01-28 01:15:51.241 I [MediaServer] [55320-MediaServer] Factory.cpp:35 registerPlugin | Load codec: mpeg4-generic</span><br><span class="line">2025-01-28 01:15:51.241 I [MediaServer] [55320-MediaServer] Factory.cpp:35 registerPlugin | Load codec: opus</span><br><span class="line">2025-01-28 01:15:51.241 I [MediaServer] [55320-MediaServer] Factory.cpp:35 registerPlugin | Load codec: PCMA</span><br><span class="line">2025-01-28 01:15:51.242 I [MediaServer] [55320-MediaServer] Factory.cpp:35 registerPlugin | Load codec: PCMU</span><br><span class="line">2025-01-28 01:15:51.242 I [MediaServer] [55320-MediaServer] Factory.cpp:35 registerPlugin | Load codec: L16</span><br><span class="line">2025-01-28 01:15:51.242 I [MediaServer] [55320-MediaServer] Factory.cpp:35 registerPlugin | Load codec: MP3</span><br><span class="line">2025-01-28 01:15:51.242 I [MediaServer] [55320-MediaServer] System.cpp:197 systemSetup | core文件大小设置为:18446744073709551615</span><br><span class="line">2025-01-28 01:15:51.242 I [MediaServer] [55320-MediaServer] System.cpp:206 systemSetup | 文件最大描述符个数设置为:1048576</span><br><span class="line">2025-01-28 01:15:51.242 I [MediaServer] [55320-MediaServer] main.cpp:271 start_main | ZLMediaKit(git hash:a27e945/2025-01-20T18:00:13+08:00,branch:master,build time:2025-01-27T19:41:40)</span><br><span class="line">2025-01-28 01:15:51.244 D [MediaServer] [55320-MediaServer] SSLBox.cpp:181 setContext | Add certificate of: default.zlmediakit.com</span><br><span class="line">2025-01-28 01:15:51.244 D [MediaServer] [55320-stamp thread] util.cpp:391 operator() | Stamp thread started</span><br><span class="line">2025-01-28 01:15:51.245 I [MediaServer] [55320-MediaServer] EventPoller.cpp:616 EventPollerPool | EventPoller created size: 4</span><br><span class="line">2025-01-28 01:15:51.245 I [MediaServer] [55320-MediaServer] main.cpp:396 start_main | 已启动http api 接口</span><br><span class="line">2025-01-28 01:15:51.245 I [MediaServer] [55320-MediaServer] main.cpp:398 start_main | 已启动http hook 接口</span><br><span class="line">2025-01-28 01:15:51.246 I [MediaServer] [55320-MediaServer] TcpServer.cpp:242 start_l | TCP server listening on [::]: 554</span><br><span class="line">2025-01-28 01:15:51.246 I [MediaServer] [55320-MediaServer] TcpServer.cpp:242 start_l | TCP server listening on [::]: 1935</span><br><span class="line">2025-01-28 01:15:51.246 I [MediaServer] [55320-MediaServer] TcpServer.cpp:242 start_l | TCP server listening on [::]: 80</span><br><span class="line">2025-01-28 01:15:51.246 I [MediaServer] [55320-MediaServer] TcpServer.cpp:242 start_l | TCP server listening on [::]: 443</span><br><span class="line">2025-01-28 01:15:51.247 I [MediaServer] [55320-MediaServer] UdpServer.cpp:128 start_l | UDP server bind to [::]: 10000</span><br><span class="line">2025-01-28 01:15:51.247 I [MediaServer] [55320-MediaServer] TcpServer.cpp:242 start_l | TCP server listening on [::]: 10000</span><br><span class="line">2025-01-28 01:15:51.247 I [MediaServer] [55320-MediaServer] UdpServer.cpp:128 start_l | UDP server bind to [::]: 9000</span><br></pre></td></tr></table></figure>
+
+<p><b>step2</b> 使用ffmpeg进行rtsp推流</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -re -i &quot;/home/bryan/share/teamwang.mp4&quot; -vcodec h264 -acodec aac -f rtsp -rtsp_transport tcp rtsp://127.0.0.1/live/test</span><br></pre></td></tr></table></figure>
+<p>可以在MediaServer见到如下输出代表推流成功</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">2025-01-28 01:18:46.546 W [MediaServer] [55320-event poller 0] MediaSink.cpp:128 checkTrackIfReady | Audio track index 1 codec mpeg4-generic receive no data for long 2007ms. Ignore it!</span><br><span class="line">2025-01-28 01:18:46.546 D [MediaServer] [55320-event poller 0] MediaSink.cpp:196 emitAllTrackReady | All track ready use 2007ms</span><br><span class="line">2025-01-28 01:18:46.546 I [MediaServer] [55320-event poller 0] MediaSource.cpp:498 emitEvent | 媒体注册:fmp4://__defaultVhost__/live/test</span><br><span class="line">2025-01-28 01:18:46.546 I [MediaServer] [55320-event poller 0] MultiMediaSourceMuxer.cpp:593 onAllTrackReady | stream: rtsp://127.0.0.1:554/live/test , codec info: mpeg4-generic[8000/1/16] H264[852/480/25] </span><br><span class="line">2025-01-28 01:18:46.546 I [MediaServer] [55320-event poller 0] MediaSource.cpp:498 emitEvent | 媒体注册:rtmp://__defaultVhost__/live/test</span><br><span class="line">2025-01-28 01:18:46.546 I [MediaServer] [55320-event poller 0] MediaSource.cpp:498 emitEvent | 媒体注册:ts://__defaultVhost__/live/test</span><br><span class="line">2025-01-28 01:18:46.546 I [MediaServer] [55320-event poller 0] MediaSource.cpp:498 emitEvent | 媒体注册:rtsp://__defaultVhost__/live/test</span><br><span class="line">2025-01-28 01:18:52.044 I [MediaServer] [55320-event poller 0] MediaSource.cpp:498 emitEvent | 媒体注册:hls://__defaultVhost__/live/test</span><br></pre></td></tr></table></figure>
+<p>使用ffplay查看视频<br><img src="/../images/zlmediakit%E6%8E%A8%E6%B5%81rtsp.png" alt="ZLMediaKid rtsp推流"></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/01/16/minimp4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/01/16/minimp4/" class="post-title-link" itemprop="url">minimp4</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-01-16 00:34:29 / Modified: 00:42:38" itemprop="dateCreated datePublished" datetime="2025-01-16T00:34:29+08:00">2025-01-16</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>minimp4是一个</p>
+<h1 id="两个mp4开源代码的对比"><a href="#两个mp4开源代码的对比" class="headerlink" title="两个mp4开源代码的对比"></a>两个mp4开源代码的对比</h1><table>
+<thead>
+<tr>
+<th>开源库</th>
+<th>mp4v2</th>
+<th>minimp4</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>语言</td>
+<td>c++</td>
+<td>c</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/01/14/%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/01/14/%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="post-title-link" itemprop="url">共享内存的基础知识</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-01-14 22:34:34" itemprop="dateCreated datePublished" datetime="2025-01-14T22:34:34+08:00">2025-01-14</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2025/01/14/linux%E7%B3%BB%E7%BB%9F%E8%A3%81%E5%89%AA%E6%96%B9%E5%BC%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -379,525 +977,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/01/12/hexo%E5%9B%BE%E7%89%87%E4%B8%8D%E6%98%BE%E7%A4%BA%E4%BF%AE%E5%A4%8D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/01/12/hexo%E5%9B%BE%E7%89%87%E4%B8%8D%E6%98%BE%E7%A4%BA%E4%BF%AE%E5%A4%8D/" class="post-title-link" itemprop="url">hexo图片不显示修复</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2025-01-12 21:45:30 / Modified: 21:53:07" itemprop="dateCreated datePublished" datetime="2025-01-12T21:45:30+08:00">2025-01-12</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="问题表现"><a href="#问题表现" class="headerlink" title="问题表现"></a>问题表现</h1><p>在本地MD插入的图片显示非常正常，但是使用hexo打开后看到的图片是有破图。<br><img src="/../images/20250112140339.png"></p>
-<h1 id="排查问题"><a href="#排查问题" class="headerlink" title="排查问题"></a>排查问题</h1><p>使用<b>F12</b>查看html页面显示的内容<br><img src="/../images/20250112140500.png"><br>使用网页直接打开图片会显示<font color="red">cannot get</font>，看起来是转换图片格式存在问题。由于使用的开源的Git hexo架构来搭建的博客，所以来github上查看对应的issue看看是否有相关的内容。<br>十分幸运的是在<a target="_blank" rel="noopener" href="https://github.com/orgs/hexojs/discussions/5314%E6%89%BE%E5%88%B0%E4%BA%86%E7%9B%B8%E5%85%B3%E7%9A%84%E7%AD%94%E6%A1%88%E3%80%82">https://github.com/orgs/hexojs/discussions/5314找到了相关的答案。</a></p>
-<h1 id="主要步骤"><a href="#主要步骤" class="headerlink" title="主要步骤"></a>主要步骤</h1><p>step1. 在soruce路径下创建一个images文件夹；<br>steps. 将图片存放在这个路径下就可以了；<br>完成这两个步骤，之前在hexo上不显示图片的博客都可以正常显示啦！</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/12/15/linux%E5%86%85%E6%A0%B8%E5%88%86%E5%B1%82/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/12/15/linux%E5%86%85%E6%A0%B8%E5%88%86%E5%B1%82/" class="post-title-link" itemprop="url">linux内核分层</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2024-12-15 21:30:53 / Modified: 21:49:34" itemprop="dateCreated datePublished" datetime="2024-12-15T21:30:53+08:00">2024-12-15</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">+</span><span class="comment">--------------------------+</span></span><br><span class="line"><span class="operator">|</span>       <span class="keyword">User</span> Space         <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> Applications, Libraries  <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>      <span class="keyword">User</span> Interfaces     <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">--------------------------+</span></span><br><span class="line">            ↑</span><br><span class="line"><span class="operator">+</span><span class="comment">--------------------------+</span></span><br><span class="line"><span class="operator">|</span>  <span class="keyword">System</span> <span class="keyword">Call</span> Interface   <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>  Provides bridge <span class="keyword">between</span> <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>   <span class="keyword">User</span> Space <span class="keyword">and</span> Kernel  <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">--------------------------+</span></span><br><span class="line">            ↑</span><br><span class="line"><span class="operator">+</span><span class="comment">--------------------------+</span></span><br><span class="line"><span class="operator">|</span>       Kernel Core        <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> Process, Memory, File    <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>  Systems, Networking     <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">--------------------------+</span></span><br><span class="line">            ↑</span><br><span class="line"><span class="operator">+</span><span class="comment">--------------------------+</span></span><br><span class="line"><span class="operator">|</span>  Hardware Abstraction    <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> Drivers, Arch<span class="operator">-</span><span class="keyword">specific</span>   <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> Code (e.g., x86, ARM)    <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">--------------------------+</span></span><br><span class="line">            ↑</span><br><span class="line"><span class="operator">+</span><span class="comment">--------------------------+</span></span><br><span class="line"><span class="operator">|</span>        Hardware          <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> CPU, Memory, I<span class="operator">/</span>O Devices <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">--------------------------+</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="Hardware"><a href="#Hardware" class="headerlink" title="Hardware"></a>Hardware</h1><p>硬件底层，包括CPU、内存、输入输出设备等。</p>
-<h1 id="Hardware-Abstraction"><a href="#Hardware-Abstraction" class="headerlink" title="Hardware Abstraction"></a>Hardware Abstraction</h1><p>硬件抽象层，封装硬件细节，提供统一接口。</p>
-<h1 id="Kernel-Core"><a href="#Kernel-Core" class="headerlink" title="Kernel Core"></a>Kernel Core</h1><p>核心功能，包括进程管理、内存管理、文件系统、网络协议等。</p>
-<h1 id="System-Call-Interface"><a href="#System-Call-Interface" class="headerlink" title="System Call Interface"></a>System Call Interface</h1><p>系统调用接口，为用户程序提供访问内核服务的入口。</p>
-<h1 id="User-Space"><a href="#User-Space" class="headerlink" title="User Space"></a>User Space</h1><p>用户空间，运行应用程序和库。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/12/14/%E5%86%85%E6%A0%B8%E6%97%A5%E5%BF%97%E7%8E%AF%E5%BD%A2%E7%BC%93%E5%86%B2%E5%8C%BA/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/12/14/%E5%86%85%E6%A0%B8%E6%97%A5%E5%BF%97%E7%8E%AF%E5%BD%A2%E7%BC%93%E5%86%B2%E5%8C%BA/" class="post-title-link" itemprop="url">内核日志环形缓冲区</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2024-12-14 21:40:31 / Modified: 22:03:41" itemprop="dateCreated datePublished" datetime="2024-12-14T21:40:31+08:00">2024-12-14</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>不诚实是局部最优，但一定不会是全局最优。</p>
-<h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><p><code>pstore</code>是一个抽象层，提供统一的接口来存储内核日志、崩溃转储等数据。可以支持多种存储后端，如<code>ramoops</code>(RAM环形缓冲区)、NVRAM、EFI等。</p>
-<p><code>ramoops</code>是一个存储后端，将日志数据存储在分配的RAM区域中，崩溃后内存数据不会被覆盖，系统重启时可以恢复这些日志。</p>
-<h1 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h1><ol>
-<li>系统需要再崩溃后保存日志供后续调试。</li>
-<li>没有持久化存储设备（如硬盘或NVRAM)，只能依赖RAM存储。</li>
-<li>系统运行在资源受限的嵌入式设备上。</li>
-</ol>
-<h1 id="配置步骤"><a href="#配置步骤" class="headerlink" title="配置步骤"></a>配置步骤</h1><h2 id="内核配置"><a href="#内核配置" class="headerlink" title="内核配置"></a>内核配置</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">CONFIG_PSTORE=y</span><br><span class="line">CONFIG_PSTORE_RAM=y</span><br><span class="line">CONFIG_RAMOOPS=y</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="日志查看"><a href="#日志查看" class="headerlink" title="日志查看"></a>日志查看</h1><p><code>pstore</code>会将存储的日志挂载到<code>/sys/fs/pstore</code>目录下，重启后可以直接查看崩溃日志</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ls</span> /sys/fs/pstore</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/12/14/challenge/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/12/14/challenge/" class="post-title-link" itemprop="url">a challenge</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2024-12-14 01:05:05 / Modified: 01:10:18" itemprop="dateCreated datePublished" datetime="2024-12-14T01:05:05+08:00">2024-12-14</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>在还没正式上班之前，争取日更博客，内容不限于技术还是兴趣。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/08/01/nginx-rtmp-module/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/08/01/nginx-rtmp-module/" class="post-title-link" itemprop="url">nginx-rtmp-module</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2023-08-01 11:30:15" itemprop="dateCreated datePublished" datetime="2023-08-01T11:30:15+08:00">2023-08-01</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2025-01-12 21:42:55" itemprop="dateModified" datetime="2025-01-12T21:42:55+08:00">2025-01-12</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h1><ol>
-<li>下载nginx-rtmp-module</li>
-<li>安装nginx</li>
-</ol>
-<h1 id="nginx"><a href="#nginx" class="headerlink" title="nginx"></a>nginx</h1><p>我们将采用nginx来作为流媒体服务器，主要原因是因为Nginx具有：</p>
-<ol>
-<li>高性能：Nginx以事件驱动的方式处理请求，采用异步非阻塞的工作模式，能够高效地处理大量的并发连接。这使得它非常适合处理实时流媒体传输，能够提供稳定、低延迟的传输性能。</li>
-<li>可靠性和稳定性：Nginx被广泛认为是一个稳定可靠的服务器软件，它在大规模并发负载下表现出色。它经受住了各种实际应用环境的考验，并被许多大型网站和服务所采用。</li>
-<li>反向代理和负载均衡：Nginx提供了反向代理和负载均衡功能，可以将客户端请求转发到多个后端服务器，实现负载均衡和高可用性。对于实时流媒体而言，这意味着可以通过配置Nginx，将流媒体请求分发到多个流媒体服务器，提供可扩展性和可靠性。</li>
-<li>模块化架构：Nginx具有模块化的架构，允许通过添加第三方模块扩展其功能。nginx-rtmp-module就是其中之一，它扩展Nginx的功能，使其能够处理实时流媒体传输。这种模块化的设计使得Nginx可以灵活适应不同的应用需求。</li>
-</ol>
-<p>nginx的下载地址：<a target="_blank" rel="noopener" href="http://nginx.org/en/download.html">http://nginx.org/en/download.html</a></p>
-<p>下载源码包后进行解压，我使用的版本是：<font color="red">nginx-1.25.1</font></p>
-<h1 id="nginx-rtmp-module"><a href="#nginx-rtmp-module" class="headerlink" title="nginx-rtmp-module"></a>nginx-rtmp-module</h1><p>nginx-rtmp-module项目地址：<a target="_blank" rel="noopener" href="https://github.com/arut/nginx-rtmp-module">https://github.com/arut/nginx-rtmp-module</a></p>
-<p>RTMP是一种实时传输音频、视频和数据的协议。nginx-rtmp-module添加了对RTMP协议的支持，使得Nginx可以充当流媒体服务器，与客户端设备进行实时的音频传输。</p>
-<p>以下是 nginx-rtmp-module 提供的主要功能：</p>
-<ol>
-<li>接收 RTMP 流：nginx-rtmp-module 允许服务器接收来自 RTMP 客户端的实时流，并进行处理和分发。</li>
-<li>多种协议支持：除了 RTMP，该模块还支持 HLS（HTTP Live Streaming）和 MPEG-DASH（Dynamic Adaptive Streaming over HTTP）等流媒体协议。</li>
-<li>视频录制和存储：该模块可以将接收到的实时流媒体数据进行录制和存储，以便后续回放或存档。</li>
-<li>动态模块配置：通过配置 Nginx 的配置文件，可以动态地控制流媒体服务的行为，如设置并发连接数、调整缓存大小等。</li>
-<li>安全认证和访问控制：nginx-rtmp-module 提供了基于 IP 地址、用户名&#x2F;密码和令牌等方式的认证和访问控制机制，用于保护流媒体服务的安全性。</li>
-<li>事件通知和回调：该模块支持事件通知和回调机制，允许开发者通过自定义代码处理特定的流媒体事件，如新的连接、断开连接等。</li>
-</ol>
-<p>更详细的部分后续看源码学习。</p>
-<h1 id="实际操作"><a href="#实际操作" class="headerlink" title="实际操作"></a>实际操作</h1><p>nginx解压路径：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bryan@bryan:~/share/nginx-1.25.1$ </span><br></pre></td></tr></table></figure>
-
-
-
-<p>nginx-rtmp-module解压路径：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bryan@bryan:~/share/nginx-rtmp-module-master$</span><br></pre></td></tr></table></figure>
-
-<p>并不需要对nginx-rtmp-module做什么多余的操作</p>
-<p>进入nginx的压缩文件下，进行编译操作：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">./configure --add-module=/home/bryan/share/nginx-rtmp-module-master</span><br><span class="line">make</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
-
-<p>这里安装的时候注意make install的输出信息，网上大多数教程nginx配置文件和执行文件是在&#x2F;etc下的，但我这里安装并不是。</p>
-<p>安装路径在：&#x2F;usr&#x2F;local&#x2F;nginx</p>
-<p>存在如下文件夹：</p>
-<p><img src="/../images/image-20230624175342245.png" alt="image-20230624175342245"></p>
-<p><strong>查看Nginx是否安装成功：</strong> </p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bryan@bryan:/usr/local/nginx/sbin$ ./nginx -v</span><br><span class="line">nginx version: nginx/1.25.1</span><br></pre></td></tr></table></figure>
-<p><strong>确认nginx的启动情况：</strong></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ps -ef|grep nginx</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">console input</span></span><br><span class="line">bryan@bryan:/usr/local/nginx/sbin$ ps -ef|grep nginx</span><br><span class="line">bryan      15360   15207  0 13:34 pts/0    00:00:00 grep --color=auto nginx</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p><strong>nginx rtmp配置：</strong><br>打开&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;conf$ vim nginx.conf 在配置文件的末尾添加如下配置：</p>
-<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">rtmp &#123;</span><br><span class="line">  server &#123;</span><br><span class="line">    listen <span class="number">1935</span>;  # 监听端口，通常为默认的 RTMP 端口 <span class="number">1935</span></span><br><span class="line">    chunk_size <span class="number">4096</span>;</span><br><span class="line"></span><br><span class="line">    application live &#123;</span><br><span class="line">      live <span class="keyword">on</span>;</span><br><span class="line">      allow play <span class="keyword">all</span>;</span><br><span class="line">      # 可以添加其他配置，如推流、播放设置等</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    application video&#123;</span><br><span class="line">        play /home/bryan/share/video;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p><strong>再次启动nginx：</strong><br>启动nginx的命令为：&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;sbin&#x2F;nginx<br>停止nginx的命令为 ：&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;sbin&#x2F;nginx -s stop<br>重启nginx的命令为：&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;sbin&#x2F;nginx -s reload</p>
-<p>正确加载了配置启动结果如下：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">bryan@bryan:/usr/local/nginx/sbin$ sudo ./nginx -t</span><br><span class="line">nginx: the configuration file /usr/local/nginx/conf/nginx.conf syntax is ok</span><br><span class="line">nginx: configuration file /usr/local/nginx/conf/nginx.conf test is successful</span><br></pre></td></tr></table></figure>
-
-<p>使用vlc打开rtmp<br>vlc地址：rtmp:&#x2F;&#x2F;192.168.43.129:1935&#x2F;video&#x2F;TikTok.mp4<br><img src="/../images/vlcRTMP.png" alt="vlcrtmp"></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/07/24/live555-RTSP/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/07/24/live555-RTSP/" class="post-title-link" itemprop="url">live555_RTSP</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2023-07-24 00:45:48" itemprop="dateCreated datePublished" datetime="2023-07-24T00:45:48+08:00">2023-07-24</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2025-01-12 21:37:46" itemprop="dateModified" datetime="2025-01-12T21:37:46+08:00">2025-01-12</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="live555的介绍"><a href="#live555的介绍" class="headerlink" title="live555的介绍"></a>live555的介绍</h1><p>Live555是一个流媒体开源项目，用于实现RTSP(Real-Time Streaming Protocol)流媒体服务器和客户端。<br>目前我接触到的嵌入式设备推流封装的大多数都是live555.</p>
-<h1 id="live555的编译"><a href="#live555的编译" class="headerlink" title="live555的编译"></a>live555的编译</h1><p><a target="_blank" rel="noopener" href="http://live555.com/liveMedia/public/">http://live555.com/liveMedia/public/</a><br>下载源码压缩包(tar.gz),选择latest.</p>
-<p><img src="/../images/live555_sourcecode.png" alt="live555_sourcecode"></p>
-<p>启动编译</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo ./genMakefiles linux</span><br><span class="line">sudo make</span><br></pre></td></tr></table></figure>
-
-<p><b><font color="red">报错：BasicTaskScheduler.cpp:191:40: error: ‘struct std::atomic_flag’ has no member named ‘test’<br>  191 |       if (fTriggersAwaitingHandling[i].test()) {<br>      |                                        ^~~~<br>make[1]: *** [Makefile:41: BasicTaskScheduler.o] Error 1<br></font></b><br>阅读changelog.txt文档可以看到在2023.06.20这次更新中使用到了std::atomic_flag，这里需要修改相关的配置。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">添加如下配置在CPLUSPLUS_FLAGS中</span></span><br><span class="line">CPLUSPLUS_FLAGS =	$(COMPILE_OPTS) -Wall -DBSD=1 $(CPPFLAGS) $(CXXFLAGS)   -DNO_STD_LIB</span><br></pre></td></tr></table></figure>
-<p>如果你的平台支持GCC 20那么添加</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CPLUSPLUS_FLAGS =	$(COMPILE_OPTS) -Wall -DBSD=1 $(CPPFLAGS) $(CXXFLAGS) -std=c++2a  </span><br></pre></td></tr></table></figure>
-<h1 id="live555的实例"><a href="#live555的实例" class="headerlink" title="live555的实例"></a>live555的实例</h1><p>编译成功后进入到mediaServer文件夹下可以看到一个<strong>live555MediaServer</strong>的文件</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">![live555_sourcecode](live555-RTSP/live555_sourcecode.png)bryan@bryan:~/share/live/mediaServer$ ./live555MediaServer</span><br><span class="line">LIVE555 Media Server</span><br><span class="line">	version 1.11 (LIVE555 Streaming Media library version 2023.06.20).</span><br><span class="line">Play streams from this server using the URL</span><br><span class="line">	rtsp://192.168.43.129:8554/&lt;filename&gt;</span><br><span class="line">where &lt;filename&gt; is a file present in the current directory.</span><br><span class="line">Each file&#x27;s type is inferred from its name suffix:</span><br><span class="line">	&quot;.264&quot; =&gt; a H.264 Video Elementary Stream file</span><br><span class="line">	&quot;.265&quot; =&gt; a H.265 Video Elementary Stream file</span><br><span class="line">	&quot;.aac&quot; =&gt; an AAC Audio (ADTS format) file</span><br><span class="line">	&quot;.ac3&quot; =&gt; an AC-3 Audio file</span><br><span class="line">	&quot;.amr&quot; =&gt; an AMR Audio file</span><br><span class="line">	&quot;.dv&quot; =&gt; a DV Video file</span><br><span class="line">	&quot;.m4e&quot; =&gt; a MPEG-4 Video Elementary Stream file</span><br><span class="line">	&quot;.mkv&quot; =&gt; a Matroska audio+video+(optional)subtitles file</span><br><span class="line">	&quot;.mp3&quot; =&gt; a MPEG-1 or 2 Audio file</span><br><span class="line">	&quot;.mpg&quot; =&gt; a MPEG-1 or 2 Program Stream (audio+video) file</span><br><span class="line">	&quot;.ogg&quot; or &quot;.ogv&quot; or &quot;.opus&quot; =&gt; an Ogg audio and/or video file</span><br><span class="line">	&quot;.ts&quot; =&gt; a MPEG Transport Stream file</span><br><span class="line">		(a &quot;.tsx&quot; index file - if present - provides server &#x27;trick play&#x27; support)</span><br><span class="line">	&quot;.vob&quot; =&gt; a VOB (MPEG-2 video with AC-3 audio) file</span><br><span class="line">	&quot;.wav&quot; =&gt; a WAV Audio file</span><br><span class="line">	&quot;.webm&quot; =&gt; a WebM audio(Vorbis)+video(VP8) file</span><br><span class="line">See http://www.live555.com/mediaServer/ for additional documentation.</span><br><span class="line">(We use port 8000 for optional RTSP-over-HTTP tunneling).)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>可以通过rtsp:&#x2F;&#x2F;192.168.43.129:8554&#x2F;<filename>来访问该文件夹下的资源<br><img src="/../images/vlcRTSP1.png" alt="vlcrtsp1"><br><img src="/../images/vlcRTSP2.png" alt="vlcrtsp2"></filename></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/08/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/06/08/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-06-08 14:10:07 / Modified: 14:41:13" itemprop="dateCreated datePublished" datetime="2022-06-08T14:10:07+08:00">2022-06-08</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><p>Hello Bryan~</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -963,7 +1046,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-count">27</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

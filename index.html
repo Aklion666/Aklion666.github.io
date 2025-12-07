@@ -145,6 +145,528 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/12/07/OTA%E5%8D%87%E7%BA%A7%E6%97%B6%E5%BA%8F%E5%9B%BE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/12/07/OTA%E5%8D%87%E7%BA%A7%E6%97%B6%E5%BA%8F%E5%9B%BE/" class="post-title-link" itemprop="url">OTA升级时序图</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-12-07 23:36:22" itemprop="dateCreated datePublished" datetime="2025-12-07T23:36:22+08:00">2025-12-07</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/12/07/%E4%B8%BA%E4%BB%80%E4%B9%88MP4%E6%96%87%E4%BB%B6%E5%BD%95%E5%83%8F%E4%BC%A0%E8%BE%93%E4%B8%AD%E6%96%AD%E5%90%8E%E6%97%A0%E6%B3%95%E6%92%AD%E6%94%BE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/12/07/%E4%B8%BA%E4%BB%80%E4%B9%88MP4%E6%96%87%E4%BB%B6%E5%BD%95%E5%83%8F%E4%BC%A0%E8%BE%93%E4%B8%AD%E6%96%AD%E5%90%8E%E6%97%A0%E6%B3%95%E6%92%AD%E6%94%BE/" class="post-title-link" itemprop="url">为什么MP4文件录像传输中断后无法播放</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-12-07 22:06:24 / Modified: 23:28:04" itemprop="dateCreated datePublished" datetime="2025-12-07T22:06:24+08:00">2025-12-07</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><strong>MP4</strong>文件是由一系列Box组成的结构化容器，其中最关键的两类Box是：</p>
+<ul>
+<li>mdat（媒体数据）：存放真正的H265&#x2F;H264&#x2F;AAC原始数据。</li>
+<li>moov（索引信息）：存放所有Sample的时间戳、偏移、帧类型等元数据。</li>
+</ul>
+<p>在录制过程中，设备会不断写入<strong>mdat</strong>，但<strong>moov</strong>一般在录像结束时一次性生成。</p>
+<p>在设备突然断电时出现的问题的根本原因是：</p>
+<ol>
+<li>mdat已写入，但moov还没来得及生成或写完整。</li>
+<li>没有moov，播放器就无法知道mdat中的帧结构与时间轴，就认为“文件损坏“。</li>
+<li>若moov写了一半，也会导致offset错误、sample table不完整，导致无法播放。</li>
+</ol>
+<p>因此，中断造成的MP4损坏，本质上就是：<strong>索引信息缺失或不完整，而不是数据本身坏了。</strong></p>
+<h1 id="如何修复"><a href="#如何修复" class="headerlink" title="如何修复"></a>如何修复</h1><ol>
+<li>可以通过扫描mdat中的NALU，重新构建sample table，补写一个新的moov box。</li>
+<li>ffmpeg的 <code>-movflags + faststart</code> 就是提前写moov的一个思路。</li>
+<li>或者采用 **fragmented MP4(fmp4)**，实时写moof&#x2F;mdat，提高断电恢复能力。</li>
+</ol>
+<p><img src="https://www.trekview.org/assets/images/blog/2022-09-23/mp4-box-structure.png?utm_source=chatgpt.com" alt="https://www.trekview.org/assets/images/blog/2022-09-23/mp4-box-structure.png?utm_source=chatgpt.com"></p>
+<p><img src="https://www.trekview.org/assets/images/blog/2022-10-07/sample-structure-mp4.jpg?utm_source=chatgpt.com" alt="https://www.trekview.org/assets/images/blog/2022-10-07/sample-structure-mp4.jpg?utm_source=chatgpt.com"></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">+</span><span class="comment">---------------------------+</span></span><br><span class="line"><span class="operator">|</span> ftyp (文件类型信息)        <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">---------------------------+</span></span><br><span class="line"><span class="operator">|</span> <span class="keyword">free</span> <span class="operator">/</span> wide (可选填充)     <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">---------------------------+</span></span><br><span class="line"><span class="operator">|</span> mdat (媒体数据)            <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">---------------------------+</span></span><br><span class="line"><span class="operator">|</span> moov (元数据<span class="operator">/</span>索引)         <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>   <span class="operator">+</span> mvhd (整体时间轴)      <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>   <span class="operator">+</span> trak (每路轨道)        <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>       <span class="operator">+</span> tkhd              <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>       <span class="operator">+</span> mdia              <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>           <span class="operator">+</span> mdhd          <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>           <span class="operator">+</span> hdlr          <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>           <span class="operator">+</span> minf          <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>               <span class="operator">+</span> stbl      <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>                   <span class="operator">+</span> stsd  <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>                   <span class="operator">+</span> stts  <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>                   <span class="operator">+</span> stsc  <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>                   <span class="operator">+</span> stsz  <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>                   <span class="operator">+</span> stco  <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">---------------------------+</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>因为 <strong>moov 在录制结束后才写入</strong>。<br> 断电 ⇒ moov 缺失 ⇒ 索引不存在 ⇒ mdat 无法被解析 ⇒ 文件看似损坏。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/12/07/%E4%BB%80%E4%B9%88%E6%98%AFts%E6%B5%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/12/07/%E4%BB%80%E4%B9%88%E6%98%AFts%E6%B5%81/" class="post-title-link" itemprop="url">什么是ts流</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-12-07 21:40:31" itemprop="dateCreated datePublished" datetime="2025-12-07T21:40:31+08:00">2025-12-07</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/12/07/MP4%E6%96%87%E4%BB%B6%E5%BD%95%E5%83%8F%E6%97%B6%E7%AA%81%E7%84%B6%E6%96%AD%E7%94%B5%E7%9A%84%E5%A4%84%E7%90%86%E6%96%B9%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/12/07/MP4%E6%96%87%E4%BB%B6%E5%BD%95%E5%83%8F%E6%97%B6%E7%AA%81%E7%84%B6%E6%96%AD%E7%94%B5%E7%9A%84%E5%A4%84%E7%90%86%E6%96%B9%E5%BC%8F/" class="post-title-link" itemprop="url">MP4文件录像时突然断电的处理方式</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-12-07 17:28:07" itemprop="dateCreated datePublished" datetime="2025-12-07T17:28:07+08:00">2025-12-07</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/12/07/SPS-PPS-VPS%E7%9A%84%E6%A6%82%E5%BF%B5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/12/07/SPS-PPS-VPS%E7%9A%84%E6%A6%82%E5%BF%B5/" class="post-title-link" itemprop="url">SPS PPS VPS的概念</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-12-07 14:52:46 / Modified: 16:50:36" itemprop="dateCreated datePublished" datetime="2025-12-07T14:52:46+08:00">2025-12-07</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><ul>
+<li>SPS(Sequence Parameter Set)：描述一段视频序列的宏观配置</li>
+<li>PPS(Picture Parameter Set)：描述一张图像&#x2F;帧的细化配置</li>
+<li>VPS(Video Parameter Set)：H265才有，用于描述整个视频层的”顶层配置“</li>
+</ul>
+<h1 id="SPS有什么"><a href="#SPS有什么" class="headerlink" title="SPS有什么"></a>SPS有什么</h1><p>SPS是描述整段视频公用的编码规则：</p>
+<ul>
+<li>宽 X 高（Resolution)</li>
+<li>颜色格式</li>
+<li>最大参考帧数量</li>
+<li>解码所需能力级别（Profile&#x2F;level)</li>
+<li>时序信息（fps相关）</li>
+<li>图像切分、宏块结构</li>
+</ul>
+<p>作用：解码器根据SPS才知道准备多大的缓冲区、如何组织解码结构。</p>
+<h1 id="PPS有什么"><a href="#PPS有什么" class="headerlink" title="PPS有什么"></a>PPS有什么</h1><p>PPS描述帧级别的参数：</p>
+<ul>
+<li>去块滤波参数(deblocking filter)</li>
+<li>熵编码类型(CABAC&#x2F;CAVLC)</li>
+<li>参考索引设置</li>
+<li>图像切片结构</li>
+</ul>
+<p>作用：为每一帧提供细节。</p>
+<h1 id="VPS"><a href="#VPS" class="headerlink" title="VPS"></a>VPS</h1><p>H265新增的更顶层参数，内容：</p>
+<ul>
+<li>多层结构、子层设置</li>
+<li>多码流协同参数（适用于HDR、多码率、多视点）</li>
+<li>解码能力需求</li>
+</ul>
+<p>作用：H265更复杂，需要一个总导演来协调所有层次，所以出现了VPS。</p>
+<h1 id="缺失会发生什么"><a href="#缺失会发生什么" class="headerlink" title="缺失会发生什么"></a>缺失会发生什么</h1><p>如果在传输过程中缺失SPS&#x2F;PPS会出现<strong>花屏、解码失败、画面无法启动等</strong>错误。想是在flv header中其实就有SPS的值出现。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/12/07/GOP%E6%98%AF%E4%BB%80%E4%B9%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/12/07/GOP%E6%98%AF%E4%BB%80%E4%B9%88/" class="post-title-link" itemprop="url">GOP是什么</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-12-07 12:38:17 / Modified: 14:48:27" itemprop="dateCreated datePublished" datetime="2025-12-07T12:38:17+08:00">2025-12-07</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>GOP的全程是Group of Pictures 指编码器生成的图像序列结构，由I帧、P帧、B帧组成。GOP长度代表两帧（I&#x2F;IDR）之间的帧数。例如GOP&#x3D;25表示每秒25fps的视频中，每秒由1帧是I帧。I帧是全量帧，P&#x2F;B是参考帧，它们依赖GOP结构进行还原。</p>
+<p>GOP的长度影响编码效率与抗网络抖动能力：</p>
+<ul>
+<li>GOP越大（I帧更小）-&gt; 压缩率更高、码率更低、但链路一旦丢包，会导致更长时间的马赛克。</li>
+<li>GOP越小（I帧更多）-&gt; 恢复快，抗抖动强，但是带宽压力更大。</li>
+</ul>
+<p>在弱网环境下，播放器或传输侧可能会：</p>
+<ul>
+<li>请求立即发送一个关键帧(FIR&#x2F;PLI)</li>
+<li>锁端GOP周期提高恢复速度</li>
+<li>丢弃部分P帧，等待下一个I帧来恢复画面</li>
+</ul>
+<p><strong>因此GOP的核心作用是：在压缩效率与弱网恢复速度之间做平衡。</strong></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/12/07/H264%E3%80%81H265%E4%B8%8EYUV420%E7%9A%84%E5%8E%8B%E7%BC%A9%E5%AF%B9%E6%AF%94%E5%85%B3%E7%B3%BB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/12/07/H264%E3%80%81H265%E4%B8%8EYUV420%E7%9A%84%E5%8E%8B%E7%BC%A9%E5%AF%B9%E6%AF%94%E5%85%B3%E7%B3%BB/" class="post-title-link" itemprop="url">H264、H265与YUV420的压缩对比关系</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-12-07 12:11:12 / Modified: 12:37:31" itemprop="dateCreated datePublished" datetime="2025-12-07T12:11:12+08:00">2025-12-07</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>从sensor采集到图片后经过一系列的操作，我们可以得到一张叫做YUV420的原始图片，它是以一种**未经过压缩的像素格式（RAW)**，祝主要特点有：</p>
+<ul>
+<li>每个像素都有亮度Y</li>
+<li>色度U&#x2F;V是按2X2分组取样</li>
+<li>所有数据量大约1.5X分辨率，也就是在代码中经常看到的 <code>w * y * 3 /2</code>的原因</li>
+</ul>
+<p>例如：</p>
+<p>1080p &#x3D; 1920 x 1080 x 1.5 &#x3D; 3MB 一帧</p>
+<p>30fps时 ： 3MB X 30 &#x3D; 90MB&#x2F;s</p>
+<p>YUV是一个超大的编码数据，如果我们在不考虑编解码的环境下，单单是一个2Mbit的带宽传输一秒的图片都需要</p>
+<p><strong>90 * 8 &#x2F; 2 &#x3D; 360s的时间才能传完</strong>，延迟极其可怕。</p>
+<h1 id="H264-x2F-H265的压缩思路"><a href="#H264-x2F-H265的压缩思路" class="headerlink" title="H264&#x2F;H265的压缩思路"></a>H264&#x2F;H265的压缩思路</h1><p>压缩的思路是从巨大的Raw数据中找到规律，丢弃不太重要的信息。</p>
+<p>压缩方式主要是一下三点：</p>
+<ol>
+<li>帧内压缩（Intra)——像JPEG一样压缩一帧<br>找到图像块的冗余，使用变换 + 量化降低数据。</li>
+<li>帧间压缩（Inter)——利用“前后帧差不多”的事实<br>画面差异本来就不大，比如监控摄像头：<ul>
+<li>背景不动</li>
+<li>只有前景改变<br>所以只要记录运动矢量 + 残差即可。</li>
+</ul>
+</li>
+</ol>
+<p>这就是压缩率飞起的关键。</p>
+<ol start="3">
+<li>Entropy编码<br>CABAC&#x2F;CAVLC等熵编码算法，把高频出现的值压得更短。</li>
+</ol>
+<h1 id="压缩效率的对比"><a href="#压缩效率的对比" class="headerlink" title="压缩效率的对比"></a>压缩效率的对比</h1><table>
+<thead>
+<tr>
+<th>编码标准</th>
+<th>相同画质下比YUV420减少多少？</th>
+<th>相比前代提升？</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>H264</td>
+<td>大约压缩到 1&#x2F;20 ~ 1&#x2F;50</td>
+<td></td>
+</tr>
+<tr>
+<td>H265</td>
+<td>大约压缩到1&#x2F;50 ~ 1&#x2F;100</td>
+<td>比H264再省30% ~ 50%带宽</td>
+</tr>
+</tbody></table>
+<p>例如：</p>
+<p>1080p@30fps， Raw约90MB&#x2F;s</p>
+<ul>
+<li>H264压缩后：1.5 ~ 4.5MB&#x2F;s(12~36Mbps)</li>
+<li>H265压缩后：0.9 ~ 3MB&#x2F;s(7~25Mbps)</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2025/11/14/FlvHeader%E8%AF%A6%E8%A7%A3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -533,608 +1055,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/10/03/IPC%E6%B5%81%E9%87%8F%E7%9A%84%E6%A6%82%E5%BF%B5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/10/03/IPC%E6%B5%81%E9%87%8F%E7%9A%84%E6%A6%82%E5%BF%B5/" class="post-title-link" itemprop="url">IPC流量的概念</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2025-10-03 23:26:16 / Modified: 23:42:59" itemprop="dateCreated datePublished" datetime="2025-10-03T23:26:16+08:00">2025-10-03</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>在<strong>App服务商&#x2F;商业运营商&#x2F;IPC(网络摄像机）</strong>的场景中，我们经常会需要强度<font color="red">流量</font>的概念。主要原因有以下几点：</p>
-<h1 id="流量是成本的直接提现"><a href="#流量是成本的直接提现" class="headerlink" title="流量是成本的直接提现"></a>流量是成本的直接提现</h1><ul>
-<li>服务器带宽通常是按照**出网流量(egress traffic)**或者带宽峰值来计费的。</li>
-<li>公网环境下，云厂商(阿里云、腾讯云、AWS等)都会按流量来计费，比如1GB出网几毛到几块等，看似不多，但是累积下来就是大头。</li>
-<li>对运营商而言，流量决定了对外链路的租用费用，骨干网成本。</li>
-</ul>
-<h1 id="IPC视频场景流量消耗极大"><a href="#IPC视频场景流量消耗极大" class="headerlink" title="IPC视频场景流量消耗极大"></a>IPC视频场景流量消耗极大</h1><ul>
-<li>一路IPC 1080P@15fps H.264编码，码率大概<strong>1.5~2Mbps</strong>。</li>
-<li>如果1000路摄像头同时上传，带宽需求 &#x3D; 2000 Mbps &#x3D; 250MB&#x2F;s。<ul>
-<li>每天流量：250MB&#x2F;s x 86400s &#x3D; 21TB&#x2F;天。</li>
-<li>一个月就是 600 +TB，成本非常高。</li>
-</ul>
-</li>
-<li>所以每增加一路摄像头，都会带来<strong>流量线性增长</strong>。</li>
-</ul>
-<h1 id="流量决定了架构设计"><a href="#流量决定了架构设计" class="headerlink" title="流量决定了架构设计"></a>流量决定了架构设计</h1><ul>
-<li>直连（P2P）：流量只在端与端之间走，服务器只做信令，这样流量成本低级。</li>
-<li>转发（Relay)：所有流量走App服务器 -&gt; 服务器出网流量爆炸，成本非常高。</li>
-<li>CDN分发：单源推流，多端观看，利用CDN节点分发，单节点压力小，但CDN出口流量费依然巨大。</li>
-</ul>
-<h1 id="影响商业模式"><a href="#影响商业模式" class="headerlink" title="影响商业模式"></a>影响商业模式</h1><ul>
-<li>ToB项目：客户可能要求本地化部署，就是为了避免云端流量费用。</li>
-<li>ToC项目：用户端看回放、看直播、云厂商的带宽账单决定盈利模式能否跑通的核心。</li>
-<li>很多云存、云回放、视频AI服务都需要额外收费，本质就是流量带来的成本。</li>
-</ul>
-<h1 id="流量与体验的矛盾"><a href="#流量与体验的矛盾" class="headerlink" title="流量与体验的矛盾"></a>流量与体验的矛盾</h1><ul>
-<li>流量压缩：降低码率 -&gt; 画质下降。</li>
-<li>提升画质：提高码率 -&gt; 流量成本升高。</li>
-<li>所以经常要在以下方面做平衡：<ul>
-<li>清晰度</li>
-<li>延迟</li>
-<li>流程成本</li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/09/22/H264%E7%9A%8416x16%E4%B8%8EH265%E7%9A%8464x64/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/09/22/H264%E7%9A%8416x16%E4%B8%8EH265%E7%9A%8464x64/" class="post-title-link" itemprop="url">H264的16x16与H265的64x64</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2025-09-22 00:19:01 / Modified: 00:21:45" itemprop="dateCreated datePublished" datetime="2025-09-22T00:19:01+08:00">2025-09-22</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="宏块的基本概念"><a href="#宏块的基本概念" class="headerlink" title="宏块的基本概念"></a>宏块的基本概念</h1><p>宏块块（Macroblock）是H.264编码的基本单位，它通常为16x16像素的亮度(Luma)。<br>对应的色度（Chroma）部分大小取决于采样格式：</p>
-<ul>
-<li>4:2:0 格式（最常见）：每个宏块包含两个 8 × 8 的色度块（U 和 V）。</li>
-<li>4:2:2 格式：色度是两个 8 × 16。</li>
-<li>4:4:4 格式：色度与亮度一样大，也是 16 × 16。</li>
-</ul>
-<p>👉 所以在常见的 YUV 4:2:0 里，一个宏块由：</p>
-<ul>
-<li>16 × 16 &#x3D; 256 个亮度像素</li>
-<li>8 × 8 &#x3D; 64 个 U 色度像素</li>
-<li>8 × 8 &#x3D; 64 个 V 色度像素<br>总计 384 个采样点</li>
-</ul>
-<h1 id="为什么是16x16"><a href="#为什么是16x16" class="headerlink" title="为什么是16x16"></a>为什么是16x16</h1><p>选择 16×16 是编码效率和复杂度之间的折中：<br></p>
-<ul>
-<li>足够大，可以容纳运动估计时的主要内容块。<br></li>
-<li>足够小，可以跟踪物体的局部运动变化。<br></li>
-<li>在运动补偿时，宏块是预测、变换和熵编码的基本单元</li>
-</ul>
-<h1 id="宏块内部结构"><a href="#宏块内部结构" class="headerlink" title="宏块内部结构"></a>宏块内部结构</h1><p>在 H.264 中，一个 16×16 宏块可以进一步划分：</p>
-<ul>
-<li>帧内预测（Intra Prediction）：宏块可分成 16×16、8×8 或 4×4 子块进行预测。<br></li>
-<li>帧间预测（Inter Prediction）：<br><br>宏块可以划分成</li>
-<li>16×16 <br></li>
-<li>16×8 <br></li>
-<li>8×16 <br></li>
-<li>8×8（还可以继续划分成 4×8、8×4、4×4）<br><br>这样可以灵活适应不同区域的运动。</li>
-</ul>
-<h1 id="宏块与编码工具的关系"><a href="#宏块与编码工具的关系" class="headerlink" title="宏块与编码工具的关系"></a>宏块与编码工具的关系</h1><p>每个宏块会进行：</p>
-<ul>
-<li>预测（帧内 or 帧间）<br></li>
-<li>残差变换（通常是 4×4 或 8×8 DCT-like 变换）<br></li>
-<li>量化<br></li>
-<li>熵编码（CAVLC&#x2F;CABAC）<br></li>
-</ul>
-<h1 id="H265的CTU"><a href="#H265的CTU" class="headerlink" title="H265的CTU"></a>H265的CTU</h1><p>在H265中，就没有宏块的定义，而是CTU（Coding Tree Unit）。CTU为64x64的块，是编码单元尺寸的升级而带来的压缩效率的提升。想象一下，在过去H264一次性只能压缩16X16的块状的图像，现在H265一次可以压缩64X64的图像。<br><br>64x64 CTU的划分方式与16x16的划分方式一样，也是通过宏块的划分。可以继续切分为CU(coding unit)，PU(Prediction Unit)，TU(Transform Unit)，最小可以达到4X4。</p>
-<h1 id="为什么可以使用CTU"><a href="#为什么可以使用CTU" class="headerlink" title="为什么可以使用CTU"></a>为什么可以使用CTU</h1><h2 id="大块区域预测效率更高"><a href="#大块区域预测效率更高" class="headerlink" title="大块区域预测效率更高"></a>大块区域预测效率更高</h2><p>视频里大面积的平坦区域（比如天空、墙壁、背景等），用 64×64 一次编码，比用很多个 16×16 宏块更省比特。减少了 <code>预测模式 + 运动矢量 + 残差信息</code> 的开销。</p>
-<h2 id="支持灵活的分割结构"><a href="#支持灵活的分割结构" class="headerlink" title="支持灵活的分割结构"></a>支持灵活的分割结构</h2><p>H.264 的宏块划分方式比较有限（16×16 &#x2F; 8×16 &#x2F; 16×8 &#x2F; 8×8）。<br><br>H.265 的 CTU 可以分裂成 四叉树结构：<br><code>64×64 → 32×32 → 16×16 → 8×8 → 4×4</code></p>
-<p>每层都能单独选择预测方式（帧内&#x2F;帧间），适配不同区域。<br><br>👉 大块区域用大块，小细节用小块，效率远超 H.264 的固定划分。</p>
-<h2 id="变换块更灵活"><a href="#变换块更灵活" class="headerlink" title="变换块更灵活"></a>变换块更灵活</h2><p>H.264 主要用 4×4 &#x2F; 8×8 DCT 变换。<br><br>H.265 允许从 4×4 到 32×32 的变换单元 (TU)。<br><br>平滑区域 → 大 TU（32×32），压缩效率高。<br><br>边缘&#x2F;纹理多的区域 → 小 TU（4×4），细节保留好。<br></p>
-<h2 id="整体压缩率提升"><a href="#整体压缩率提升" class="headerlink" title="整体压缩率提升"></a>整体压缩率提升</h2><p>由于块更大、分割更灵活，H.265 在相同主观质量下可以比 H.264 节省 30–50% 的码率。<br>这是 HEVC 的核心卖点。</p>
-<h1 id="成本"><a href="#成本" class="headerlink" title="成本"></a>成本</h1><p>当然，H.265 也不是没有代价：<br><br>更大的块 + 四叉树划分 → 编码复杂度提高很多。<br>解码也比 H.264 更耗算力。<br>所以 H.265 对硬件加速和芯片支持依赖更强（手机、机顶盒、摄像头必须支持硬解码，否则发热&#x2F;耗电大）。</p>
-<p><img src="/2025/09/22/H264%E7%9A%8416x16%E4%B8%8EH265%E7%9A%8464x64/1.png"></p>
-<p>这张图直观展示了差别：</p>
-<p>左边：H.264 宏块 (16×16)，固定划分，通常再细分成 4×4 或 8×8 小块。</p>
-<p>右边：H.265 CTU (64×64)，支持递归划分成 32×32 → 16×16 → 8×8 → 4×4，更灵活。</p>
-<p>👉 H.265 之所以更有优势，就是因为大块区域能用大 CTU 一次处理，小细节还能继续细分，从而同时提升了压缩率和灵活性。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/09/05/C-%E7%BA%BF%E7%A8%8B%E4%B8%ADdetach%E4%B8%8Ejoin%E7%9A%84%E9%80%89%E6%8B%A9/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/09/05/C-%E7%BA%BF%E7%A8%8B%E4%B8%ADdetach%E4%B8%8Ejoin%E7%9A%84%E9%80%89%E6%8B%A9/" class="post-title-link" itemprop="url">C++线程中detach与join的选择</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2025-09-05 21:19:09" itemprop="dateCreated datePublished" datetime="2025-09-05T21:19:09+08:00">2025-09-05</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2025-09-29 20:39:01" itemprop="dateModified" datetime="2025-09-29T20:39:01+08:00">2025-09-29</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>在进行多线程编程的时候，如何管理线程的生命周期一直是一件很头疼的事情。如果生命周期管理不好，轻则程序进行过程中马上崩溃，重则在长期运行后因为资源释放失败而造成了虚拟内存碎片的上涨，很难以排查。<br>在我的实际工作中，有两种方式来处理这个问题：</p>
-<ol>
-<li><code>join</code>来等待thread执行结束；</li>
-<li><code>detach</code>让线程自己管理自己的生命周期，<strong>外部</strong>不做处理。</li>
-</ol>
-<h1 id="join-孤独的等待者"><a href="#join-孤独的等待者" class="headerlink" title="join 孤独的等待者"></a>join 孤独的等待者</h1><p>join() 会阻塞当前线程，直到被调用的线程执行完毕。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;thread&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;chrono&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">worker</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    std::this_thread::<span class="built_in">sleep_for</span>(std::chrono::<span class="built_in">seconds</span>(<span class="number">2</span>));</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Worker thread completed\n&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="function">std::thread <span class="title">t</span><span class="params">(worker)</span></span>;</span><br><span class="line">    </span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Main thread waiting for worker...\n&quot;</span>;</span><br><span class="line">    t.<span class="built_in">join</span>();  <span class="comment">// 主线程在这里阻塞，等待worker线程完成</span></span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Main thread continues\n&quot;</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>输出:</strong></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Main thread waiting for worker...</span><br><span class="line">Worker thread completed</span><br><span class="line">Main thread continues</span><br></pre></td></tr></table></figure>
-
-<h1 id="detach-无情的渣男"><a href="#detach-无情的渣男" class="headerlink" title="detach()无情的渣男"></a>detach()无情的渣男</h1><p>detach() 将线程与 std::thread 对象分离，让线程在后台独立运行。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;thread&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;chrono&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">worker</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    std::this_thread::<span class="built_in">sleep_for</span>(std::chrono::<span class="built_in">seconds</span>(<span class="number">2</span>));</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Worker thread completed\n&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="function">std::thread <span class="title">t</span><span class="params">(worker)</span></span>;</span><br><span class="line">    </span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Main thread detaching worker...\n&quot;</span>;</span><br><span class="line">    t.<span class="built_in">detach</span>();  <span class="comment">// 线程在后台独立运行</span></span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Main thread continues immediately\n&quot;</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 给detached线程一些时间完成</span></span><br><span class="line">    std::this_thread::<span class="built_in">sleep_for</span>(std::chrono::<span class="built_in">seconds</span>(<span class="number">3</span>));</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>输出：</strong></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Main thread detaching worker...</span><br><span class="line">Main thread continues immediately</span><br><span class="line">Worker thread completed</span><br></pre></td></tr></table></figure>
-
-<h2 id="detach的陷阱"><a href="#detach的陷阱" class="headerlink" title="detach的陷阱"></a>detach的陷阱</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;thread&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">dangerous_worker</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> local_var = <span class="number">42</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="function">std::thread <span class="title">t</span><span class="params">([&amp;local_var]() &#123;  <span class="comment">// 捕获局部变量的引用</span></span></span></span><br><span class="line"><span class="params"><span class="function">        std::this_thread::sleep_for(std::chrono::seconds(<span class="number">1</span>));</span></span></span><br><span class="line"><span class="params"><span class="function">        std::cout &lt;&lt; <span class="string">&quot;Local var: &quot;</span> &lt;&lt; local_var &lt;&lt; std::endl;  <span class="comment">// 危险！</span></span></span></span><br><span class="line"><span class="params"><span class="function">    &#125;)</span></span>;</span><br><span class="line">    </span><br><span class="line">    t.<span class="built_in">detach</span>();</span><br><span class="line">&#125;  <span class="comment">// local_var 被销毁，但detached线程可能还在访问它</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">dangerous_worker</span>();</span><br><span class="line">    std::this_thread::<span class="built_in">sleep_for</span>(std::chrono::<span class="built_in">seconds</span>(<span class="number">2</span>));</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>很糟糕的一个情况，需要牢记一个特性，当启动了<code>detach</code>后，所有的事物都是独立的，这个时候如果还有对于外部有依赖，那可不是一个合格的渣男噢！会造成程序错误的。</p>
-<h1 id="引入RAII的思想"><a href="#引入RAII的思想" class="headerlink" title="引入RAII的思想"></a>引入RAII的思想</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ThreadGuard</span> &#123;</span><br><span class="line">    std::thread&amp; t_;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">explicit</span> <span class="title">ThreadGuard</span><span class="params">(std::thread&amp; t)</span> : t_(t) &#123;</span>&#125;</span><br><span class="line">    </span><br><span class="line">    ~<span class="built_in">ThreadGuard</span>() &#123;</span><br><span class="line">        <span class="keyword">if</span> (t_.<span class="built_in">joinable</span>()) &#123;</span><br><span class="line">            t_.<span class="built_in">join</span>();  <span class="comment">// 自动等待线程完成</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 禁止拷贝</span></span><br><span class="line">    <span class="built_in">ThreadGuard</span>(<span class="type">const</span> ThreadGuard&amp;) = <span class="keyword">delete</span>;</span><br><span class="line">    ThreadGuard&amp; <span class="keyword">operator</span>=(<span class="type">const</span> ThreadGuard&amp;) = <span class="keyword">delete</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">safe_example</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="function">std::thread <span class="title">t</span><span class="params">([]()&#123;</span></span></span><br><span class="line"><span class="params"><span class="function">        <span class="comment">// 做一些工作</span></span></span></span><br><span class="line"><span class="params"><span class="function">    &#125;)</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="function">ThreadGuard <span class="title">guard</span><span class="params">(t)</span></span>;  <span class="comment">// 确保线程会被join</span></span><br><span class="line">    <span class="comment">// 即使发生异常，guard的析构函数也会调用join()</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ul>
-<li>使用 join()：当你需要等待线程完成并获得其结果时</li>
-<li>使用 detach()：当你想让线程在后台独立运行，且确保它不会访问已销毁的对象时</li>
-<li>永远不要让 std::thread 对象在没有调用 join() 或 detach() 的情况下被销毁</li>
-<li>优先考虑 join()，因为它更安全且更容易管理资源</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>特性</th>
-<th>join</th>
-<th>detach</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>阻塞</td>
-<td>阻塞调用线程，直到目标线程完成后</td>
-<td>立即返回</td>
-</tr>
-<tr>
-<td>线程所有权</td>
-<td>保持所有权，可以随时查看</td>
-<td>放弃所有权</td>
-</tr>
-<tr>
-<td>资源管理</td>
-<td>自动清理线程资源</td>
-<td>线程自己清理资源</td>
-</tr>
-<tr>
-<td>安全性</td>
-<td>安全，确保线程完成</td>
-<td>需要确保线程不会访问已经销毁的对象</td>
-</tr>
-</tbody></table>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/09/03/%E7%9B%B4%E6%92%AD%E4%B8%AD%E7%94%BB%E9%9D%A2%E5%81%B6%E5%8F%91%E7%9A%84%E8%B7%B3%E5%B8%A7%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E6%89%8B%E6%AE%B5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/09/03/%E7%9B%B4%E6%92%AD%E4%B8%AD%E7%94%BB%E9%9D%A2%E5%81%B6%E5%8F%91%E7%9A%84%E8%B7%B3%E5%B8%A7%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E6%89%8B%E6%AE%B5/" class="post-title-link" itemprop="url">直播中画面偶发的跳帧问题排查手段</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2025-09-03 00:12:30 / Modified: 00:21:34" itemprop="dateCreated datePublished" datetime="2025-09-03T00:12:30+08:00">2025-09-03</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h1><p>在一次拉取摄像头音视频数据进行播放的时候出现了<font color="red">画面跳帧、高延迟、卡顿</font>的现象，不满足于产品需求，是一个无法忍受的功能场景，故需要进行问题定位后进行排查。</p>
-<h1 id="初步判断"><a href="#初步判断" class="headerlink" title="初步判断"></a>初步判断</h1><p>大致可以分为两个部分进行问题排查，首先是<strong>设备端</strong>推流数据是否有问题，其次是<strong>媒体服务器</strong>转码的数据是否有问题。由于这里的摄像头数据的功能实现代码是完全无感的，所以只能先从媒体服务器这边进行排查。</p>
-<h1 id="手段一：视频保存"><a href="#手段一：视频保存" class="headerlink" title="手段一：视频保存"></a>手段一：视频保存</h1><p>将推流的数据保存为视频文件，进行本地播放进行查看，看看获取到的数据是否存在问题。</p>
-<h1 id="手段二：原始数据保存"><a href="#手段二：原始数据保存" class="headerlink" title="手段二：原始数据保存"></a>手段二：原始数据保存</h1><p>使用网络抓包的手段，但由于视频数据较大，且需要仔细的按帧切割所以不采用常规的一些抓包手段。这里可以选择在服务端打开对应的端口进行端口监听，将保存下来的数据原封不动的保存下来（bin)然后按照私有协议进行payload的切割，这里可以查看<strong>：</strong></p>
-<ol>
-<li><strong>seq</strong>与<strong>timestamp</strong>是否存在异常；</li>
-<li>按帧保存Jpg图片，查看图片是否正常，跳帧数据是否确实丢失；</li>
-<li>结合 1 和 2 进行更细节的排查；</li>
-</ol>
-<p>按照上面三个步骤排查后，可以准确定位是否为服务端的问题。如果服务端有问题，按照这三个部分大致也能定位到了。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/01/28/ZLMediaKit%E7%9A%84%E5%BF%AB%E9%80%9F%E5%AE%9E%E8%B7%B5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/01/28/ZLMediaKit%E7%9A%84%E5%BF%AB%E9%80%9F%E5%AE%9E%E8%B7%B5/" class="post-title-link" itemprop="url">ZLMediaKit的快速实践</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2025-01-28 01:06:18 / Modified: 01:22:46" itemprop="dateCreated datePublished" datetime="2025-01-28T01:06:18+08:00">2025-01-28</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="ZLMediaKit介绍"><a href="#ZLMediaKit介绍" class="headerlink" title="ZLMediaKit介绍"></a>ZLMediaKit介绍</h1><p>一个基于C++11的高性能运营级流媒体服务框架</p>
-<h1 id="clone-amp-amp-make"><a href="#clone-amp-amp-make" class="headerlink" title="clone &amp;&amp; make"></a>clone &amp;&amp; make</h1><p><b>step1</b> 克隆代码，因为存在第三方代码，不要使用zip的方式。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/ZLMediaKit/ZLMediaKit.git</span><br></pre></td></tr></table></figure>
-
-<p><b>step2</b> </p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git submodule update --init</span><br></pre></td></tr></table></figure>
-<p>这一步很重要，如果没有执行会在<code>cmake ..</code>阶段出现如下报错：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">-- Configuring done</span><br><span class="line">CMake Error: Cannot determine link language for target &quot;mpeg&quot;.</span><br><span class="line">CMake Error: CMake can not determine linker language for target: mpeg</span><br><span class="line">CMake Error: Cannot determine link language for target &quot;flv&quot;.</span><br><span class="line">CMake Error: CMake can not determine linker language for target: flv</span><br><span class="line">CMake Error: Cannot determine link language for target &quot;zltoolkit&quot;.</span><br><span class="line">CMake Error: CMake can not determine linker language for target: zltoolkit</span><br><span class="line">CMake Error: Cannot determine link language for target &quot;mov&quot;.</span><br><span class="line">CMake Error: CMake can not determine linker language for target: mov</span><br><span class="line">CMake Error: Cannot determine link language for target &quot;jsoncpp&quot;.</span><br><span class="line">CMake Error: CMake can not determine linker language for target: jsoncpp</span><br><span class="line">-- Generating done</span><br></pre></td></tr></table></figure>
-
-<p><b>step3</b> 构建与编译项目</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cd ZLMediaKit</span><br><span class="line">mkdir build</span><br><span class="line">cd build</span><br><span class="line">cmake ..</span><br><span class="line">make</span><br></pre></td></tr></table></figure>
-
-<h1 id="推流"><a href="#推流" class="headerlink" title="推流"></a>推流</h1><p><b>step1</b> 进入到ZLMediaKit&#x2F;release&#x2F;linux&#x2F;Debug目录下执行<code>MediaServer</code></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ./MediaServer</span><br></pre></td></tr></table></figure>
-<p>可以看到如下输出</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">2025-01-28 01:15:51.241 I [MediaServer] [55320-MediaServer] Factory.cpp:35 registerPlugin | Load codec: H264</span><br><span class="line">2025-01-28 01:15:51.241 I [MediaServer] [55320-MediaServer] Factory.cpp:35 registerPlugin | Load codec: H265</span><br><span class="line">2025-01-28 01:15:51.241 I [MediaServer] [55320-MediaServer] Factory.cpp:35 registerPlugin | Load codec: JPEG</span><br><span class="line">2025-01-28 01:15:51.241 I [MediaServer] [55320-MediaServer] Factory.cpp:35 registerPlugin | Load codec: mpeg4-generic</span><br><span class="line">2025-01-28 01:15:51.241 I [MediaServer] [55320-MediaServer] Factory.cpp:35 registerPlugin | Load codec: opus</span><br><span class="line">2025-01-28 01:15:51.241 I [MediaServer] [55320-MediaServer] Factory.cpp:35 registerPlugin | Load codec: PCMA</span><br><span class="line">2025-01-28 01:15:51.242 I [MediaServer] [55320-MediaServer] Factory.cpp:35 registerPlugin | Load codec: PCMU</span><br><span class="line">2025-01-28 01:15:51.242 I [MediaServer] [55320-MediaServer] Factory.cpp:35 registerPlugin | Load codec: L16</span><br><span class="line">2025-01-28 01:15:51.242 I [MediaServer] [55320-MediaServer] Factory.cpp:35 registerPlugin | Load codec: MP3</span><br><span class="line">2025-01-28 01:15:51.242 I [MediaServer] [55320-MediaServer] System.cpp:197 systemSetup | core文件大小设置为:18446744073709551615</span><br><span class="line">2025-01-28 01:15:51.242 I [MediaServer] [55320-MediaServer] System.cpp:206 systemSetup | 文件最大描述符个数设置为:1048576</span><br><span class="line">2025-01-28 01:15:51.242 I [MediaServer] [55320-MediaServer] main.cpp:271 start_main | ZLMediaKit(git hash:a27e945/2025-01-20T18:00:13+08:00,branch:master,build time:2025-01-27T19:41:40)</span><br><span class="line">2025-01-28 01:15:51.244 D [MediaServer] [55320-MediaServer] SSLBox.cpp:181 setContext | Add certificate of: default.zlmediakit.com</span><br><span class="line">2025-01-28 01:15:51.244 D [MediaServer] [55320-stamp thread] util.cpp:391 operator() | Stamp thread started</span><br><span class="line">2025-01-28 01:15:51.245 I [MediaServer] [55320-MediaServer] EventPoller.cpp:616 EventPollerPool | EventPoller created size: 4</span><br><span class="line">2025-01-28 01:15:51.245 I [MediaServer] [55320-MediaServer] main.cpp:396 start_main | 已启动http api 接口</span><br><span class="line">2025-01-28 01:15:51.245 I [MediaServer] [55320-MediaServer] main.cpp:398 start_main | 已启动http hook 接口</span><br><span class="line">2025-01-28 01:15:51.246 I [MediaServer] [55320-MediaServer] TcpServer.cpp:242 start_l | TCP server listening on [::]: 554</span><br><span class="line">2025-01-28 01:15:51.246 I [MediaServer] [55320-MediaServer] TcpServer.cpp:242 start_l | TCP server listening on [::]: 1935</span><br><span class="line">2025-01-28 01:15:51.246 I [MediaServer] [55320-MediaServer] TcpServer.cpp:242 start_l | TCP server listening on [::]: 80</span><br><span class="line">2025-01-28 01:15:51.246 I [MediaServer] [55320-MediaServer] TcpServer.cpp:242 start_l | TCP server listening on [::]: 443</span><br><span class="line">2025-01-28 01:15:51.247 I [MediaServer] [55320-MediaServer] UdpServer.cpp:128 start_l | UDP server bind to [::]: 10000</span><br><span class="line">2025-01-28 01:15:51.247 I [MediaServer] [55320-MediaServer] TcpServer.cpp:242 start_l | TCP server listening on [::]: 10000</span><br><span class="line">2025-01-28 01:15:51.247 I [MediaServer] [55320-MediaServer] UdpServer.cpp:128 start_l | UDP server bind to [::]: 9000</span><br></pre></td></tr></table></figure>
-
-<p><b>step2</b> 使用ffmpeg进行rtsp推流</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -re -i &quot;/home/bryan/share/teamwang.mp4&quot; -vcodec h264 -acodec aac -f rtsp -rtsp_transport tcp rtsp://127.0.0.1/live/test</span><br></pre></td></tr></table></figure>
-<p>可以在MediaServer见到如下输出代表推流成功</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">2025-01-28 01:18:46.546 W [MediaServer] [55320-event poller 0] MediaSink.cpp:128 checkTrackIfReady | Audio track index 1 codec mpeg4-generic receive no data for long 2007ms. Ignore it!</span><br><span class="line">2025-01-28 01:18:46.546 D [MediaServer] [55320-event poller 0] MediaSink.cpp:196 emitAllTrackReady | All track ready use 2007ms</span><br><span class="line">2025-01-28 01:18:46.546 I [MediaServer] [55320-event poller 0] MediaSource.cpp:498 emitEvent | 媒体注册:fmp4://__defaultVhost__/live/test</span><br><span class="line">2025-01-28 01:18:46.546 I [MediaServer] [55320-event poller 0] MultiMediaSourceMuxer.cpp:593 onAllTrackReady | stream: rtsp://127.0.0.1:554/live/test , codec info: mpeg4-generic[8000/1/16] H264[852/480/25] </span><br><span class="line">2025-01-28 01:18:46.546 I [MediaServer] [55320-event poller 0] MediaSource.cpp:498 emitEvent | 媒体注册:rtmp://__defaultVhost__/live/test</span><br><span class="line">2025-01-28 01:18:46.546 I [MediaServer] [55320-event poller 0] MediaSource.cpp:498 emitEvent | 媒体注册:ts://__defaultVhost__/live/test</span><br><span class="line">2025-01-28 01:18:46.546 I [MediaServer] [55320-event poller 0] MediaSource.cpp:498 emitEvent | 媒体注册:rtsp://__defaultVhost__/live/test</span><br><span class="line">2025-01-28 01:18:52.044 I [MediaServer] [55320-event poller 0] MediaSource.cpp:498 emitEvent | 媒体注册:hls://__defaultVhost__/live/test</span><br></pre></td></tr></table></figure>
-<p>使用ffplay查看视频<br><img src="/../images/zlmediakit%E6%8E%A8%E6%B5%81rtsp.png" alt="ZLMediaKid rtsp推流"></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/01/16/minimp4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/01/16/minimp4/" class="post-title-link" itemprop="url">minimp4</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2025-01-16 00:34:29 / Modified: 00:42:38" itemprop="dateCreated datePublished" datetime="2025-01-16T00:34:29+08:00">2025-01-16</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>minimp4是一个</p>
-<h1 id="两个mp4开源代码的对比"><a href="#两个mp4开源代码的对比" class="headerlink" title="两个mp4开源代码的对比"></a>两个mp4开源代码的对比</h1><table>
-<thead>
-<tr>
-<th>开源库</th>
-<th>mp4v2</th>
-<th>minimp4</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>语言</td>
-<td>c++</td>
-<td>c</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-</tbody></table>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/01/14/%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/01/14/%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="post-title-link" itemprop="url">共享内存的基础知识</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2025-01-14 22:34:34" itemprop="dateCreated datePublished" datetime="2025-01-14T22:34:34+08:00">2025-01-14</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1200,7 +1124,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-count">27</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

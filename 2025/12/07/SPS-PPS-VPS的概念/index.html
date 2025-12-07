@@ -20,15 +20,19 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/archives/2025/index.html">
+  <meta name="description" content="前言 SPS(Sequence Parameter Set)：描述一段视频序列的宏观配置 PPS(Picture Parameter Set)：描述一张图像&#x2F;帧的细化配置 VPS(Video Parameter Set)：H265才有，用于描述整个视频层的”顶层配置“  SPS有什么SPS是描述整段视频公用的编码规则：  宽 X 高（Resolution) 颜色格式 最大参考帧数量 解码">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SPS PPS VPS的概念">
+<meta property="og:url" content="http://example.com/2025/12/07/SPS-PPS-VPS%E7%9A%84%E6%A6%82%E5%BF%B5/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="前言 SPS(Sequence Parameter Set)：描述一段视频序列的宏观配置 PPS(Picture Parameter Set)：描述一张图像&#x2F;帧的细化配置 VPS(Video Parameter Set)：H265才有，用于描述整个视频层的”顶层配置“  SPS有什么SPS是描述整段视频公用的编码规则：  宽 X 高（Resolution) 颜色格式 最大参考帧数量 解码">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-12-07T06:52:46.000Z">
+<meta property="article:modified_time" content="2025-12-07T08:50:36.048Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/archives/2025/">
+<link rel="canonical" href="http://example.com/2025/12/07/SPS-PPS-VPS%E7%9A%84%E6%A6%82%E5%BF%B5/">
 
 
 <script id="page-configurations">
@@ -36,12 +40,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'en'
   };
 </script>
 
-  <title>Archive | Hexo</title>
+  <title>SPS PPS VPS的概念 | Hexo</title>
   
 
 
@@ -139,234 +143,111 @@
         <div class="content-wrap">
           
 
-          <div class="content archive">
+          <div class="content post posts-expand">
             
 
+    
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <span class="collection-header">Um..! 27 posts in total. Keep on posting.</span>
-      </div>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/12/07/SPS-PPS-VPS%E7%9A%84%E6%A6%82%E5%BF%B5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          SPS PPS VPS的概念
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-12-07 14:52:46 / Modified: 16:50:36" itemprop="dateCreated datePublished" datetime="2025-12-07T14:52:46+08:00">2025-12-07</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2025</span>
-    </div>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2025-12-07T23:36:22+08:00"
-              content="2025-12-07">
-          12-07
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2025/12/07/OTA%E5%8D%87%E7%BA%A7%E6%97%B6%E5%BA%8F%E5%9B%BE/" itemprop="url">
-            <span itemprop="name">OTA升级时序图</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2025-12-07T22:06:24+08:00"
-              content="2025-12-07">
-          12-07
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2025/12/07/%E4%B8%BA%E4%BB%80%E4%B9%88MP4%E6%96%87%E4%BB%B6%E5%BD%95%E5%83%8F%E4%BC%A0%E8%BE%93%E4%B8%AD%E6%96%AD%E5%90%8E%E6%97%A0%E6%B3%95%E6%92%AD%E6%94%BE/" itemprop="url">
-            <span itemprop="name">为什么MP4文件录像传输中断后无法播放</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2025-12-07T21:40:31+08:00"
-              content="2025-12-07">
-          12-07
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2025/12/07/%E4%BB%80%E4%B9%88%E6%98%AFts%E6%B5%81/" itemprop="url">
-            <span itemprop="name">什么是ts流</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2025-12-07T17:28:07+08:00"
-              content="2025-12-07">
-          12-07
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2025/12/07/MP4%E6%96%87%E4%BB%B6%E5%BD%95%E5%83%8F%E6%97%B6%E7%AA%81%E7%84%B6%E6%96%AD%E7%94%B5%E7%9A%84%E5%A4%84%E7%90%86%E6%96%B9%E5%BC%8F/" itemprop="url">
-            <span itemprop="name">MP4文件录像时突然断电的处理方式</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2025-12-07T14:52:46+08:00"
-              content="2025-12-07">
-          12-07
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2025/12/07/SPS-PPS-VPS%E7%9A%84%E6%A6%82%E5%BF%B5/" itemprop="url">
-            <span itemprop="name">SPS PPS VPS的概念</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2025-12-07T12:38:17+08:00"
-              content="2025-12-07">
-          12-07
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2025/12/07/GOP%E6%98%AF%E4%BB%80%E4%B9%88/" itemprop="url">
-            <span itemprop="name">GOP是什么</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2025-12-07T12:11:12+08:00"
-              content="2025-12-07">
-          12-07
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2025/12/07/H264%E3%80%81H265%E4%B8%8EYUV420%E7%9A%84%E5%8E%8B%E7%BC%A9%E5%AF%B9%E6%AF%94%E5%85%B3%E7%B3%BB/" itemprop="url">
-            <span itemprop="name">H264、H265与YUV420的压缩对比关系</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2025-11-14T00:18:25+08:00"
-              content="2025-11-14">
-          11-14
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2025/11/14/FlvHeader%E8%AF%A6%E8%A7%A3/" itemprop="url">
-            <span itemprop="name">FlvHeader详解</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2025-10-24T23:12:04+08:00"
-              content="2025-10-24">
-          10-24
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2025/10/24/%E7%A0%81%E5%86%9C%E4%B9%8B%E6%AE%87%EF%BC%8C%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E5%88%86%E6%B0%B4%E5%B2%AD/" itemprop="url">
-            <span itemprop="name">码农之殇，程序员的分水岭</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2025-10-04T22:16:01+08:00"
-              content="2025-10-04">
-          10-04
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2025/10/04/PIMPL/" itemprop="url">
-            <span itemprop="name">PIMPL</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><ul>
+<li>SPS(Sequence Parameter Set)：描述一段视频序列的宏观配置</li>
+<li>PPS(Picture Parameter Set)：描述一张图像&#x2F;帧的细化配置</li>
+<li>VPS(Video Parameter Set)：H265才有，用于描述整个视频层的”顶层配置“</li>
+</ul>
+<h1 id="SPS有什么"><a href="#SPS有什么" class="headerlink" title="SPS有什么"></a>SPS有什么</h1><p>SPS是描述整段视频公用的编码规则：</p>
+<ul>
+<li>宽 X 高（Resolution)</li>
+<li>颜色格式</li>
+<li>最大参考帧数量</li>
+<li>解码所需能力级别（Profile&#x2F;level)</li>
+<li>时序信息（fps相关）</li>
+<li>图像切分、宏块结构</li>
+</ul>
+<p>作用：解码器根据SPS才知道准备多大的缓冲区、如何组织解码结构。</p>
+<h1 id="PPS有什么"><a href="#PPS有什么" class="headerlink" title="PPS有什么"></a>PPS有什么</h1><p>PPS描述帧级别的参数：</p>
+<ul>
+<li>去块滤波参数(deblocking filter)</li>
+<li>熵编码类型(CABAC&#x2F;CAVLC)</li>
+<li>参考索引设置</li>
+<li>图像切片结构</li>
+</ul>
+<p>作用：为每一帧提供细节。</p>
+<h1 id="VPS"><a href="#VPS" class="headerlink" title="VPS"></a>VPS</h1><p>H265新增的更顶层参数，内容：</p>
+<ul>
+<li>多层结构、子层设置</li>
+<li>多码流协同参数（适用于HDR、多码率、多视点）</li>
+<li>解码能力需求</li>
+</ul>
+<p>作用：H265更复杂，需要一个总导演来协调所有层次，所以出现了VPS。</p>
+<h1 id="缺失会发生什么"><a href="#缺失会发生什么" class="headerlink" title="缺失会发生什么"></a>缺失会发生什么</h1><p>如果在传输过程中缺失SPS&#x2F;PPS会出现<strong>花屏、解码失败、画面无法启动等</strong>错误。想是在flv header中其实就有SPS的值出现。</p>
 
     </div>
-  </div>
-  
-  
-  
 
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/12/07/GOP%E6%98%AF%E4%BB%80%E4%B9%88/" rel="prev" title="GOP是什么">
+      <i class="fa fa-chevron-left"></i> GOP是什么
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/12/07/MP4%E6%96%87%E4%BB%B6%E5%BD%95%E5%83%8F%E6%97%B6%E7%AA%81%E7%84%B6%E6%96%AD%E7%94%B5%E7%9A%84%E5%A4%84%E7%90%86%E6%96%B9%E5%BC%8F/" rel="next" title="MP4文件录像时突然断电的处理方式">
+      MP4文件录像时突然断电的处理方式 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
   
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/archives/2025/page/2/">2</a><a class="page-number" href="/archives/2025/page/3/">3</a><a class="extend next" rel="next" href="/archives/2025/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
-  </nav>
+  
+  
 
 
 
@@ -418,6 +299,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SPS%E6%9C%89%E4%BB%80%E4%B9%88"><span class="nav-number">2.</span> <span class="nav-text">SPS有什么</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#PPS%E6%9C%89%E4%BB%80%E4%B9%88"><span class="nav-number">3.</span> <span class="nav-text">PPS有什么</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#VPS"><span class="nav-number">4.</span> <span class="nav-text">VPS</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BC%BA%E5%A4%B1%E4%BC%9A%E5%8F%91%E7%94%9F%E4%BB%80%E4%B9%88"><span class="nav-number">5.</span> <span class="nav-text">缺失会发生什么</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
