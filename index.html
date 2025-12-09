@@ -145,6 +145,262 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/12/09/%E6%8A%96%E5%8A%A8%E7%BC%93%E5%86%B2%E5%8C%BA-Jitter-Buffer/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/12/09/%E6%8A%96%E5%8A%A8%E7%BC%93%E5%86%B2%E5%8C%BA-Jitter-Buffer/" class="post-title-link" itemprop="url">抖动缓冲区(Jitter Buffer)</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-12-09 23:00:52" itemprop="dateCreated datePublished" datetime="2025-12-09T23:00:52+08:00">2025-12-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-12-10 00:09:03" itemprop="dateModified" datetime="2025-12-10T00:09:03+08:00">2025-12-10</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>在音视频领域我们接收数据通常使用的是UDP数据包，关键的复杂之处在于UDP是有损的，并且不能保证传输的顺序。因此，即便数据包以完全单调的速率由远端发送，它们也不能以突发的方式到达，尤其中间会有不同的间隔，有些可能被延迟到无序到达，有些可能根本不会到达。解决这个问题是向用户提高实时媒体体验的关键因素之一。</p>
+<p><img src="/2025/12/09/%E6%8A%96%E5%8A%A8%E7%BC%93%E5%86%B2%E5%8C%BA-Jitter-Buffer/handling-jitter.jpg" alt="img"></p>
+<p>上图展示的是<strong>发送端</strong>以有序的方式发送，但是<strong>接收端</strong>以无序的方式接收到包。</p>
+<p>抖动是指的包到达时的变化量，低抖动代表着较为有序地到达，而高抖动代表着较为无序地到达。</p>
+<h1 id="为什么使用缓冲"><a href="#为什么使用缓冲" class="headerlink" title="为什么使用缓冲"></a>为什么使用缓冲</h1><p>取个中间值，抖动状态是一个中等程序，我们将中等程度的流输入到解码器也可能会导致不佳的体验。当数据包延迟到达的时候，音频或者视频可能会被拉长，而当收到大量数据包时又会加速，音频可能会失真，视频可能会卡顿或者出现故障。任何乱序收到的数据包实际上都已丢失，在进入解码的时候，已经处理了<code>i-1</code>的数据包，这个时候处理<code>i</code>包的意义就没有了。因此采用缓冲是最基本的方式，通过缓冲区重组的方式来解决这个无序的问题。</p>
+<h1 id="抖动缓冲区"><a href="#抖动缓冲区" class="headerlink" title="抖动缓冲区"></a>抖动缓冲区</h1><p>在将输入数据传入decoder之前将其进行缓冲，是接收端减轻网络抖动的一种方式。这种方法能使数据包重新调整节奏，以弥补其突发到达的情况。只要重排序的数据包在前一个数据包解码之前到达，缓冲区就能对其进行重新排序。这些输入缓冲区被称为抖动缓冲区。</p>
+<p>抖动缓冲区也不是越大越好，假设我们缓冲100ms的数据，那么我们的实时延迟就增加了100毫秒。<strong>抖动缓冲区的挑战在于合理的调整缓冲区的大小，使其减少抖动影响，同时保证延迟在可接受的范围内。</strong></p>
+<h1 id="动态抖动缓冲区"><a href="#动态抖动缓冲区" class="headerlink" title="动态抖动缓冲区"></a>动态抖动缓冲区</h1><p>对于多样化的网络（局域网、4G、弱网）环境下，抖动缓冲区的做法并不是设置一个固定的大小，而是根据事实情况动态地自动扩展，以便较大的缓冲区可以更好地减轻较高水平抖动的影响。这些系统被称之为<strong>自适应或动态抖动缓冲区</strong>。原则是缓冲区应该从小开始，能够在抖动或者丢包增加时迅速扩展（理想情况扩展速度足够快，以避免由于突发或重新排序导致数据包丢失），然后抖动改善时，较慢地返回较小的值，同时避免由于播放速度增加而导致媒体明显失真。除了何时增长和缩小的算法之外，还有其他技巧，譬如在静音期间丢弃缓冲区中的音频数据包，以避免音频加速的情况下减少缓冲区大小。</p>
+<p>即时使用自适应抖动缓冲区，也应该对其设置一些上线，因为超过某个点后，延迟成本开始超过明显的媒体退化。这种最简单的形式是有一个缓冲区不会增长的上限，但也可能包括更复杂的实现，例如使缓冲区在变得越来越大时越来越不愿意扩展。</p>
+<p>实现可能希望为音频和视频缓冲区大小设置不同的阈值，因为于音频相比，视频可以接受较高的延迟。<strong>这完全取决于产品的具体要求，有的人可能觉得100ms不行，也有的人觉得3s都可以。</strong></p>
+<p>当然，导致播放延迟的问题除了Jitter Buffer的设置，也于<strong>同步</strong>有关。不过那是另外一个主题了。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/12/09/MP4%E5%BD%95%E5%83%8F%E5%88%86%E8%BE%A8%E7%8E%87%E5%8F%91%E7%94%9F%E5%88%87%E6%8D%A2%E4%BC%9A%E5%8F%91%E7%94%9F%E4%BB%80%E4%B9%88%EF%BC%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/12/09/MP4%E5%BD%95%E5%83%8F%E5%88%86%E8%BE%A8%E7%8E%87%E5%8F%91%E7%94%9F%E5%88%87%E6%8D%A2%E4%BC%9A%E5%8F%91%E7%94%9F%E4%BB%80%E4%B9%88%EF%BC%9F/" class="post-title-link" itemprop="url">MP4录像分辨率发生切换会发生什么？</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-12-09 22:31:47" itemprop="dateCreated datePublished" datetime="2025-12-09T22:31:47+08:00">2025-12-09</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/12/09/RTMP%E7%9A%84%E5%BB%BA%E7%AB%8B%E8%BF%9E%E6%8E%A5%E8%BF%87%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/12/09/RTMP%E7%9A%84%E5%BB%BA%E7%AB%8B%E8%BF%9E%E6%8E%A5%E8%BF%87%E7%A8%8B/" class="post-title-link" itemprop="url">RTMP的建立连接过程</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-12-09 22:30:57" itemprop="dateCreated datePublished" datetime="2025-12-09T22:30:57+08:00">2025-12-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-12-10 00:13:37" itemprop="dateModified" datetime="2025-12-10T00:13:37+08:00">2025-12-10</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><img src="/2025/12/09/RTMP%E7%9A%84%E5%BB%BA%E7%AB%8B%E8%BF%9E%E6%8E%A5%E8%BF%87%E7%A8%8B/image-20251210001316476.png" alt="image-20251210001321533"></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/12/09/RTSP%E7%9A%84%E5%BB%BA%E7%AB%8B%E8%BF%9E%E6%8E%A5%E8%BF%87%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/12/09/RTSP%E7%9A%84%E5%BB%BA%E7%AB%8B%E8%BF%9E%E6%8E%A5%E8%BF%87%E7%A8%8B/" class="post-title-link" itemprop="url">RTSP的建立连接过程</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-12-09 22:30:46 / Modified: 22:41:07" itemprop="dateCreated datePublished" datetime="2025-12-09T22:30:46+08:00">2025-12-09</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><img src="/2025/12/09/RTSP%E7%9A%84%E5%BB%BA%E7%AB%8B%E8%BF%9E%E6%8E%A5%E8%BF%87%E7%A8%8B/image-20251209224045794.png" alt="image-20251209224045794"></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2025/12/07/OTA%E5%8D%87%E7%BA%A7%E6%97%B6%E5%BA%8F%E5%9B%BE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -319,6 +575,13 @@
 
               <time title="Created: 2025-12-07 21:40:31" itemprop="dateCreated datePublished" datetime="2025-12-07T21:40:31+08:00">2025-12-07</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-12-09 22:36:12" itemprop="dateModified" datetime="2025-12-09T22:36:12+08:00">2025-12-09</time>
+              </span>
 
           
 
@@ -331,7 +594,73 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          
+          <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>TS(Transport Stream)是MPEG-2定义的一种面向“传输”场景的视频封装格式。最大的特点是：<strong>抗误码强、分包小、丢一点还能继续观看</strong>。<br>适用于：</p>
+<ul>
+<li>直播;</li>
+<li>不稳定网络(比如4G)</li>
+<li>多路音视频一起同步传输</li>
+</ul>
+<h1 id="TS的核心结构"><a href="#TS的核心结构" class="headerlink" title="TS的核心结构"></a>TS的核心结构</h1><ol>
+<li><p>固定长度包：每包188字节<br>更小的包在弱网情况下更<strong>抗揍</strong>。</p>
+</li>
+<li><p>每个TS包都有PID(Packet ID)</p>
+</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>PID</th>
+<th>对象</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0x0000</td>
+<td>PAT(节目关联表)</td>
+</tr>
+<tr>
+<td>PAT-&gt;指定的PID</td>
+<td>PMT(节目映射表)</td>
+</tr>
+<tr>
+<td>PMT-&gt;指定的PID</td>
+<td>视频流&#x2F;音频流</td>
+</tr>
+</tbody></table>
+<p>靠PID，播放器才能知道：视频在哪里，音频在哪里，字幕在哪里。</p>
+<ol start="3">
+<li>PSI&#x2F;SI表：PAT&#x2F;PMT<br>它们负责告诉播放器，哪些是音频轨，哪些是视频轨。</li>
+</ol>
+<h1 id="TS与PS、FLV、MP4的区别"><a href="#TS与PS、FLV、MP4的区别" class="headerlink" title="TS与PS、FLV、MP4的区别"></a>TS与PS、FLV、MP4的区别</h1><table>
+<thead>
+<tr>
+<th>封装格式</th>
+<th>场景</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>TS</td>
+<td>直播、传输</td>
+<td>强抗误码，188字节分包，适合不稳定网络</td>
+</tr>
+<tr>
+<td>PS</td>
+<td>DVD、本地播放</td>
+<td>不抗丢包、但结构简单</td>
+</tr>
+<tr>
+<td>FLV</td>
+<td>直播(RTMP)</td>
+<td>网络友好，结构更灵活</td>
+</tr>
+<tr>
+<td>MP4</td>
+<td>点播</td>
+<td>需要moov，结构清晰但不抗丢包</td>
+</tr>
+</tbody></table>
+<p>一句话总结：<strong>TS是为了传输而设计的，重点是抗误码；MP4是为点播而设计的，重点是结构完整。</strong></p>
+
       
     </div>
 
@@ -563,510 +892,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/12/07/H264%E3%80%81H265%E4%B8%8EYUV420%E7%9A%84%E5%8E%8B%E7%BC%A9%E5%AF%B9%E6%AF%94%E5%85%B3%E7%B3%BB/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/12/07/H264%E3%80%81H265%E4%B8%8EYUV420%E7%9A%84%E5%8E%8B%E7%BC%A9%E5%AF%B9%E6%AF%94%E5%85%B3%E7%B3%BB/" class="post-title-link" itemprop="url">H264、H265与YUV420的压缩对比关系</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2025-12-07 12:11:12 / Modified: 12:37:31" itemprop="dateCreated datePublished" datetime="2025-12-07T12:11:12+08:00">2025-12-07</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>从sensor采集到图片后经过一系列的操作，我们可以得到一张叫做YUV420的原始图片，它是以一种**未经过压缩的像素格式（RAW)**，祝主要特点有：</p>
-<ul>
-<li>每个像素都有亮度Y</li>
-<li>色度U&#x2F;V是按2X2分组取样</li>
-<li>所有数据量大约1.5X分辨率，也就是在代码中经常看到的 <code>w * y * 3 /2</code>的原因</li>
-</ul>
-<p>例如：</p>
-<p>1080p &#x3D; 1920 x 1080 x 1.5 &#x3D; 3MB 一帧</p>
-<p>30fps时 ： 3MB X 30 &#x3D; 90MB&#x2F;s</p>
-<p>YUV是一个超大的编码数据，如果我们在不考虑编解码的环境下，单单是一个2Mbit的带宽传输一秒的图片都需要</p>
-<p><strong>90 * 8 &#x2F; 2 &#x3D; 360s的时间才能传完</strong>，延迟极其可怕。</p>
-<h1 id="H264-x2F-H265的压缩思路"><a href="#H264-x2F-H265的压缩思路" class="headerlink" title="H264&#x2F;H265的压缩思路"></a>H264&#x2F;H265的压缩思路</h1><p>压缩的思路是从巨大的Raw数据中找到规律，丢弃不太重要的信息。</p>
-<p>压缩方式主要是一下三点：</p>
-<ol>
-<li>帧内压缩（Intra)——像JPEG一样压缩一帧<br>找到图像块的冗余，使用变换 + 量化降低数据。</li>
-<li>帧间压缩（Inter)——利用“前后帧差不多”的事实<br>画面差异本来就不大，比如监控摄像头：<ul>
-<li>背景不动</li>
-<li>只有前景改变<br>所以只要记录运动矢量 + 残差即可。</li>
-</ul>
-</li>
-</ol>
-<p>这就是压缩率飞起的关键。</p>
-<ol start="3">
-<li>Entropy编码<br>CABAC&#x2F;CAVLC等熵编码算法，把高频出现的值压得更短。</li>
-</ol>
-<h1 id="压缩效率的对比"><a href="#压缩效率的对比" class="headerlink" title="压缩效率的对比"></a>压缩效率的对比</h1><table>
-<thead>
-<tr>
-<th>编码标准</th>
-<th>相同画质下比YUV420减少多少？</th>
-<th>相比前代提升？</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>H264</td>
-<td>大约压缩到 1&#x2F;20 ~ 1&#x2F;50</td>
-<td></td>
-</tr>
-<tr>
-<td>H265</td>
-<td>大约压缩到1&#x2F;50 ~ 1&#x2F;100</td>
-<td>比H264再省30% ~ 50%带宽</td>
-</tr>
-</tbody></table>
-<p>例如：</p>
-<p>1080p@30fps， Raw约90MB&#x2F;s</p>
-<ul>
-<li>H264压缩后：1.5 ~ 4.5MB&#x2F;s(12~36Mbps)</li>
-<li>H265压缩后：0.9 ~ 3MB&#x2F;s(7~25Mbps)</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/11/14/FlvHeader%E8%AF%A6%E8%A7%A3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/11/14/FlvHeader%E8%AF%A6%E8%A7%A3/" class="post-title-link" itemprop="url">FlvHeader详解</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2025-11-14 00:18:25 / Modified: 00:18:37" itemprop="dateCreated datePublished" datetime="2025-11-14T00:18:25+08:00">2025-11-14</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="导言"><a href="#导言" class="headerlink" title="导言"></a>导言</h1><p>在Flv格式中，Header有两个意思。一个是flv文件的Header，另外一个是每个FlvTag的Header。</p>
-<h1 id="Flv文件的Header"><a href="#Flv文件的Header" class="headerlink" title="Flv文件的Header"></a>Flv文件的Header</h1><p><strong>长度：</strong> 9个字节</p>
-<p>Flv文件的Header结构如下：</p>
-<table>
-<thead>
-<tr>
-<th>偏移地址</th>
-<th>内容</th>
-<th>长度</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>0x0000</td>
-<td><code>46 4C 56</code></td>
-<td>3</td>
-<td>Signature(“FLV”)</td>
-</tr>
-<tr>
-<td>0x0003</td>
-<td><code>01</code></td>
-<td>1</td>
-<td>Version</td>
-</tr>
-<tr>
-<td>0x0004</td>
-<td><code>05</code></td>
-<td>1</td>
-<td>Flags(音频+视频)</td>
-</tr>
-<tr>
-<td>0x0005</td>
-<td><code>00 00 00 09</code></td>
-<td>4</td>
-<td>Offset(DataOffset)</td>
-</tr>
-</tbody></table>
-<p>再次之后紧跟着一个长度为<strong>4个字节</strong>的<code>PreviousTagSize0</code>。<br>PreviousTagSize0的值为0，表示第一个Tag的Size为0。</p>
-<p><strong>Flags字段值：</strong> 0x01&#x3D;audio, 0x04&#x3D;video, 0x05&#x3D;audio+video</p>
-<p><img src="/2025/11/14/FlvHeader%E8%AF%A6%E8%A7%A3/image.png" alt="alt text"></p>
-<p>🧠 一句话口诀：F L V 一五九，前导零结尾。</p>
-<ul>
-<li>“FLV” → 开头魔数</li>
-<li>“一” → version 1</li>
-<li>“五” → flags&#x3D;0x05（音视频）</li>
-<li>“九” → header 长度 9</li>
-<li>“前导零” → 第一个 PreviousTagSize0&#x3D;0</li>
-</ul>
-<p>“Tag 来到” → 紧接第一个 Tag（Script、Video 或 Audio）</p>
-<h1 id="FlvTag的Header"><a href="#FlvTag的Header" class="headerlink" title="FlvTag的Header"></a>FlvTag的Header</h1><p><strong>长度：</strong> 11个字节</p>
-<table>
-<thead>
-<tr>
-<th>偏移</th>
-<th>内容</th>
-<th>长度</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>0</td>
-<td>8 &#x3D; Audio <br> 9 &#x3D; Video <br> 18 &#x3D; ScriptData <br> 0x12 &#x3D; Metadata</td>
-<td>1</td>
-<td>Tag Type</td>
-</tr>
-<tr>
-<td>1</td>
-<td>DataSize</td>
-<td>3</td>
-<td>TagData部分长度（不包含Header&#x2F;PrevSize）</td>
-</tr>
-<tr>
-<td>4</td>
-<td>Timestamp</td>
-<td>3</td>
-<td>时间戳（DTS,低24位）单位：ms</td>
-</tr>
-<tr>
-<td>7</td>
-<td>TimestampExtended</td>
-<td>1</td>
-<td>时间戳（DTS,高8位）</td>
-</tr>
-<tr>
-<td>8</td>
-<td>StreamID</td>
-<td>3</td>
-<td>保留字段，始终位0X0000</td>
-</tr>
-</tbody></table>
-<p>一个Tag的实际总长度为 &#x3D; 11 + DataSize + 4</p>
-<p><img src="/2025/11/14/FlvHeader%E8%AF%A6%E8%A7%A3/image-1.png" alt="alt text"></p>
-<h1 id="PreviousTagSizeN"><a href="#PreviousTagSizeN" class="headerlink" title="PreviousTagSizeN"></a>PreviousTagSizeN</h1><p>长度为4个字节，用来标记当前一个FlvTag的长度。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/10/24/%E7%A0%81%E5%86%9C%E4%B9%8B%E6%AE%87%EF%BC%8C%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E5%88%86%E6%B0%B4%E5%B2%AD/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/10/24/%E7%A0%81%E5%86%9C%E4%B9%8B%E6%AE%87%EF%BC%8C%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E5%88%86%E6%B0%B4%E5%B2%AD/" class="post-title-link" itemprop="url">码农之殇，程序员的分水岭</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2025-10-24 23:12:04 / Modified: 23:36:01" itemprop="dateCreated datePublished" datetime="2025-10-24T23:12:04+08:00">2025-10-24</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>在过去的十年间，”35岁被优化”成为悬在每个程序员头顶的达摩克利斯之剑。传统观念认为，在35岁之前必须完成向技术专家或管理者的转型，否则将面临职业生涯的危机。然而，随着AI时代的来临和自动化编程工具的普及，这一命题正在发生根本性的改变——职业分水岭不再遥远，而是每个程序员都必须立即面对的现实挑战。</p>
-<h1 id="码农之殇"><a href="#码农之殇" class="headerlink" title="码农之殇"></a>码农之殇</h1><h2 id="时代的变迁：从黄金十年到AI冲击"><a href="#时代的变迁：从黄金十年到AI冲击" class="headerlink" title="时代的变迁：从黄金十年到AI冲击"></a>时代的变迁：从黄金十年到AI冲击</h2><h3 id="过去的繁荣景象"><a href="#过去的繁荣景象" class="headerlink" title="过去的繁荣景象"></a>过去的繁荣景象</h3><p>回顾计算机行业过去的黄金十年，它一直是高考志愿的热门选择，甚至众多非计算机专业的毕业生也纷纷转型投身程序开发领域。市场的旺盛需求创造了一个独特的就业环境：无论是技术高手还是初级菜鸟，都能在这个行业中找到自己的一席之地。</p>
-<p>这种繁荣背后的逻辑很简单：大型项目不仅需要<strong>懂业务、懂技术、懂设计交互</strong>的架构师，同样需要大量”拧螺丝”的执行者。在这个阶段，程序员的主要工作是实现产品经理的需求，在技术负责人的架构规划下完成<strong>CRUD</strong>功能和业务逻辑开发。一个在今天看来微不足道的小功能，当时可能需要1-2名程序员花费三到五天的时间完成。</p>
-<h3 id="“码农”现象的兴起"><a href="#“码农”现象的兴起" class="headerlink" title="“码农”现象的兴起"></a>“码农”现象的兴起</h3><p>行业内将这些从事重复性、低创造性工作的执行者调侃为”码农”。这个群体面临着明显的职业瓶颈：他们难以处理模糊、复杂的系统性难题，缺乏对业务的深入理解和独立思考，仅仅作为需求的执行终端。他们的工作内容往往等同于将代码从A处复制到B处，遇到问题时更多地依赖加班和”肝”来强行解决。</p>
-<h2 id="AI时代：职业分水岭的加速器"><a href="#AI时代：职业分水岭的加速器" class="headerlink" title="AI时代：职业分水岭的加速器"></a>AI时代：职业分水岭的加速器</h2><h3 id="降维打击的到来"><a href="#降维打击的到来" class="headerlink" title="降维打击的到来"></a>降维打击的到来</h3><p>正如建筑业从人力搬砖发展到机械化施工，编程领域也正在经历类似的变革。AI编程助手的出现，能够更快、更准确地完成那些曾经需要大量人力完成的重复性工作。从公司管理者的角度考虑，支付高额薪水雇佣”码农”来完成AI可以更好完成的工作，已经变得不再经济。</p>
-<p>AI技术正在对传统的编程工作模式发起”降维打击”，极大地压缩了基础程序员的生存空间。这种冲击不是渐进的，而是颠覆性的。</p>
-<h3 id="重新定义”程序员”与”码农”"><a href="#重新定义”程序员”与”码农”" class="headerlink" title="重新定义”程序员”与”码农”"></a>重新定义”程序员”与”码农”</h3><p>在AI时代，我们有必要重新审视”程序员”这一职业的真正内涵：</p>
-<p><strong>码农</strong>（即将被淘汰的群体）：</p>
-<ul>
-<li>局限于代码实现的执行层面</li>
-<li>缺乏业务理解和系统设计能力</li>
-<li>解决问题的能力单一且表面化</li>
-<li>价值主要体现在将需求转换为代码的执行力上</li>
-</ul>
-<p><strong>真正的程序员</strong>（未来的幸存者与发展者）：</p>
-<ul>
-<li>能够解决模糊和复杂的系统性问题</li>
-<li>深刻理解业务价值和技术实现的结合点</li>
-<li>具备架构设计和技术决策能力</li>
-<li>价值体现在判断力、创造力和技术领导力上</li>
-</ul>
-<h2 id="AI是敌是友？技术演进的双面性"><a href="#AI是敌是友？技术演进的双面性" class="headerlink" title="AI是敌是友？技术演进的双面性"></a>AI是敌是友？技术演进的双面性</h2><h3 id="拉平效应还是放大效应？"><a href="#拉平效应还是放大效应？" class="headerlink" title="拉平效应还是放大效应？"></a>拉平效应还是放大效应？</h3><p>有一种观点认为，AI会减少初级程序员与高级程序员在代码开发能力上的差距，从而拉平开发水平。然而，事实可能恰恰相反。</p>
-<p>AI的使用，实际上会将高级程序员的优势发挥得更加淋漓尽致。当基础的编码工作被AI自动化后，真正的价值差异就体现在那些AI无法替代的能力上：复杂问题拆解、系统架构设计、业务场景抽象、技术方案选型等高级技能。</p>
-<h3 id="丛林法则的新时代"><a href="#丛林法则的新时代" class="headerlink" title="丛林法则的新时代"></a>丛林法则的新时代</h3><p>我们正在进入一个技术人才的”丛林时代”，具备优秀问题解决能力的程序员将获得前所未有的技术体验和职场优势。而仍然停留在”码农”思维的执行者，将面临严峻的生存挑战。</p>
-<p><strong>在这个新时代，码农，将死。</strong></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/10/04/PIMPL/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/10/04/PIMPL/" class="post-title-link" itemprop="url">PIMPL</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2025-10-04 22:16:01 / Modified: 22:16:40" itemprop="dateCreated datePublished" datetime="2025-10-04T22:16:01+08:00">2025-10-04</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p><strong>Pimpl</strong> 的全称是 Pointer to IMPLementation，中文直译就是 <strong>“指向实现的指针”</strong>，有时也被叫 <strong>Cheshire Cat Idiom</strong> （像柴郡猫一样，头文件只露出笑容（接口），身体（实现）藏起来）<strong>Compilation Firewall</strong>（编译防火墙，挡住依赖扩散）</p>
-<p>Pimpl 不是语法特性，而是一种设计思想&#x2F;习惯用法（idiom）。就像 RAII、Singleton 一样，它是 C++ 社区长期演进出来的设计模式。</p>
-<p>主要目标是：</p>
-<ul>
-<li><p>隐藏实现细节（information hiding）;</p>
-</li>
-<li><p>减少编译依赖（降低头文件之间的耦合）;</p>
-</li>
-<li><p>保持 ABI 稳定（对外接口二进制兼容）;</p>
-</li>
-</ul>
-<p>普通类：.h 文件 &#x3D; “全身裸露”，别人一眼就看到内部细节。</p>
-<p>Pimpl：.h 文件 &#x3D; “只露个影子（指针）”，别人只知道有个实现，却不知道里面长啥样。</p>
-<h1 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h1><p>struct Impl; 这其实是 不完整类型声明（forward declaration）。</p>
-<p>这里只是告诉编译器有一个叫 Impl 的结构体存在，但不说明它里面有些什么成员。</p>
-<p>编译器因此知道 Impl 这个名字，但不能直接用它的大小（sizeof(Impl)）或访问里面的字段。</p>
-<p>常见用途就是 Pimpl 手法（Pointer to Implementation），比如：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 头文件 MyClass.h</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyClass</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">MyClass</span>();</span><br><span class="line">    ~<span class="built_in">MyClass</span>();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">doSomething</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">struct</span> <span class="title class_">Impl</span>;          <span class="comment">// 前向声明</span></span><br><span class="line">    Impl* pImpl;          <span class="comment">// 只存一个指针，不暴露实现细节</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>然后在 .cpp 文件里再给出 struct Impl 的完整定义：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// MyClass.cpp</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;MyClass.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">MyClass</span>::Impl &#123;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">doSomethingImpl</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Hello from Impl!&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">MyClass::<span class="built_in">MyClass</span>() : <span class="built_in">pImpl</span>(<span class="keyword">new</span> Impl) &#123;&#125;</span><br><span class="line"></span><br><span class="line">MyClass::~<span class="built_in">MyClass</span>() &#123; <span class="keyword">delete</span> pImpl; &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">MyClass::doSomething</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    pImpl-&gt;<span class="built_in">doSomethingImpl</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这样做的好处：</p>
-<ul>
-<li><p>封装实现：头文件只暴露接口，不暴露内部细节；</p>
-</li>
-<li><p>减少编译依赖：修改 Impl 的实现不会导致依赖 MyClass.h 的代码重新编译；</p>
-</li>
-<li><p>稳定 ABI：常用于库的接口设计；</p>
-</li>
-</ul>
-<h1 id="内存示意布局"><a href="#内存示意布局" class="headerlink" title="内存示意布局"></a>内存示意布局</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[调用方栈帧 / 对象所在处 - 栈或静态区]</span><br><span class="line">┌──────────────────────────────┐</span><br><span class="line">│ MyClass obj                  │</span><br><span class="line">│ ┌──────────────────────────┐ │</span><br><span class="line">│ │ pImpl : pointer (8B x64) │─┼─────────────┐</span><br><span class="line">│ └──────────────────────────┘ │             │</span><br><span class="line">└──────────────────────────────┘             │</span><br><span class="line">                                             │</span><br><span class="line">[堆内存 - 由 MyClass 管理的实现体]          │</span><br><span class="line">┌─────────────────────────────────────────┐  │</span><br><span class="line">│ MyClass::Impl                           │◀─┘</span><br><span class="line">│ ┌───────────────┬───────────────┬─────┐ │</span><br><span class="line">│ │ 成员a         │ 成员b         │ ... │ │</span><br><span class="line">│ │ (如 int)      │ (如 std::string)    │ │</span><br><span class="line">│ └───────────────┴───────────────┴─────┘ │</span><br><span class="line">└─────────────────────────────────────────┘</span><br></pre></td></tr></table></figure>
-
-<p>要点：</p>
-<ul>
-<li><p>MyClass 对外只有一个指针大小（x64 通常 8 字节）；</p>
-</li>
-<li><p>大小稳定，ABI 友好；</p>
-</li>
-<li><p>实际“重量级”成员都藏在 Impl 里，实现细节不泄露。</p>
-</li>
-<li><p>改 Impl 的字段不会触发大量重编译（依赖减少），编译更快。</p>
-</li>
-</ul>
-<h1 id="和传统的-h的声明方式的对比"><a href="#和传统的-h的声明方式的对比" class="headerlink" title="和传统的.h的声明方式的对比"></a>和传统的.h的声明方式的对比</h1><ol>
-<li>普通类：<strong>声明在 .h，实现放 .cpp</strong></li>
-</ol>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Animal.h</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Animal</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Animal</span>();</span><br><span class="line">    ~<span class="built_in">Animal</span>();</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">speak</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="type">int</span> age;</span><br><span class="line">    std::string name;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// Animal.cpp</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;Animal.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line">Animal::<span class="built_in">Animal</span>() : <span class="built_in">age</span>(<span class="number">0</span>), <span class="built_in">name</span>(<span class="string">&quot;dog&quot;</span>) &#123;&#125;</span><br><span class="line">Animal::~<span class="built_in">Animal</span>() &#123;&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">Animal::speak</span><span class="params">()</span> </span>&#123; std::cout &lt;&lt; name &lt;&lt; std::endl; &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>特点：</p>
-<ul>
-<li><p>.h 文件必须包含所有成员定义（比如 int age, std::string name）；</p>
-</li>
-<li><p>只不过函数体（实现细节）放在 .cpp；</p>
-</li>
-</ul>
-<p>这样依赖 Animal.h 的代码，会被迫看到 STL 的<code> &lt;string&gt;</code>，编译时依赖很大。</p>
-<p>一旦 Animal 的成员变量变动（比如 std::string 改成 std::vector<char>），所有包含 <code>Animal.h</code> 的代码都得重新编译。</char></p>
-<ol start="2">
-<li>Pimpl 手法（指针实现）</li>
-</ol>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Animal.h</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Animal</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Animal</span>();</span><br><span class="line">    ~<span class="built_in">Animal</span>();</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">speak</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">struct</span> <span class="title class_">Impl</span>;     <span class="comment">// 只声明，不公开细节</span></span><br><span class="line">    Impl* pImpl;     <span class="comment">// 或者 std::unique_ptr&lt;Impl&gt;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Animal.cpp</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;Animal.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Animal</span>::Impl &#123;</span><br><span class="line">    <span class="type">int</span> age;</span><br><span class="line">    std::string name;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">speak</span><span class="params">()</span> </span>&#123; std::cout &lt;&lt; name &lt;&lt; std::endl; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Animal::<span class="built_in">Animal</span>() : <span class="built_in">pImpl</span>(<span class="keyword">new</span> Impl&#123;<span class="number">0</span>, <span class="string">&quot;dog&quot;</span>&#125;) &#123;&#125;</span><br><span class="line">Animal::~<span class="built_in">Animal</span>() &#123; <span class="keyword">delete</span> pImpl; &#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">Animal::speak</span><span class="params">()</span> </span>&#123; pImpl-&gt;<span class="built_in">speak</span>(); &#125;</span><br></pre></td></tr></table></figure>
-
-<p>特点：</p>
-<ul>
-<li><p>.h 文件 不暴露任何成员变量，只暴露一个指针;</p>
-</li>
-<li><p>.cpp 才包含 <string> 等庞大依赖;</string></p>
-</li>
-</ul>
-<p>Animal.h 变得非常轻量，改动 Impl 时不需要重新编译依赖方，接口 ABI 稳定（sizeof(Animal) 恒定&#x3D;一个指针大小）。</p>
-<table>
-<thead>
-<tr>
-<th>对比点</th>
-<th>普通声明+实现</th>
-<th>Pimpl 手法</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>成员变量</td>
-<td>.h 里要写</td>
-<td>.h 里看不到</td>
-</tr>
-<tr>
-<td>编译依赖</td>
-<td>改成员就要全量编译</td>
-<td>只改 .cpp 就行</td>
-</tr>
-<tr>
-<td>ABI 稳定性</td>
-<td>sizeof(Animal) 随成员变化而变</td>
-<td>恒定（一个指针大小）</td>
-</tr>
-<tr>
-<td>封装性</td>
-<td>依赖方能看到类的完整定义</td>
-<td>依赖方完全不知道实现细节</td>
-</tr>
-</tbody></table>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1132,7 +961,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-count">31</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

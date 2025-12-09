@@ -145,6 +145,301 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/01/14/%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/01/14/%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="post-title-link" itemprop="url">共享内存的基础知识</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-01-14 22:34:34" itemprop="dateCreated datePublished" datetime="2025-01-14T22:34:34+08:00">2025-01-14</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/01/14/linux%E7%B3%BB%E7%BB%9F%E8%A3%81%E5%89%AA%E6%96%B9%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/01/14/linux%E7%B3%BB%E7%BB%9F%E8%A3%81%E5%89%AA%E6%96%B9%E5%BC%8F/" class="post-title-link" itemprop="url">linux系统裁剪方式</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-01-14 22:34:03" itemprop="dateCreated datePublished" datetime="2025-01-14T22:34:03+08:00">2025-01-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-02-09 19:54:23" itemprop="dateModified" datetime="2025-02-09T19:54:23+08:00">2025-02-09</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="裁剪驱动"><a href="#裁剪驱动" class="headerlink" title="裁剪驱动"></a>裁剪驱动</h1><p>使用 <code>make kernel_menuconfig</code>将不要的驱动去除，避免因为无用的驱动而导致系统增大。</p>
+<h1 id="内核配置表"><a href="#内核配置表" class="headerlink" title="内核配置表"></a>内核配置表</h1><p>除去内核中无用的配置，一般内核配置在<b>开发阶段</b>与<b>发布阶段</b>是不同的，通常情况下在<b>发布阶段</b>会小一些。<br>“Y *” - 建议开发阶段开启，在部署阶段可以选择<code>N</code>;<br>“N +” - 是否能够设置为<code>N</code>取决于自己的系统是否需要该功能;<br>“Y -“ - 通常需要配置，如果不需要的话可以自己进行审查是否可以关闭。</p>
+<table>
+<thead>
+<tr>
+<th>配置选项</th>
+<th>表述</th>
+<th>默认</th>
+<th>最小</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CONFIG_CORE_SMALL</td>
+<td>优化内核数据大小</td>
+<td>N</td>
+<td>Y</td>
+</tr>
+<tr>
+<td>CONFIG_NET_SMALL</td>
+<td>优化网络数据相关大小</td>
+<td>N</td>
+<td>Y</td>
+</tr>
+</tbody></table>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/01/14/%E5%85%B3%E4%BA%8E%E5%86%99%E5%8D%9A%E5%AE%A2%E7%9A%84%E4%B8%80%E4%BA%9B%E6%9D%82%E5%BF%B5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/01/14/%E5%85%B3%E4%BA%8E%E5%86%99%E5%8D%9A%E5%AE%A2%E7%9A%84%E4%B8%80%E4%BA%9B%E6%9D%82%E5%BF%B5/" class="post-title-link" itemprop="url">关于写博客的一些杂念</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-01-14 21:17:53" itemprop="dateCreated datePublished" datetime="2025-01-14T21:17:53+08:00">2025-01-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-12-06 19:31:58" itemprop="dateModified" datetime="2025-12-06T19:31:58+08:00">2025-12-06</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>过去很长一段时间我都遗忘掉写博客的念头，与我而言我想要将我的博客写的完美点，从而行动力低下。不过最近发生了两件事情让我打算重新开始博客的编写，并且希望在25年将博客篇数达到<font color="red">100</font>。</p>
+<p>第一件事情是在观看网易云计算首席架构师刘超的访谈中关于博客记录的描写，他有提到技术的更新迭代是很快的，而人们遗忘也很快，但是如果有编写过相关的文章，那么重新拾起也会快一点。<br>与我而言，我在过去十年接触到的技术点我自信是不弱于这个行业百分之八十的人的，但我总是没有沉淀下去，知识就像往池塘丢进一颗石子，当它沉淀到底的时候就是掌握知识的时候，而我的知识好似一片叶子，从来都不曾往池底沉落知识一直漂浮在水面上，偶尔清风来袭泛起一丝波澜罢了。</p>
+<p>第二件事是最近有一个人对我说，我看过你的博客，但好像里面没写啥东西。<br>对于这件事我是很惊喜的，我的博客竟然真的有人去浏览，但我也很难过，我似乎真的没有往里面放点什么东西，那怕是几篇水文呢？</p>
+<p>所以我决定重新将写博文这件事情放上我的计划中，我希望能够将我的知识沉淀下去，也希望阅览到我博客的人对我的技术有所认知。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/01/14/%E4%BD%BF%E7%94%A8tcpdump-wireshark%E6%8E%92%E6%9F%A5%E7%BD%91%E7%BB%9C%E4%BA%A4%E4%BA%92%E9%97%AE%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/01/14/%E4%BD%BF%E7%94%A8tcpdump-wireshark%E6%8E%92%E6%9F%A5%E7%BD%91%E7%BB%9C%E4%BA%A4%E4%BA%92%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">使用tcpdump+wireshark排查网络交互问题</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-01-14 00:11:16 / Modified: 00:54:19" itemprop="dateCreated datePublished" datetime="2025-01-14T00:11:16+08:00">2025-01-14</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>只要不是单机应用，你就必然需要与其他设备进行通讯，而只要具备网络功能那么必然需要有网络交互这一部分的开发工作。如果在与其他人合作开发应用的过程中，如果遇到了双方都认为自己不存在问题的时候就需要进行最底层的数据抓包来排查问题了。<br>最近在接触一个较大的项目代码，询问服务端开发的工程师与客户端开发的工程师双方都认为数据已经发送成功了，至于为什么没有处理不晓得为啥，双方认为都是对方的错误，再次我们不能单纯的从代码来判断是否<font color="red">接收到与发送成功</font>，更适合的做法是通过更底层的数据来判断。<br>由于我们网络受限的情况，没有办法直接在A主机上对B主机进行抓包，所以需要依赖到tcpdump。</p>
+<h1 id="编译tcpdump-libpcap"><a href="#编译tcpdump-libpcap" class="headerlink" title="编译tcpdump + libpcap"></a>编译tcpdump + libpcap</h1><p>tcpdump是需要用到的工具，而libpcap是tcpdump的依赖库。</p>
+<h2 id="下载编译libpcap"><a href="#下载编译libpcap" class="headerlink" title="下载编译libpcap"></a>下载编译libpcap</h2><p>源码下载</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/the-tcpdump-group/libpcap.git</span><br><span class="line">cd libpcap</span><br></pre></td></tr></table></figure>
+<p>编译配置</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">./autogen.sh</span><br><span class="line">./configure \</span><br><span class="line">    --host=arm-xxx-linux-uclibcgnueabihf \</span><br><span class="line">    CC=arm-xxx-linux-uclibcgnueabihf-gcc \</span><br><span class="line">    CXX=arm-xxx-linux-uclibcgnueabihf-g++</span><br><span class="line"></span><br><span class="line">make</span><br></pre></td></tr></table></figure>
+<p>安装</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make install DESTDIR=../temp #我选择安装在上一层文件夹下</span><br></pre></td></tr></table></figure>
+
+<h2 id="下载编译tcpdump"><a href="#下载编译tcpdump" class="headerlink" title="下载编译tcpdump"></a>下载编译tcpdump</h2><p>源码下载</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/the-tcpdump-group/tcpdump.git</span><br><span class="line">cd tcpdump</span><br></pre></td></tr></table></figure>
+<p>编译配置</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">./configure \</span><br><span class="line">    --host=arm-xxx-linux-uclibcgnueabihf \</span><br><span class="line">    CC=arm-xxx-linux-uclibcgnueabihf-gcc \</span><br><span class="line">    CXX=arm-xxx-linux-uclibcgnueabihf-g++ \</span><br><span class="line">    LDFLAGS=&quot;-L../temp/usr/lib&quot; \</span><br><span class="line">    CPPFLAGS=&quot;-I../temp/usr/include&quot;</span><br></pre></td></tr></table></figure>
+<p>编译与安装</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">make</span><br><span class="line">make install DESTDIR=../temp</span><br></pre></td></tr></table></figure>
+
+<h1 id="下载wireshark"><a href="#下载wireshark" class="headerlink" title="下载wireshark"></a>下载wireshark</h1><p>由于我是windows系统，直接去到官方<a target="_blank" rel="noopener" href="https://www.wireshark.org/">https://www.wireshark.org/</a> 进行安装下载程序就行了。</p>
+<h1 id="实操"><a href="#实操" class="headerlink" title="实操"></a>实操</h1><p>将tcpdump 二进制执行文件传输到客户端的主机上，进行抓包。可以直接选择抓全部包，也可以选择抓取特定的包，由于不确定交互是否正确，在此我抓取的内容是全部。</p>
+<ol>
+<li>打开客户端的执行程序，执行如下代码<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tcpdump -i any -w capture.pcap</span><br></pre></td></tr></table></figure></li>
+<li>执行你的网络交互步骤，譬如服务端向客户端发送消息或者客户端向服务端发送消息等操作。</li>
+<li>将抓取文件复制到主机A上，使用wireshark打开后进行具体的分析。<br>我是在这一步的时候，确定了客户端是有获取到服务端消息的。后逐步排查客户端更加底层的代码，确定了客户端开发工程师在实现交互中存在问题，后续修复该问题完成与服务端的交互。</li>
+</ol>
+<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>在进行项目开发的时候，无论功能的简单与否，只要涉及到2层以上的交互都应该有具体的文档输出，否则的话是给双方隐形增加开发成本。另外我真心觉得有些开发工程师过于傲慢，无论是否发送成功，业务层逻辑设计关于指令交互这一块，如果不存在来回交互的，认为不合理都是可以接受的。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2025/01/12/hexo%E5%9B%BE%E7%89%87%E4%B8%8D%E6%98%BE%E7%A4%BA%E4%BF%AE%E5%A4%8D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -596,70 +891,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/08/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/06/08/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-06-08 14:10:07 / Modified: 14:41:13" itemprop="dateCreated datePublished" datetime="2022-06-08T14:10:07+08:00">2022-06-08</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><p>Hello Bryan~</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -725,7 +960,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-count">31</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
